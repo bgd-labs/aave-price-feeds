@@ -16,6 +16,7 @@ import {MiscBase} from 'aave-address-book/MiscBase.sol';
 import {MiscGnosis} from 'aave-address-book/MiscGnosis.sol';
 import {MiscOptimism} from 'aave-address-book/MiscOptimism.sol';
 import {MiscPolygon} from 'aave-address-book/MiscPolygon.sol';
+import {ChainlinkBase} from 'aave-address-book/ChainlinkBase.sol';
 
 import {ICbEthRateProvider} from 'cl-synchronicity-price-adapter/interfaces/ICbEthRateProvider.sol';
 import {IrETH} from 'cl-synchronicity-price-adapter/interfaces/IrETH.sol';
@@ -165,7 +166,7 @@ contract ExchangeRatesAvax is Test {
 
 contract ExchangeRatesBase is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('base'), 31620903); // 2025-15-06
+    vm.createSelectFork(vm.rpcUrl('base'), 39376200); // Dec-12-2025
   }
 
   function test_getExchangeRate() public view {
@@ -186,6 +187,10 @@ contract ExchangeRatesBase is Test {
       IChainlinkAggregator(CapAdaptersCodeBase.rsETH_ETH_AGGREGATOR).latestAnswer()
     );
 
+    uint256 syrupUSDCCLRate = uint256(
+      IChainlinkAggregator(ChainlinkBase.syrupUSDC_USDC_Exchange_Rate).latestAnswer()
+    );
+
     console.log('Base');
     console.log('cbEthRate', cbEthRate);
     console.log('wstEthRate', wstEthRate);
@@ -193,6 +198,7 @@ contract ExchangeRatesBase is Test {
     console.log('ezEthRate', ezEthRate);
     console.log('rsETHRate', rsETHRate);
     console.log('rsETHCLRate', rsETHCLRate);
+    console.log('syrupUSDCCLRate', syrupUSDCCLRate);
 
     console.log(block.timestamp);
   }

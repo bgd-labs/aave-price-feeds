@@ -17,7 +17,9 @@ library CapAdaptersCodePlasma {
   address public constant wstETH_stETH_AGGREGATOR = 0xd64d26cAd5f672463c33f91cE5b243d24cF7a903;
   address public constant sUSDe_USDe_AGGREGATOR = 0x802033dc696B92e5ED5bF68E1750F7Ed3329eabD;
   address public constant PT_sUSDe_15_JAN_2026 = 0x02FCC4989B4C9D435b7ceD3fE1Ba4CF77BBb5Dd8;
+  address public constant PT_sUSDe_09_APR_2026 = 0xab509448ad489e2E1341e25CC500f2596464Cc82;
   address public constant PT_USDe_15_JAN_2026 = 0x93B544c330F60A2aa05ceD87aEEffB8D38FD8c9a;
+  address public constant PT_USDe_09_APR_2026 = 0x54Dc267be2839303ff1e323584A16e86CeC4Aa44;
 
   address public constant WETH_PRICE_FEED = 0x43A7dd2125266c5c4c26EB86cd61241132426Fe7;
   address public constant USDT_PRICE_FEED = 0x70b77FcdbE2293423e41AdD2FB599808396807BC;
@@ -40,6 +42,23 @@ library CapAdaptersCodePlasma {
       );
   }
 
+  function ptSUSDeApril2026AdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PendlePriceCapAdapter).creationCode,
+        abi.encode(
+          IPendlePriceCapAdapter.PendlePriceCapAdapterParams({
+            assetToUsdAggregator: AaveV3PlasmaAssets.USDT0_ORACLE,
+            pendlePrincipalToken: PT_sUSDe_09_APR_2026,
+            maxDiscountRatePerYear: uint256(27.276e16).toUint64(),
+            discountRatePerYear: uint256(5.596e16).toUint64(),
+            aclManager: address(AaveV3Plasma.ACL_MANAGER),
+            description: 'PT Capped sUSDe USDT/USD linear discount 09APR2026'
+          })
+        )
+      );
+  }
+
   function ptUSDeJanuary2026AdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
@@ -52,6 +71,23 @@ library CapAdaptersCodePlasma {
             discountRatePerYear: uint256(7.96e16).toUint64(),
             aclManager: address(AaveV3Plasma.ACL_MANAGER),
             description: 'PT Capped USDe USDT/USD linear discount 15JAN2026'
+          })
+        )
+      );
+  }
+
+  function ptUSDeApril2026AdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PendlePriceCapAdapter).creationCode,
+        abi.encode(
+          IPendlePriceCapAdapter.PendlePriceCapAdapterParams({
+            assetToUsdAggregator: AaveV3PlasmaAssets.USDT0_ORACLE,
+            pendlePrincipalToken: PT_USDe_09_APR_2026,
+            maxDiscountRatePerYear: uint256(27.276e16).toUint64(),
+            discountRatePerYear: uint256(4.701e16).toUint64(),
+            aclManager: address(AaveV3Plasma.ACL_MANAGER),
+            description: 'PT Capped USDe USDT/USD linear discount 09APR2026'
           })
         )
       );
@@ -180,9 +216,21 @@ contract DeployPtSUSDe15JAN2026Plasma is PlasmaScript {
   }
 }
 
+contract DeployPtSUSDe09APR2026Plasma is PlasmaScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodePlasma.ptSUSDeApril2026AdapterCode());
+  }
+}
+
 contract DeployPtUSDe15JAN2026Plasma is PlasmaScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodePlasma.ptUSDeJanuary2026AdapterCode());
+  }
+}
+
+contract DeployPtUSDe09APR2026Plasma is PlasmaScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodePlasma.ptUSDeApril2026AdapterCode());
   }
 }
 
