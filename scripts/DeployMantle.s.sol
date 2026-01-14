@@ -76,7 +76,7 @@ library CapAdaptersCodeMantle {
             aclManager: AaveV3Mantle.ACL_MANAGER,
             baseAggregatorAddress: USDT_Stable_Adapter,
             ratioProviderAddress: sUSDe_USDe_Exchange_rate,
-            pairDescription: 'Capped wrsETH / ETH / USD',
+            pairDescription: 'Capped sUSDe / USDT / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1_209784443221941813, // snapshot from mainnet
