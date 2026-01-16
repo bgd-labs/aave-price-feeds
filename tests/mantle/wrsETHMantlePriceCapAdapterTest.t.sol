@@ -9,7 +9,7 @@ contract wrsETHMantlePriceCapAdapterTest is CLAdapterBaseTest {
     CLAdapterBaseTest(
       CapAdaptersCodeMantle.wrsETHAdapterCode(),
       1,
-      ForkParams({network: 'mantle', blockNumber: 90127892}),
+      ForkParams({network: 'mantle', blockNumber: 90211167}),
       'WRsETH_Mantle'
     )
   {}

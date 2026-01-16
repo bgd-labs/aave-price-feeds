@@ -10,7 +10,7 @@ contract USDCMantlePriceCapAdapterTest is BaseStableTest {
     BaseStableTest(
       CapAdaptersCodeMantle.USDCAdapterCode(),
       30,
-      ForkParams({network: 'mantle', blockNumber: 90127000})
+      ForkParams({network: 'mantle', blockNumber: 90209274})
     )
   {}
 }

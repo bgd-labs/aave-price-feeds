@@ -14,7 +14,7 @@ library CapAdaptersCodeMantle {
   address public constant rsETH_ETH_Exchange_rate = 0xAa7B3679db156d3773620eBce98E38Cd87544C0e;
   address public constant sUSDe_USDe_Exchange_rate = 0x1D28137b7695d1Dcd122E5Bf0ce7eE92360e83b7;
   address public constant syrupUSDT_USDT_Exchange_rate = 0xdDEaeAdF319bd363120Af02fBdb1e2C5A3Ce172a;
-  address public constant USDT_Stable_Adapter = 0xceEB5F8C740e4253e1EEb200B4d03D304d2adEA4;
+  address public constant USDT_Stable_Adapter = 0xFA5dEcEd7cdCEAB065addd0E32D9527ABd1069Ee;
 
   function USDTAdapterCode() internal pure returns (bytes memory) {
     return
@@ -58,8 +58,8 @@ library CapAdaptersCodeMantle {
             pairDescription: 'Capped SyrupUSDT / USDT / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_098758443592522491, // snapshot from mainnet
-              snapshotTimestamp: 1761065003, // Jan-07-2026
+              snapshotRatio: 1_110788277783283832, // snapshot from mainnet (block: 24180000)
+              snapshotTimestamp: 1767755099, // Jan-07-2026
               maxYearlyRatioGrowthPercent: 8_45
             })
           })
@@ -79,8 +79,8 @@ library CapAdaptersCodeMantle {
             pairDescription: 'Capped sUSDe / USDT / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_209784443221941813, // snapshot from mainnet
-              snapshotTimestamp: 1764724715, // Dec-31-2025
+              snapshotRatio: 1_213777113888938853, // snapshot from mainnet
+              snapshotTimestamp: 1767152639, // Dec-31-2025 (block: 24130000)
               maxYearlyRatioGrowthPercent: 15_19
             })
           })
@@ -100,8 +100,8 @@ library CapAdaptersCodeMantle {
             pairDescription: 'Capped wrsETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_059715374118623278, // snapshot from mainnet
-              snapshotTimestamp: 1764724715, // Dec-31-2025
+              snapshotRatio: 1_061649883886412906, // snapshot from mainnet
+              snapshotTimestamp: 1767152639, // Dec-31-2025 (block: 24130000)
               maxYearlyRatioGrowthPercent: 6_67
             })
           })

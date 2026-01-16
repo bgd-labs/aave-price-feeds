@@ -9,7 +9,7 @@ contract syrupUSDTMantlePriceCapAdapterTest is CLAdapterBaseTest {
     CLAdapterBaseTest(
       CapAdaptersCodeMantle.syrupUSDTAdapterCode(),
       7,
-      ForkParams({network: 'mantle', blockNumber: 90127892}),
+      ForkParams({network: 'mantle', blockNumber: 90211167}),
       'syrupUSDT_Mantle'
     )
   {}
