@@ -23,7 +23,7 @@ library CapAdaptersCodeMantle {
         abi.encode(
           IPriceCapAdapterStable.CapAdapterStableParams({
             aclManager: AaveV3Mantle.ACL_MANAGER,
-            assetToUsdAggregator: IChainlinkAggregator(ChainlinkMantle.USDT_USD),
+            assetToUsdAggregator: IChainlinkAggregator(ChainlinkMantle.USDT__USD),
             adapterDescription: 'Capped USDT/USD',
             priceCap: int256(1.04 * 1e8)
           })
@@ -38,7 +38,7 @@ library CapAdaptersCodeMantle {
         abi.encode(
           IPriceCapAdapterStable.CapAdapterStableParams({
             aclManager: AaveV3Mantle.ACL_MANAGER,
-            assetToUsdAggregator: IChainlinkAggregator(ChainlinkMantle.USDC_USD),
+            assetToUsdAggregator: IChainlinkAggregator(ChainlinkMantle.USDC__USD),
             adapterDescription: 'Capped USDC/USD',
             priceCap: int256(1.04 * 1e8)
           })
@@ -95,7 +95,7 @@ library CapAdaptersCodeMantle {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Mantle.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkMantle.ETH_USD,
+            baseAggregatorAddress: ChainlinkMantle.ETH__USD,
             ratioProviderAddress: rsETH_ETH_Exchange_rate,
             pairDescription: 'Capped wrsETH / ETH / USD',
             minimumSnapshotDelay: 14 days,

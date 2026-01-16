@@ -73,9 +73,9 @@ contract CapoSvrUpgradeTest is Test {
       address baseAggregator = address(IPriceCapAdapter(lsts[i].svr).BASE_TO_USD_AGGREGATOR());
 
       if (lsts[i].svr == CAPO_SVR.eBTC) {
-        assertEq(baseAggregator, ChainlinkEthereum.SVR_BTC_USD);
+        assertEq(baseAggregator, ChainlinkEthereum.SVR_BTC__USD);
       } else {
-        assertEq(baseAggregator, ChainlinkEthereum.SVR_ETH_USD);
+        assertEq(baseAggregator, ChainlinkEthereum.SVR_ETH__USD);
       }
     }
   }
@@ -87,9 +87,9 @@ contract CapoSvrUpgradeTest is Test {
       );
 
       if (stables[i].svr == CAPO_SVR.USDC) {
-        assertEq(baseAggregator, ChainlinkEthereum.SVR_USDC_USD);
+        assertEq(baseAggregator, ChainlinkEthereum.SVR_USDC__USD);
       } else {
-        assertEq(baseAggregator, ChainlinkEthereum.SVR_USDT_USD);
+        assertEq(baseAggregator, ChainlinkEthereum.SVR_USDT__USD);
       }
     }
   }
@@ -111,7 +111,7 @@ contract CapoSvrUpgradeTest is Test {
     assertEq(svrWBTC.description(), 'wBTC/BTC/USD');
 
     // svr oracle
-    assertEq(address(svrWBTC.PEG_TO_BASE()), ChainlinkEthereum.SVR_BTC_USD);
+    assertEq(address(svrWBTC.PEG_TO_BASE()), ChainlinkEthereum.SVR_BTC__USD);
   }
 
   function _assertLstAdapterParams(IPriceCapAdapter current, IPriceCapAdapter svr) internal view {
