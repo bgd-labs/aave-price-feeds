@@ -72,6 +72,10 @@ library BlockUtils {
       return 86_400;
     }
 
+    if (keccak256(bytes(network)) == keccak256(bytes('mantle'))) {
+      return 43_200;
+    }
+
     return 7300;
   }
 }

@@ -106,7 +106,7 @@ library CapAdaptersCodeBase {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Base.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkBase.BTC_USD,
+            baseAggregatorAddress: ChainlinkBase.BTC__USD,
             ratioProviderAddress: LBTC_STAKE_ORACLE,
             pairDescription: 'Capped LBTC / BTC / USD',
             minimumSnapshotDelay: 7 days,

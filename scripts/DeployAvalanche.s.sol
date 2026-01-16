@@ -58,7 +58,7 @@ library CapAdaptersCodeAvalanche {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Avalanche.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkAvalanche.ETH_USD,
+            baseAggregatorAddress: ChainlinkAvalanche.ETH__USD,
             ratioProviderAddress: ChainlinkAvalanche.WRSETH_ETH_Exchange_Rate,
             pairDescription: 'Capped wrsETH / ETH / USD',
             minimumSnapshotDelay: 14 days,

@@ -140,7 +140,7 @@ library CapAdaptersCodeLinea {
         abi.encode(
           IPriceCapAdapterStable.CapAdapterStableParams({
             aclManager: AaveV3Linea.ACL_MANAGER,
-            assetToUsdAggregator: IChainlinkAggregator(ChainlinkLinea.MUSD_USD),
+            assetToUsdAggregator: IChainlinkAggregator(ChainlinkLinea.MUSD__USD),
             adapterDescription: 'Capped mUSD / USD',
             priceCap: int256(1.04 * 1e8)
           })
