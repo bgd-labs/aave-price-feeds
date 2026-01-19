@@ -63,6 +63,7 @@ library CapAdaptersCodeEthereum {
   address public constant PT_USDe_27_NOV_2025 = 0x62C6E813b9589C3631Ba0Cdb013acdB8544038B7;
   address public constant PT_sUSDe_05_FEB_2026 = 0xE8483517077afa11A9B07f849cee2552f040d7b2;
   address public constant PT_USDe_05_FEB_2026 = 0x1F84a51296691320478c98b8d77f2Bbd17D34350;
+  address public constant PT_srUSDe_02_APR_2026 = 0x9Bf45ab47747F4B4dD09B3C2c73953484b4eB375;
   address public constant stETH = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84;
   address public constant rETH = 0xae78736Cd615f374D3085123A210448E74Fc6393;
   address public constant tETH = 0xD11c452fc99cF405034ee446803b6F6c1F6d5ED8;
@@ -71,6 +72,23 @@ library CapAdaptersCodeEthereum {
   address public constant EURC_PRICE_FEED = 0x04F84020Fdf10d9ee64D1dcC2986EDF2F556DA11;
   address public constant EUR_PRICE_FEED = 0xb49f677943BC038e9857d61E7d053CaA2C1734C1;
   address public constant LBTC_STAKE_ORACLE = 0x1De9fcfeDF3E51266c188ee422fbA1c7860DA0eF;
+
+  function ptSrUSDeApril2026AdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PendlePriceCapAdapter).creationCode,
+        abi.encode(
+          IPendlePriceCapAdapter.PendlePriceCapAdapterParams({
+            assetToUsdAggregator: AaveV3EthereumAssets.USDT_ORACLE,
+            pendlePrincipalToken: PT_srUSDe_02_APR_2026,
+            maxDiscountRatePerYear: uint256(24.01e16).toUint64(),
+            discountRatePerYear: uint256(6.72e16).toUint64(),
+            aclManager: address(AaveV3Ethereum.ACL_MANAGER),
+            description: 'PT Capped srUSDe USDT/USD linear discount 02APR2026'
+          })
+        )
+      );
+  }
 
   function ptSUSDeNovember2025AdapterCode() internal pure returns (bytes memory) {
     return
@@ -999,5 +1017,11 @@ contract DeployPtUSDe05FEB2026Ethereum is EthereumScript {
 contract DeployPtSUSDe05FEB2026Ethereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptSUSDeFebruary2026AdapterCode());
+  }
+}
+
+contract DeployPtSrUSDe02APR2026Ethereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptSrUSDeApril2026AdapterCode());
   }
 }
