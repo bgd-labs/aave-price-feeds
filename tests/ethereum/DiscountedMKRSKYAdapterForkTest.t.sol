@@ -12,7 +12,7 @@ import {BlockUtils} from '../utils/BlockUtils.sol';
 
 contract DiscountedMKRSKYAdapterForkTest is Test {
   uint256 public constant RETROSPECTIVE_STEP = 1; // days
-  uint256 public constant RETROSPECTIVE_DAYS = 14;
+  uint256 public constant RETROSPECTIVE_DAYS = 60;
 
   // Mainnet addresses
   address public constant SKY_USD_FEED = 0xee10fE5E7aa92dd7b136597449c3d5813cFC5F18;
