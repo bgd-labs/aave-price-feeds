@@ -78,22 +78,16 @@ contract DiscountedMKRSKYAdapter is IDiscountedMKRSKYAdapter {
   /// @inheritdoc IBasicFeed
   string public description;
 
-  constructor(
-    address aclManager_,
-    uint256 discount_,
-    address referenceFeed_,
-    uint256 exchangeRate_,
-    string memory description_
-  ) {
-    if (aclManager_ == address(0)) revert ACLManagerIsZeroAddress();
-    if (exchangeRate_ < ONE_EXCHANGE_RATE) revert InvalidExchangeRate();
+  constructor(ConstructorParams memory params) {
+    if (params.aclManager == address(0)) revert ACLManagerIsZeroAddress();
+    if (params.exchangeRate < ONE_EXCHANGE_RATE) revert InvalidExchangeRate();
 
-    ACL_MANAGER = IACLManager(aclManager_);
-    EXCHANGE_RATE = exchangeRate_;
-    description = description_;
-    _setDiscount(discount_);
-    _setReferenceFeed(referenceFeed_);
-    DECIMALS = IChainlinkAggregator(referenceFeed_).decimals();
+    ACL_MANAGER = IACLManager(params.aclManager);
+    EXCHANGE_RATE = params.exchangeRate;
+    description = params.description;
+    _setDiscount(params.discount);
+    _setReferenceFeed(params.referenceFeed);
+    DECIMALS = IChainlinkAggregator(params.referenceFeed).decimals();
   }
 
   /// @inheritdoc IBasicFeed

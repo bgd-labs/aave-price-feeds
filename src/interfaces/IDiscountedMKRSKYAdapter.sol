@@ -11,6 +11,19 @@ import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IC
  * @notice Interface for the DiscountedMKRSKYAdapter price feed
  */
 interface IDiscountedMKRSKYAdapter is IBasicFeed {
+  /// @notice Constructor parameters for DiscountedMKRSKYAdapter
+  /// @param aclManager ACL manager contract for access control
+  /// @param discount Initial discount in BPS (e.g., 6_00 = 6%)
+  /// @param referenceFeed Chainlink-compatible price feed for SKY/USD
+  /// @param exchangeRate Fixed MKR/SKY exchange rate with 2 decimal precision (e.g., 24000_00 = 24000:1)
+  /// @param description Human-readable description of the adapter
+  struct ConstructorParams {
+    address aclManager;
+    uint256 discount;
+    address referenceFeed;
+    uint256 exchangeRate;
+    string description;
+  }
   /// @notice Emitted when the discount is updated
   /// @param currentDiscount Previous discount in BPS
   /// @param newDiscount New discount in BPS

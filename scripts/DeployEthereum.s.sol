@@ -35,6 +35,7 @@ import {LBTCPriceCapAdapter} from '../src/contracts/lst-adapters/LBTCPriceCapAda
 import {SyrupUSDCPriceCapAdapter} from '../src/contracts/lst-adapters/SyrupUSDCPriceCapAdapter.sol';
 import {SyrupUSDTPriceCapAdapter} from '../src/contracts/lst-adapters/SyrupUSDTPriceCapAdapter.sol';
 import {DiscountedMKRSKYAdapter} from '../src/contracts/misc-adapters/DiscountedMKRSKYAdapter.sol';
+import {IDiscountedMKRSKYAdapter} from '../src/interfaces/IDiscountedMKRSKYAdapter.sol';
 
 library CapAdaptersCodeEthereum {
   using SafeCast for uint256;
@@ -780,11 +781,13 @@ library CapAdaptersCodeEthereum {
       abi.encodePacked(
         type(DiscountedMKRSKYAdapter).creationCode,
         abi.encode(
-          address(AaveV3Ethereum.ACL_MANAGER),
-          uint256(6_00), // 6% discount
-          SKY_USD_FEED,
-          uint256(24_000_00), // 24000:1 exchange rate
-          'MKR/USD (calculated)'
+          IDiscountedMKRSKYAdapter.ConstructorParams({
+            aclManager: address(AaveV3Ethereum.ACL_MANAGER),
+            discount: 6_00, // 6%
+            referenceFeed: SKY_USD_FEED,
+            exchangeRate: 24_000_00, // 24000:1
+            description: 'MKR/USD (calculated)'
+          })
         )
       );
   }

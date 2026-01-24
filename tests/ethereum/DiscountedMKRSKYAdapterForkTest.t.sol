@@ -143,11 +143,13 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
 
   function _createAdapter() internal returns (IDiscountedMKRSKYAdapter) {
     return new DiscountedMKRSKYAdapter(
-      address(AaveV3Ethereum.ACL_MANAGER),
-      DISCOUNT,
-      SKY_USD_FEED,
-      EXCHANGE_RATE,
-      DESCRIPTION
+      IDiscountedMKRSKYAdapter.ConstructorParams({
+        aclManager: address(AaveV3Ethereum.ACL_MANAGER),
+        discount: DISCOUNT,
+        referenceFeed: SKY_USD_FEED,
+        exchangeRate: EXCHANGE_RATE,
+        description: DESCRIPTION
+      })
     );
   }
 

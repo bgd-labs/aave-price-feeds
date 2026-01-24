@@ -30,11 +30,13 @@ contract DiscountedMKRSKYAdapterTest is Test {
     aclManager = IACLManager(address(new ACLManagerMock(POOL_ADMIN, address(0))));
     referenceFeed = new ChainlinkAggregatorMock(SKY_PRICE);
     adapter = new DiscountedMKRSKYAdapter(
-      address(aclManager),
-      DISCOUNT,
-      address(referenceFeed),
-      EXCHANGE_RATE,
-      DESCRIPTION
+      IDiscountedMKRSKYAdapter.ConstructorParams({
+        aclManager: address(aclManager),
+        discount: DISCOUNT,
+        referenceFeed: address(referenceFeed),
+        exchangeRate: EXCHANGE_RATE,
+        description: DESCRIPTION
+      })
     );
   }
 
@@ -139,11 +141,13 @@ contract DiscountedMKRSKYAdapterTest is Test {
   function test_constructor_aclManagerZeroAddress() external {
     vm.expectRevert(IDiscountedMKRSKYAdapter.ACLManagerIsZeroAddress.selector);
     new DiscountedMKRSKYAdapter(
-      address(0),
-      DISCOUNT,
-      address(referenceFeed),
-      EXCHANGE_RATE,
-      DESCRIPTION
+      IDiscountedMKRSKYAdapter.ConstructorParams({
+        aclManager: address(0),
+        discount: DISCOUNT,
+        referenceFeed: address(referenceFeed),
+        exchangeRate: EXCHANGE_RATE,
+        description: DESCRIPTION
+      })
     );
   }
 
@@ -151,32 +155,38 @@ contract DiscountedMKRSKYAdapterTest is Test {
     // Test discount below minimum (10 = 0.1%)
     vm.expectRevert(IDiscountedMKRSKYAdapter.InvalidDiscount.selector);
     new DiscountedMKRSKYAdapter(
-      address(aclManager),
-      9, // below 10
-      address(referenceFeed),
-      EXCHANGE_RATE,
-      DESCRIPTION
+      IDiscountedMKRSKYAdapter.ConstructorParams({
+        aclManager: address(aclManager),
+        discount: 9, // below 10
+        referenceFeed: address(referenceFeed),
+        exchangeRate: EXCHANGE_RATE,
+        description: DESCRIPTION
+      })
     );
 
     // Test discount above maximum (99_90 = 99.9%)
     vm.expectRevert(IDiscountedMKRSKYAdapter.InvalidDiscount.selector);
     new DiscountedMKRSKYAdapter(
-      address(aclManager),
-      99_91, // above 99_90
-      address(referenceFeed),
-      EXCHANGE_RATE,
-      DESCRIPTION
+      IDiscountedMKRSKYAdapter.ConstructorParams({
+        aclManager: address(aclManager),
+        discount: 99_91, // above 99_90
+        referenceFeed: address(referenceFeed),
+        exchangeRate: EXCHANGE_RATE,
+        description: DESCRIPTION
+      })
     );
   }
 
   function test_constructor_invalidFeed() external {
     vm.expectRevert(IDiscountedMKRSKYAdapter.InvalidFeed.selector);
     new DiscountedMKRSKYAdapter(
-      address(aclManager),
-      DISCOUNT,
-      address(0),
-      EXCHANGE_RATE,
-      DESCRIPTION
+      IDiscountedMKRSKYAdapter.ConstructorParams({
+        aclManager: address(aclManager),
+        discount: DISCOUNT,
+        referenceFeed: address(0),
+        exchangeRate: EXCHANGE_RATE,
+        description: DESCRIPTION
+      })
     );
   }
 
@@ -184,11 +194,13 @@ contract DiscountedMKRSKYAdapterTest is Test {
     // Test exchange rate below minimum (1_00 = 1:1)
     vm.expectRevert(IDiscountedMKRSKYAdapter.InvalidExchangeRate.selector);
     new DiscountedMKRSKYAdapter(
-      address(aclManager),
-      DISCOUNT,
-      address(referenceFeed),
-      99, // below 1_00
-      DESCRIPTION
+      IDiscountedMKRSKYAdapter.ConstructorParams({
+        aclManager: address(aclManager),
+        discount: DISCOUNT,
+        referenceFeed: address(referenceFeed),
+        exchangeRate: 99, // below 1_00
+        description: DESCRIPTION
+      })
     );
   }
 
@@ -197,11 +209,13 @@ contract DiscountedMKRSKYAdapterTest is Test {
 
     vm.expectRevert(IDiscountedMKRSKYAdapter.PriceTooLow.selector);
     new DiscountedMKRSKYAdapter(
-      address(aclManager),
-      DISCOUNT,
-      address(lowPriceFeed),
-      EXCHANGE_RATE,
-      DESCRIPTION
+      IDiscountedMKRSKYAdapter.ConstructorParams({
+        aclManager: address(aclManager),
+        discount: DISCOUNT,
+        referenceFeed: address(lowPriceFeed),
+        exchangeRate: EXCHANGE_RATE,
+        description: DESCRIPTION
+      })
     );
   }
 
@@ -211,11 +225,13 @@ contract DiscountedMKRSKYAdapterTest is Test {
 
     vm.expectRevert(IDiscountedMKRSKYAdapter.InvalidDecimals.selector);
     new DiscountedMKRSKYAdapter(
-      address(aclManager),
-      DISCOUNT,
-      address(invalidDecimalsFeed),
-      EXCHANGE_RATE,
-      DESCRIPTION
+      IDiscountedMKRSKYAdapter.ConstructorParams({
+        aclManager: address(aclManager),
+        discount: DISCOUNT,
+        referenceFeed: address(invalidDecimalsFeed),
+        exchangeRate: EXCHANGE_RATE,
+        description: DESCRIPTION
+      })
     );
   }
 
@@ -287,11 +303,13 @@ contract DiscountedMKRSKYAdapterTest is Test {
     // Need a new adapter since exchange rate is immutable
     ChainlinkAggregatorMock fuzzFeed = new ChainlinkAggregatorMock(int256(skyPrice));
     DiscountedMKRSKYAdapter fuzzAdapter = new DiscountedMKRSKYAdapter(
-      address(aclManager),
-      fuzzDiscount,
-      address(fuzzFeed),
-      fuzzExchangeRate,
-      DESCRIPTION
+      IDiscountedMKRSKYAdapter.ConstructorParams({
+        aclManager: address(aclManager),
+        discount: fuzzDiscount,
+        referenceFeed: address(fuzzFeed),
+        exchangeRate: fuzzExchangeRate,
+        description: DESCRIPTION
+      })
     );
 
     uint256 expectedPrice = ((skyPrice * fuzzExchangeRate) *
