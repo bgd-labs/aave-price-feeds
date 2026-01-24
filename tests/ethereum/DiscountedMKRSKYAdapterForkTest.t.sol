@@ -18,10 +18,8 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
   address public constant SKY_USD_FEED = 0xee10fE5E7aa92dd7b136597449c3d5813cFC5F18;
   address public constant MKR_USD_FEED = 0xec1D1B3b0443256cc3860e24a46F108e699484Aa;
 
-  // Adapter parameters
-  uint256 public constant EXCHANGE_RATE = 24_000_00; // 24000:1
-  uint256 public constant DISCOUNT = 6_00; // 6%
-  uint256 public constant ONE_HUNDRED_PERCENT_BPS = 100_00;
+  // Adapter constants (must match contract)
+  uint256 public constant EXCHANGE_RATE = 24_000; // 24000:1
   uint8 public constant DECIMALS = 8;
   string public constant DESCRIPTION = 'MKR/USD (calculated)';
   string public constant REPORT_NAME = 'DiscountedMKRSKYAdapter_custom_Ethereum';
@@ -58,13 +56,14 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
     int256 adapterPrice = adapter.latestAnswer();
     int256 skyPrice = IChainlinkAggregator(SKY_USD_FEED).latestAnswer();
     int256 mkrReferencePrice = IChainlinkAggregator(MKR_USD_FEED).latestAnswer();
+    uint256 discount = adapter.discount();
 
     // Verify price is positive
     assertGt(adapterPrice, 0, 'Adapter price should be positive');
 
     // Verify formula: MKR = SKY * EXCHANGE_RATE * (1 - discount)
     int256 expectedPrice = int256(
-      ((uint256(skyPrice) * EXCHANGE_RATE) * (ONE_HUNDRED_PERCENT_BPS - DISCOUNT)) / 1_000_000
+      ((uint256(skyPrice) * EXCHANGE_RATE) * (1e18 - discount)) / 1e18
     );
     assertEq(adapterPrice, expectedPrice, 'Price should match formula');
 
@@ -72,6 +71,7 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
     emit log_named_int('Adapter MKR price', adapterPrice);
     emit log_named_int('Reference MKR price', mkrReferencePrice);
     emit log_named_int('SKY price', skyPrice);
+    emit log_named_uint('Discount (BPS)', discount);
   }
 
   function test_latestAnswerRetrospective() public {
@@ -99,18 +99,19 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
       int256 adapterPrice = adapter.latestAnswer();
       int256 skyPrice = IChainlinkAggregator(SKY_USD_FEED).latestAnswer();
       int256 mkrReferencePrice = IChainlinkAggregator(MKR_USD_FEED).latestAnswer();
+      uint256 discount = adapter.discount();
 
       // Verify price is positive
       assertGt(adapterPrice, 0, 'Adapter price should be positive');
 
       // Verify formula holds at each block
       int256 expectedPrice = int256(
-        ((uint256(skyPrice) * EXCHANGE_RATE) * (ONE_HUNDRED_PERCENT_BPS - DISCOUNT)) / 1_000_000
+        ((uint256(skyPrice) * EXCHANGE_RATE) * (1e18 - discount)) / 1e18
       );
       assertEq(adapterPrice, expectedPrice, 'Price should match formula');
 
       // Calculate MKR price without discount (just exchange rate)
-      int256 noDiscountPrice = int256((uint256(skyPrice) * EXCHANGE_RATE) / 1_00);
+      int256 noDiscountPrice = int256(uint256(skyPrice) * EXCHANGE_RATE);
 
       // Calculate discount from reference price in BPS
       // discountFromReference = (referencePrice - adapterPrice) * 10000 / referencePrice
@@ -142,15 +143,7 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
   }
 
   function _createAdapter() internal returns (IDiscountedMKRSKYAdapter) {
-    return new DiscountedMKRSKYAdapter(
-      IDiscountedMKRSKYAdapter.ConstructorParams({
-        aclManager: address(AaveV3Ethereum.ACL_MANAGER),
-        discount: DISCOUNT,
-        referenceFeed: SKY_USD_FEED,
-        exchangeRate: EXCHANGE_RATE,
-        description: DESCRIPTION
-      })
-    );
+    return new DiscountedMKRSKYAdapter();
   }
 
   function _generateReport() internal {
@@ -165,7 +158,6 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
     vm.serializeString('root', 'reference', 'MKR / USD (Chainlink)');
     vm.serializeUint('root', 'decimals', DECIMALS);
     vm.serializeUint('root', 'exchangeRate', EXCHANGE_RATE);
-    vm.serializeUint('root', 'discountBps', DISCOUNT);
 
     string memory pricesKey = 'prices';
     string memory content = '{}';
@@ -203,8 +195,8 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
     md = string(abi.encodePacked(md, '| Adapter Output | MKR/USD (calculated) |\n'));
     md = string(abi.encodePacked(md, '| SKY/USD Feed | [', _addressToString(SKY_USD_FEED), '](https://etherscan.io/address/', _addressToString(SKY_USD_FEED), ') |\n'));
     md = string(abi.encodePacked(md, '| MKR/USD Feed (Reference) | [', _addressToString(MKR_USD_FEED), '](https://etherscan.io/address/', _addressToString(MKR_USD_FEED), ') |\n'));
-    md = string(abi.encodePacked(md, '| Exchange Rate | ', vm.toString(EXCHANGE_RATE / 100), ':1 (1 MKR = ', vm.toString(EXCHANGE_RATE / 100), ' SKY) |\n'));
-    md = string(abi.encodePacked(md, '| Discount | ', vm.toString(DISCOUNT / 100), '.', _padZeros(DISCOUNT % 100, 2), '% |\n'));
+    md = string(abi.encodePacked(md, '| Exchange Rate | ', vm.toString(EXCHANGE_RATE), ':1 (1 MKR = ', vm.toString(EXCHANGE_RATE), ' SKY) |\n'));
+    md = string(abi.encodePacked(md, '| Discount | Dynamic (fetched from MkrSky contract) |\n'));
     md = string(abi.encodePacked(md, '| Decimals | ', vm.toString(DECIMALS), ' |\n'));
     md = string(abi.encodePacked(md, '| Network | Ethereum Mainnet |\n'));
     md = string(abi.encodePacked(md, '| Block Range | ', vm.toString(prices[0].blockNumber), ' - ', vm.toString(prices[prices.length - 1].blockNumber), ' |\n'));

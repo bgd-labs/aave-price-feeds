@@ -9,53 +9,53 @@ import {
   DiscountedMKRSKYAdapter
 } from '../../src/contracts/misc-adapters/DiscountedMKRSKYAdapter.sol';
 import {IDiscountedMKRSKYAdapter} from '../../src/interfaces/IDiscountedMKRSKYAdapter.sol';
-import {IACLManager} from 'aave-address-book/AaveV3.sol';
-import {ACLManagerMock} from './mocks/ACLManagerMock.sol';
 import {ChainlinkAggregatorMock} from './mocks/ChainlinkAggregatorMock.sol';
+import {MkrSkyMock} from './mocks/MkrSkyMock.sol';
 
 contract DiscountedMKRSKYAdapterTest is Test {
   IDiscountedMKRSKYAdapter adapter;
-  IACLManager aclManager;
-  ChainlinkAggregatorMock referenceFeed;
+  MkrSkyMock mkrSkyMock;
 
-  address public constant POOL_ADMIN = address(50);
+  // Constant addresses matching the adapter
+  address public constant MKR_SKY_ADDRESS = 0xA1Ea1bA18E88C381C724a75F23a130420C403f9a;
+  address public constant SKY_USD_FEED = 0xee10fE5E7aa92dd7b136597449c3d5813cFC5F18;
 
-  uint256 public constant DISCOUNT = 6_00; // 6%
-  uint256 public constant EXCHANGE_RATE = 24_000_00; // 24000:1
-  uint256 public constant ONE_HUNDRED_PERCENT_BPS = 100_00;
+  uint256 public constant EXCHANGE_RATE = 24_000; // 24000:1 (cached from MkrSky.rate())
+  uint256 public constant FEE_6_PERCENT = 0.06 ether; // 6% in MkrSky format (1e18 = 100%)
   int256 public constant SKY_PRICE = 6650503; // ~$0.0665 with 8 decimals
-  string public DESCRIPTION = 'MKR/USD (calculated)';
+  string public constant DESCRIPTION = 'MKR/USD (calculated)';
 
   function setUp() public {
-    aclManager = IACLManager(address(new ACLManagerMock(POOL_ADMIN, address(0))));
-    referenceFeed = new ChainlinkAggregatorMock(SKY_PRICE);
-    adapter = new DiscountedMKRSKYAdapter(
-      IDiscountedMKRSKYAdapter.ConstructorParams({
-        aclManager: address(aclManager),
-        discount: DISCOUNT,
-        referenceFeed: address(referenceFeed),
-        exchangeRate: EXCHANGE_RATE,
-        description: DESCRIPTION
-      })
-    );
+    // Deploy mock and etch it at the constant DISCOUNT_PROVIDER address
+    mkrSkyMock = new MkrSkyMock(FEE_6_PERCENT, EXCHANGE_RATE);
+    vm.etch(MKR_SKY_ADDRESS, address(mkrSkyMock).code);
+    MkrSkyMock(MKR_SKY_ADDRESS).setFee(FEE_6_PERCENT);
+    MkrSkyMock(MKR_SKY_ADDRESS).setRate(EXCHANGE_RATE);
+
+    // Deploy mock and etch it at the constant REFERENCE_FEED address
+    ChainlinkAggregatorMock referenceFeedMock = new ChainlinkAggregatorMock(SKY_PRICE);
+    vm.etch(SKY_USD_FEED, address(referenceFeedMock).code);
+    ChainlinkAggregatorMock(SKY_USD_FEED).setLatestAnswer(SKY_PRICE);
+    ChainlinkAggregatorMock(SKY_USD_FEED).setDecimals(8);
+
+    adapter = new DiscountedMKRSKYAdapter();
   }
 
   function test_latestAnswer() external view {
-    // Expected: (6650503 * 24000_00 / 1_00) * (100_00 - 6_00) / 100_00 = 1500_35347680
-    // Simplified: (6650503 * 24000_00) * (100_00 - 6_00) / 1000000 = 150035347680
+    // Expected: (6650503 * 24000) * (1e18 - 0.06e18) / 1e18 = 150035347680
     int256 expectedPrice = int256(
-      ((uint256(SKY_PRICE) * EXCHANGE_RATE) * (ONE_HUNDRED_PERCENT_BPS - DISCOUNT)) / 1_000_000
+      ((uint256(SKY_PRICE) * EXCHANGE_RATE) * (1e18 - FEE_6_PERCENT)) / 1e18
     );
     assertEq(adapter.latestAnswer(), expectedPrice);
   }
 
   function test_latestAnswer_zeroOrNegativePrice() external {
     // Test zero price
-    referenceFeed.setLatestAnswer(0);
+    ChainlinkAggregatorMock(SKY_USD_FEED).setLatestAnswer(0);
     assertEq(adapter.latestAnswer(), 0);
 
     // Test negative price
-    referenceFeed.setLatestAnswer(-1);
+    ChainlinkAggregatorMock(SKY_USD_FEED).setLatestAnswer(-1);
     assertEq(adapter.latestAnswer(), 0);
   }
 
@@ -69,7 +69,7 @@ contract DiscountedMKRSKYAdapterTest is Test {
   }
 
   function test_discount() external view {
-    assertEq(adapter.discount(), DISCOUNT);
+    assertEq(adapter.discount(), FEE_6_PERCENT);
   }
 
   function test_exchangeRate() external view {
@@ -77,245 +77,70 @@ contract DiscountedMKRSKYAdapterTest is Test {
   }
 
   function test_referenceFeed() external view {
-    assertEq(address(adapter.referenceFeed()), address(referenceFeed));
+    assertEq(address(adapter.REFERENCE_FEED()), SKY_USD_FEED);
   }
 
-  function test_setDiscount(uint256 newDiscount) external {
-    uint256 initialDiscount = adapter.discount();
-    vm.prank(POOL_ADMIN);
-
-    if (newDiscount >= 10 && newDiscount <= 99_90) {
-      vm.expectEmit(true, true, true, true);
-      emit IDiscountedMKRSKYAdapter.DiscountUpdated(initialDiscount, newDiscount);
-
-      adapter.setDiscount(newDiscount);
-      assertEq(adapter.discount(), newDiscount);
-    } else {
-      vm.expectRevert(IDiscountedMKRSKYAdapter.InvalidDiscount.selector);
-      adapter.setDiscount(newDiscount);
-    }
+  function test_discountProvider() external view {
+    assertEq(adapter.DISCOUNT_PROVIDER(), MKR_SKY_ADDRESS);
   }
 
-  function test_setDiscount_callerNotPoolAdmin(address caller) external {
-    vm.assume(caller != POOL_ADMIN);
-    vm.prank(caller);
-
-    vm.expectRevert(IDiscountedMKRSKYAdapter.CallerIsNotPoolAdmin.selector);
-    adapter.setDiscount(10_00);
-  }
-
-  function test_setReferenceFeed() external {
-    ChainlinkAggregatorMock newFeed = new ChainlinkAggregatorMock(SKY_PRICE);
-    address initialFeed = address(adapter.referenceFeed());
-
-    vm.prank(POOL_ADMIN);
-    vm.expectEmit(true, true, true, true);
-    emit IDiscountedMKRSKYAdapter.ReferenceFeedUpdated(initialFeed, address(newFeed));
-
-    adapter.setReferenceFeed(address(newFeed));
-    assertEq(address(adapter.referenceFeed()), address(newFeed));
-  }
-
-  function test_setReferenceFeed_zeroAddress() external {
-    vm.prank(POOL_ADMIN);
-    vm.expectRevert(IDiscountedMKRSKYAdapter.InvalidFeed.selector);
-    adapter.setReferenceFeed(address(0));
-  }
-
-  function test_setReferenceFeed_priceTooLow() external {
-    ChainlinkAggregatorMock lowPriceFeed = new ChainlinkAggregatorMock(999); // Below MIN_REFERENCE_PRICE
-
-    vm.prank(POOL_ADMIN);
-    vm.expectRevert(IDiscountedMKRSKYAdapter.PriceTooLow.selector);
-    adapter.setReferenceFeed(address(lowPriceFeed));
-  }
-
-  function test_setReferenceFeed_callerNotPoolAdmin(address caller) external {
-    vm.assume(caller != POOL_ADMIN);
-    vm.prank(caller);
-
-    vm.expectRevert(IDiscountedMKRSKYAdapter.CallerIsNotPoolAdmin.selector);
-    adapter.setReferenceFeed(address(referenceFeed)); // Use existing valid feed
-  }
-
-  function test_constructor_aclManagerZeroAddress() external {
-    vm.expectRevert(IDiscountedMKRSKYAdapter.ACLManagerIsZeroAddress.selector);
-    new DiscountedMKRSKYAdapter(
-      IDiscountedMKRSKYAdapter.ConstructorParams({
-        aclManager: address(0),
-        discount: DISCOUNT,
-        referenceFeed: address(referenceFeed),
-        exchangeRate: EXCHANGE_RATE,
-        description: DESCRIPTION
-      })
-    );
-  }
-
-  function test_constructor_invalidDiscount() external {
-    // Test discount below minimum (10 = 0.1%)
-    vm.expectRevert(IDiscountedMKRSKYAdapter.InvalidDiscount.selector);
-    new DiscountedMKRSKYAdapter(
-      IDiscountedMKRSKYAdapter.ConstructorParams({
-        aclManager: address(aclManager),
-        discount: 9, // below 10
-        referenceFeed: address(referenceFeed),
-        exchangeRate: EXCHANGE_RATE,
-        description: DESCRIPTION
-      })
-    );
-
-    // Test discount above maximum (99_90 = 99.9%)
-    vm.expectRevert(IDiscountedMKRSKYAdapter.InvalidDiscount.selector);
-    new DiscountedMKRSKYAdapter(
-      IDiscountedMKRSKYAdapter.ConstructorParams({
-        aclManager: address(aclManager),
-        discount: 99_91, // above 99_90
-        referenceFeed: address(referenceFeed),
-        exchangeRate: EXCHANGE_RATE,
-        description: DESCRIPTION
-      })
-    );
-  }
-
-  function test_constructor_invalidFeed() external {
-    vm.expectRevert(IDiscountedMKRSKYAdapter.InvalidFeed.selector);
-    new DiscountedMKRSKYAdapter(
-      IDiscountedMKRSKYAdapter.ConstructorParams({
-        aclManager: address(aclManager),
-        discount: DISCOUNT,
-        referenceFeed: address(0),
-        exchangeRate: EXCHANGE_RATE,
-        description: DESCRIPTION
-      })
-    );
-  }
-
-  function test_constructor_invalidExchangeRate() external {
-    // Test exchange rate below minimum (1_00 = 1:1)
-    vm.expectRevert(IDiscountedMKRSKYAdapter.InvalidExchangeRate.selector);
-    new DiscountedMKRSKYAdapter(
-      IDiscountedMKRSKYAdapter.ConstructorParams({
-        aclManager: address(aclManager),
-        discount: DISCOUNT,
-        referenceFeed: address(referenceFeed),
-        exchangeRate: 99, // below 1_00
-        description: DESCRIPTION
-      })
-    );
-  }
-
-  function test_constructor_priceTooLow() external {
-    ChainlinkAggregatorMock lowPriceFeed = new ChainlinkAggregatorMock(999); // Below MIN_REFERENCE_PRICE
-
-    vm.expectRevert(IDiscountedMKRSKYAdapter.PriceTooLow.selector);
-    new DiscountedMKRSKYAdapter(
-      IDiscountedMKRSKYAdapter.ConstructorParams({
-        aclManager: address(aclManager),
-        discount: DISCOUNT,
-        referenceFeed: address(lowPriceFeed),
-        exchangeRate: EXCHANGE_RATE,
-        description: DESCRIPTION
-      })
-    );
-  }
-
-  function test_constructor_invalidDecimals() external {
-    ChainlinkAggregatorMock invalidDecimalsFeed = new ChainlinkAggregatorMock(SKY_PRICE);
-    invalidDecimalsFeed.setDecimals(6); // Not 8
-
-    vm.expectRevert(IDiscountedMKRSKYAdapter.InvalidDecimals.selector);
-    new DiscountedMKRSKYAdapter(
-      IDiscountedMKRSKYAdapter.ConstructorParams({
-        aclManager: address(aclManager),
-        discount: DISCOUNT,
-        referenceFeed: address(invalidDecimalsFeed),
-        exchangeRate: EXCHANGE_RATE,
-        description: DESCRIPTION
-      })
-    );
-  }
-
-  function test_setReferenceFeed_invalidDecimals() external {
-    ChainlinkAggregatorMock invalidDecimalsFeed = new ChainlinkAggregatorMock(SKY_PRICE);
-    invalidDecimalsFeed.setDecimals(18); // Not 8
-
-    vm.prank(POOL_ADMIN);
-    vm.expectRevert(IDiscountedMKRSKYAdapter.InvalidDecimals.selector);
-    adapter.setReferenceFeed(address(invalidDecimalsFeed));
-  }
-
-  function test_latestAnswer_withDifferentValues() external {
+  function test_latestAnswer_withDifferentPrices() external {
     // Test with different reference prices
     int256 newPrice = 10_000_000; // $0.10 with 8 decimals
-    referenceFeed.setLatestAnswer(newPrice);
+    ChainlinkAggregatorMock(SKY_USD_FEED).setLatestAnswer(newPrice);
 
     int256 expectedPrice = int256(
-      ((uint256(newPrice) * EXCHANGE_RATE) * (ONE_HUNDRED_PERCENT_BPS - DISCOUNT)) / 1_000_000
+      ((uint256(newPrice) * EXCHANGE_RATE) * (1e18 - FEE_6_PERCENT)) / 1e18
     );
     assertEq(adapter.latestAnswer(), expectedPrice);
+  }
 
-    // Test with different discount
-    vm.prank(POOL_ADMIN);
-    adapter.setDiscount(10_00); // 10%
+  function test_latestAnswer_withDifferentDiscounts() external {
+    // Test with 10% discount
+    uint256 fee10Percent = 0.1 ether; // 10% in MkrSky format (1 ether = 100%)
+    MkrSkyMock(MKR_SKY_ADDRESS).setFee(fee10Percent);
+
+    int256 expectedPrice = int256(
+      ((uint256(SKY_PRICE) * EXCHANGE_RATE) * (1e18 - fee10Percent)) / 1e18
+    );
+    assertEq(adapter.latestAnswer(), expectedPrice);
+    assertEq(adapter.discount(), fee10Percent);
+
+    // Test with 1% discount
+    uint256 fee1Percent = 0.01 ether; // 1% in MkrSky format (1 ether = 100%)
+    MkrSkyMock(MKR_SKY_ADDRESS).setFee(fee1Percent);
 
     expectedPrice = int256(
-      ((uint256(newPrice) * EXCHANGE_RATE) * (ONE_HUNDRED_PERCENT_BPS - 10_00)) / 1_000_000
+      ((uint256(SKY_PRICE) * EXCHANGE_RATE) * (1e18 - fee1Percent)) / 1e18
     );
     assertEq(adapter.latestAnswer(), expectedPrice);
+    assertEq(adapter.discount(), fee1Percent);
   }
 
-  function test_latestAnswer_fuzz(uint256 skyPrice, uint256 fuzzDiscount) external {
+  function test_discount_fuzz(uint256 feeInEther) external {
+    // Bound fee to realistic range: 0.01% to 50% (0.0001 ether to 0.5 ether)
+    feeInEther = bound(feeInEther, 0.0001 ether, 0.5 ether);
+    MkrSkyMock(MKR_SKY_ADDRESS).setFee(feeInEther);
+
+    // discount() returns raw fee directly (1e18 = 100%)
+    assertEq(adapter.discount(), feeInEther);
+  }
+
+  function test_latestAnswer_fuzz(uint256 skyPrice, uint256 feeInEther) external {
     // Bound SKY price to realistic range: $0.01 to $0.50 with 8 decimals
-    // Current SKY price ~6650503 (~$0.0665)
     skyPrice = bound(skyPrice, 1_000_000, 50_000_000);
 
-    // Bound discount to valid range
-    fuzzDiscount = bound(fuzzDiscount, adapter.MIN_DISCOUNT(), adapter.MAX_DISCOUNT());
+    // Bound fee to realistic range: 0.1% to 20% (0.001 ether to 0.2 ether)
+    feeInEther = bound(feeInEther, 0.001 ether, 0.2 ether);
 
-    // Update adapter parameters
-    referenceFeed.setLatestAnswer(int256(skyPrice));
+    // Update mock values
+    ChainlinkAggregatorMock(SKY_USD_FEED).setLatestAnswer(int256(skyPrice));
+    MkrSkyMock(MKR_SKY_ADDRESS).setFee(feeInEther);
 
-    vm.prank(POOL_ADMIN);
-    adapter.setDiscount(fuzzDiscount);
-
-    // Calculate expected price: (skyPrice * EXCHANGE_RATE) * (ONE_HUNDRED_PERCENT_BPS - discount) / (ONE_HUNDRED_PERCENT_BPS * ONE_EXCHANGE_RATE)
-    uint256 expectedPrice = ((skyPrice * EXCHANGE_RATE) *
-      (ONE_HUNDRED_PERCENT_BPS - fuzzDiscount)) / 1_000_000;
+    // Calculate expected price using the same formula as the contract
+    uint256 expectedPrice = ((skyPrice * EXCHANGE_RATE) * (1e18 - feeInEther)) / 1e18;
 
     assertEq(adapter.latestAnswer(), int256(expectedPrice));
-
-    // Sanity check: MKR price should be roughly skyPrice * exchangeRate * (1 - discount)
-    // With SKY ~$0.0665 and rate 24000, MKR should be ~$1500 (150000000000 with 8 decimals)
     assertGt(adapter.latestAnswer(), 0);
-  }
-
-  function test_latestAnswer_fuzz_edgeCases(
-    uint256 skyPrice,
-    uint256 fuzzDiscount,
-    uint256 fuzzExchangeRate
-  ) external {
-    // Test with full valid ranges (not just realistic)
-    skyPrice = bound(skyPrice, uint256(adapter.MIN_REFERENCE_PRICE()), 1_000_000_000); // Up to $10
-    fuzzDiscount = bound(fuzzDiscount, adapter.MIN_DISCOUNT(), adapter.MAX_DISCOUNT());
-    // Exchange rate: from 1:1 to 100000:1 (reasonable upper bound to avoid overflow)
-    fuzzExchangeRate = bound(fuzzExchangeRate, adapter.ONE_EXCHANGE_RATE(), 100_000_00);
-
-    // Need a new adapter since exchange rate is immutable
-    ChainlinkAggregatorMock fuzzFeed = new ChainlinkAggregatorMock(int256(skyPrice));
-    DiscountedMKRSKYAdapter fuzzAdapter = new DiscountedMKRSKYAdapter(
-      IDiscountedMKRSKYAdapter.ConstructorParams({
-        aclManager: address(aclManager),
-        discount: fuzzDiscount,
-        referenceFeed: address(fuzzFeed),
-        exchangeRate: fuzzExchangeRate,
-        description: DESCRIPTION
-      })
-    );
-
-    uint256 expectedPrice = ((skyPrice * fuzzExchangeRate) *
-      (ONE_HUNDRED_PERCENT_BPS - fuzzDiscount)) / 1_000_000;
-
-    assertEq(fuzzAdapter.latestAnswer(), int256(expectedPrice));
-    assertGe(fuzzAdapter.latestAnswer(), 0);
   }
 }

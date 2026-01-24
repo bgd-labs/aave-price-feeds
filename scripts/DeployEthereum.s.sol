@@ -777,19 +777,7 @@ library CapAdaptersCodeEthereum {
   }
 
   function discountedMKRSKYAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(DiscountedMKRSKYAdapter).creationCode,
-        abi.encode(
-          IDiscountedMKRSKYAdapter.ConstructorParams({
-            aclManager: address(AaveV3Ethereum.ACL_MANAGER),
-            discount: 6_00, // 6%
-            referenceFeed: SKY_USD_FEED,
-            exchangeRate: 24_000_00, // 24000:1
-            description: 'MKR/USD (calculated)'
-          })
-        )
-      );
+    return type(DiscountedMKRSKYAdapter).creationCode;
   }
 }
 
