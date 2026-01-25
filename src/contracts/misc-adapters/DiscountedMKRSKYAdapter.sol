@@ -76,7 +76,8 @@ contract DiscountedMKRSKYAdapter is IDiscountedMKRSKYAdapter {
   /// @dev Returns 0 when:
   ///      - Reference feed price <= 0
   ///      - Due to integer division truncation when: referenceFeedPrice * 24000 * (1e18 - discount) < 1e18
-  ///        For example, with referenceFeedPrice = 1 (smallest unit), zeroes when discount > ~95.83%
+  ///        For example, with referenceFeedPrice = 1 (smallest unit), zeroes when discount > ~99.996%
+  ///        With current SKY/USD price (~$0.0665), zeroes when discount > ~99.9999999994%
   function latestAnswer() external view virtual returns (int256) {
     int256 rawPrice = REFERENCE_FEED.latestAnswer();
 

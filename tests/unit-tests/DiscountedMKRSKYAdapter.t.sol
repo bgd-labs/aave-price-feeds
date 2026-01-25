@@ -117,9 +117,50 @@ contract DiscountedMKRSKYAdapterTest is Test {
     assertEq(adapter.discount(), fee1Percent);
   }
 
+  /// @dev Tests edge cases where latestAnswer() returns 0 due to high discount.
+  ///      Per contract docs: "Due to integer division truncation when:
+  ///      referenceFeedPrice * 24000 * (1e18 - discount) < 1e18"
+  function test_latestAnswer_zeroFromHighDiscount() external {
+    // Case 1: 100% discount always returns 0, regardless of SKY price
+    uint256 fee100Percent = 1 ether;
+    MkrSkyMock(MKR_SKY_ADDRESS).setFee(fee100Percent);
+    ChainlinkAggregatorMock(SKY_USD_FEED).setLatestAnswer(SKY_PRICE);
+    assertEq(adapter.latestAnswer(), 0);
+    assertEq(adapter.discount(), fee100Percent);
+
+    // Case 2: Higher SKY price with 100% discount still returns 0
+    ChainlinkAggregatorMock(SKY_USD_FEED).setLatestAnswer(50_000_000); // $0.50
+    assertEq(adapter.latestAnswer(), 0);
+
+    // Case 3: Minimum SKY price (1) with near-100% discount truncates to 0
+    // For truncation: 1 * 24000 * (1e18 - discount) < 1e18
+    // Solving: discount > 1e18 - (1e18 / 24000) ≈ 99.9958%
+    ChainlinkAggregatorMock(SKY_USD_FEED).setLatestAnswer(1);
+    uint256 feeNear100Percent = 0.99996 ether; // 99.996%
+    MkrSkyMock(MKR_SKY_ADDRESS).setFee(feeNear100Percent);
+    assertEq(adapter.latestAnswer(), 0);
+
+    // Case 4: Verify high but not extreme discount still returns value with min price
+    // 1 * 24000 * (1e18 - 0.99e18) / 1e18 = 24000 * 0.01 = 240
+    uint256 fee99Percent = 0.99 ether;
+    MkrSkyMock(MKR_SKY_ADDRESS).setFee(fee99Percent);
+    assertEq(adapter.latestAnswer(), 240);
+
+    // Case 5: Normal SKY price with high discount returns reduced but non-zero value
+    ChainlinkAggregatorMock(SKY_USD_FEED).setLatestAnswer(SKY_PRICE); // ~$0.0665
+    uint256 fee90Percent = 0.9 ether;
+    MkrSkyMock(MKR_SKY_ADDRESS).setFee(fee90Percent);
+    // (6650503 * 24000) * (1e18 - 0.9e18) / 1e18 = 159612072 * 0.1 = 15961207
+    int256 expectedPrice = int256(
+      ((uint256(SKY_PRICE) * EXCHANGE_RATE) * (1e18 - fee90Percent)) / 1e18
+    );
+    assertEq(adapter.latestAnswer(), expectedPrice);
+    assertGt(adapter.latestAnswer(), 0);
+  }
+
   function test_discount_fuzz(uint256 feeInEther) external {
-    // Bound fee to realistic range: 0.01% to 50% (0.0001 ether to 0.5 ether)
-    feeInEther = bound(feeInEther, 0.0001 ether, 0.5 ether);
+    // Bound fee to full range: 0.01% to 100% (0.0001 ether to 1 ether)
+    feeInEther = bound(feeInEther, 0.0001 ether, 1 ether);
     MkrSkyMock(MKR_SKY_ADDRESS).setFee(feeInEther);
 
     // discount() returns raw fee directly (1e18 = 100%)
@@ -130,8 +171,8 @@ contract DiscountedMKRSKYAdapterTest is Test {
     // Bound SKY price to realistic range: $0.01 to $0.50 with 8 decimals
     skyPrice = bound(skyPrice, 1_000_000, 50_000_000);
 
-    // Bound fee to realistic range: 0.1% to 20% (0.001 ether to 0.2 ether)
-    feeInEther = bound(feeInEther, 0.001 ether, 0.2 ether);
+    // Bound fee to full range: 0.1% to 100% (0.001 ether to 1 ether)
+    feeInEther = bound(feeInEther, 0.001 ether, 1 ether);
 
     // Update mock values
     ChainlinkAggregatorMock(SKY_USD_FEED).setLatestAnswer(int256(skyPrice));
@@ -141,6 +182,6 @@ contract DiscountedMKRSKYAdapterTest is Test {
     uint256 expectedPrice = ((skyPrice * EXCHANGE_RATE) * (1e18 - feeInEther)) / 1e18;
 
     assertEq(adapter.latestAnswer(), int256(expectedPrice));
-    assertGt(adapter.latestAnswer(), 0);
+    assertGe(adapter.latestAnswer(), 0);
   }
 }
