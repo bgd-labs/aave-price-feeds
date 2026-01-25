@@ -114,6 +114,7 @@ deploy-pt-susde-05-feb-2026-mainnet :; forge script scripts/DeployEthereum.s.sol
 deploy-pt-usde-05-feb-2026-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtUSDe05FEB2026Ethereum --rpc-url mainnet $(common-flags)
 
 deploy-dpi-eth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployFixedDpiEthEthereum --rpc-url mainnet $(common-flags)
+deploy-discounted-mkr-sky-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployDiscountedMKRSKYEthereum --rpc-url mainnet $(common-flags)
 deploy-dpi-usd-polygon :; forge script scripts/DeployPolygon.s.sol:DeployFixedDpiUsdPolygon --rpc-url polygon $(common-flags)
 deploy-dpi-eth-polygon :; forge script scripts/DeployPolygon.s.sol:DeployFixedDpiEthPolygon --rpc-url polygon $(common-flags)
 
