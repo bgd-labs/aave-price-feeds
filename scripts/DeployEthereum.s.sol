@@ -13,6 +13,7 @@ import {ChainlinkEthereum} from 'aave-address-book/ChainlinkEthereum.sol';
 
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 import {FixedPriceAdapter} from '../src/contracts/misc-adapters/FixedPriceAdapter.sol';
+import {OneUSDFixedAdapter} from '../src/contracts/misc-adapters/OneUSDFixedAdapter.sol';
 import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCapAdapter.sol';
 import {IPriceCapAdapterStable} from '../src/interfaces/IPriceCapAdapterStable.sol';
 import {WeETHPriceCapAdapter} from '../src/contracts/lst-adapters/WeETHPriceCapAdapter.sol';
@@ -802,6 +803,10 @@ library CapAdaptersCodeEthereum {
   function discountedMKRSKYAdapterCode() internal pure returns (bytes memory) {
     return type(DiscountedMKRSKYAdapter).creationCode;
   }
+
+  function oneUSDFixedAdapterCode() internal pure returns (bytes memory) {
+    return abi.encodePacked(type(OneUSDFixedAdapter).creationCode);
+  }
 }
 
 contract DeployLBTCEthereum is EthereumScript {
@@ -1035,6 +1040,12 @@ contract DeployPtSUSDe05FEB2026Ethereum is EthereumScript {
 contract DeployDiscountedMKRSKYEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.discountedMKRSKYAdapterCode());
+  }
+}
+
+contract DeployOneUSDFixedAdapterEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.oneUSDFixedAdapterCode());
   }
 }
 contract DeployPtSrUSDe02APR2026Ethereum is EthereumScript {
