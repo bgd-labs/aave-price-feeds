@@ -63,6 +63,7 @@ deploy-fixed-musd-linea :; forge script scripts/DeployLinea.s.sol:DeployFixedMUS
 deploy-fixed-musd-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployFixedMUSDEthereum --rpc-url mainnet $(common-flags)
 
 deploy-fixed-usdg-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployFixedUSDGEthereum --rpc-url mainnet $(common-flags)
+deploy-one-usd-fixed-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployOneUSDFixedAdapterEthereum --rpc-url mainnet $(common-flags)
 
 deploy-weETH-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeployWeEthZkSync --rpc-url zksync $(common-flags)
 deploy-sUSDe-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeploySUSDeZkSync --rpc-url zksync $(common-flags)
