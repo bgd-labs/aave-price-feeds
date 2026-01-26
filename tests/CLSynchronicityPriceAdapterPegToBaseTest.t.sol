@@ -5,7 +5,6 @@ import {Test} from 'forge-std/Test.sol';
 
 import {CLSynchronicityPriceAdapterPegToBase} from '../src/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
 import {IChainlinkAggregator} from '../src/interfaces/IChainlinkAggregator.sol';
-import {BaseAggregatorsBase} from '../src/lib/BaseAggregatorsBase.sol';
 import {ChainlinkEthereum} from 'aave-address-book/ChainlinkEthereum.sol';
 import {ChainlinkArbitrum} from 'aave-address-book/ChainlinkArbitrum.sol';
 import {ChainlinkOptimism} from 'aave-address-book/ChainlinkOptimism.sol';
@@ -168,7 +167,7 @@ contract CLSynchronicityPriceAdapterPegToBaseTestPolygon is Test {
     vm.createSelectFork(vm.rpcUrl('polygon'), START_BLOCK);
   }
 
-  function testLatestAnswerWstETHUSD() public {
+  function testLatestAnswerWstETHUSD() public view {
     address DEPLOYED_CONTRACT = 0xA2508729b1282Cc70dd33Ed311d4A9A37383035b;
 
     CLSynchronicityPriceAdapterPegToBase adapter = CLSynchronicityPriceAdapterPegToBase(

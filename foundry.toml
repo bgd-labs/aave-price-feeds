@@ -22,6 +22,9 @@ fs_permissions = [{ access = "write", path = "./reports" }]
 ffi = true
 evm_version = 'shanghai'
 
+[lint]
+exclude_lints = ["unsafe-typecast"]
+
 [profile.zksync.zksync]
 bytecode_hash = 'none'
 compile = true

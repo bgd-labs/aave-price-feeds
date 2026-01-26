@@ -62,7 +62,6 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
     assertGt(adapterPrice, 0, 'Adapter price should be positive');
 
     // Verify formula: MKR = SKY * EXCHANGE_RATE * (1 - discount)
-    // forge-lint: disable-next-line(unsafe-typecast)
     int256 expectedPrice = int256(((uint256(skyPrice) * EXCHANGE_RATE) * (1e18 - discount)) / 1e18);
     assertEq(adapterPrice, expectedPrice, 'Price should match formula');
 
@@ -104,15 +103,12 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
       assertGt(adapterPrice, 0, 'Adapter price should be positive');
 
       // Verify formula holds at each block
-      // forge-lint: disable-next-line(unsafe-typecast)
       int256 expectedPrice = int256(
-        // forge-lint: disable-next-line(unsafe-typecast)
         ((uint256(skyPrice) * EXCHANGE_RATE) * (1e18 - discount)) / 1e18
       );
       assertEq(adapterPrice, expectedPrice, 'Price should match formula');
 
       // Calculate MKR price without discount (just exchange rate)
-      // forge-lint: disable-next-line(unsafe-typecast)
       int256 noDiscountPrice = int256(uint256(skyPrice) * EXCHANGE_RATE);
 
       // Calculate discount from reference price in BPS
@@ -311,7 +307,6 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
 
   function _formatPrice(int256 price) internal pure returns (string memory) {
     if (price < 0) return '-';
-    // forge-lint: disable-next-line(unsafe-typecast)
     uint256 uPrice = uint256(price);
     uint256 dollars = uPrice / 1e8;
     uint256 cents = (uPrice % 1e8) / 1e6;
@@ -320,7 +315,6 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
 
   function _formatPrice4Decimals(int256 price) internal pure returns (string memory) {
     if (price < 0) return '-';
-    // forge-lint: disable-next-line(unsafe-typecast)
     uint256 uPrice = uint256(price);
     uint256 dollars = uPrice / 1e8;
     uint256 decimals = (uPrice % 1e8) / 1e4;
@@ -329,28 +323,22 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
 
   function _formatBps(int256 bps) internal pure returns (string memory) {
     if (bps < 0) {
-      // forge-lint: disable-next-line(unsafe-typecast)
       return
         string(
           abi.encodePacked(
             '-',
-            // forge-lint: disable-next-line(unsafe-typecast)
             vm.toString(uint256(-bps) / 100),
             '.',
-            // forge-lint: disable-next-line(unsafe-typecast)
             _padZeros(uint256(-bps) % 100, 2),
             '%'
           )
         );
     }
-    // forge-lint: disable-next-line(unsafe-typecast)
     return
       string(
         abi.encodePacked(
-          // forge-lint: disable-next-line(unsafe-typecast)
           vm.toString(uint256(bps) / 100),
           '.',
-          // forge-lint: disable-next-line(unsafe-typecast)
           _padZeros(uint256(bps) % 100, 2),
           '%'
         )
@@ -405,7 +393,6 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
     uint256 _days
   ) internal pure returns (uint256 year, uint256 month, uint256 day) {
     unchecked {
-      // forge-lint: disable-next-line(unsafe-typecast)
       int256 z = int256(_days) + 719468;
       int256 era = (z >= 0 ? z : z - 146096) / 146097;
       int256 doe = z - era * 146097;
@@ -416,11 +403,8 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
       int256 d = doy - (153 * mp + 2) / 5 + 1;
       int256 m = mp + (mp < 10 ? int256(3) : int256(-9));
       y += (m <= 2 ? int256(1) : int256(0));
-      // forge-lint: disable-next-line(unsafe-typecast)
       year = uint256(y);
-      // forge-lint: disable-next-line(unsafe-typecast)
       month = uint256(m);
-      // forge-lint: disable-next-line(unsafe-typecast)
       day = uint256(d);
     }
   }
