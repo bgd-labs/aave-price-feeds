@@ -28,8 +28,8 @@ import {WstETHPriceCapAdapter} from '../src/contracts/lst-adapters/WstETHPriceCa
 import {RETHPriceCapAdapter} from '../src/contracts/lst-adapters/RETHPriceCapAdapter.sol';
 import {CbETHPriceCapAdapter} from '../src/contracts/lst-adapters/CbETHPriceCapAdapter.sol';
 import {TETHPriceCapAdapter} from '../src/contracts/lst-adapters/TETHPriceCapAdapter.sol';
-import {CLSynchronicityPriceAdapterPegToBase} from 'cl-synchronicity-price-adapter/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
-import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregatorsMainnet.sol';
+import {CLSynchronicityPriceAdapterPegToBase} from '../src/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
+import {BaseAggregatorsMainnet} from '../src/lib/BaseAggregatorsMainnet.sol';
 import {EURPriceCapAdapterStable, IEURPriceCapAdapterStable} from '../src/contracts/misc-adapters/EURPriceCapAdapterStable.sol';
 import {LBTCPriceCapAdapter} from '../src/contracts/lst-adapters/LBTCPriceCapAdapter.sol';
 import {SyrupUSDCPriceCapAdapter} from '../src/contracts/lst-adapters/SyrupUSDCPriceCapAdapter.sol';
@@ -678,12 +678,7 @@ library CapAdaptersCodeEthereum {
     return
       abi.encodePacked(
         type(FixedPriceAdapter).creationCode,
-        abi.encode(
-          address(AaveV3Ethereum.ACL_MANAGER),
-          8,
-          int256(1 * 1e8),
-          'Fixed mUSD/USD'
-        )
+        abi.encode(address(AaveV3Ethereum.ACL_MANAGER), 8, int256(1 * 1e8), 'Fixed mUSD/USD')
       );
   }
 
@@ -691,12 +686,7 @@ library CapAdaptersCodeEthereum {
     return
       abi.encodePacked(
         type(FixedPriceAdapter).creationCode,
-        abi.encode(
-          address(AaveV3Ethereum.ACL_MANAGER),
-          8,
-          int256(1 * 1e8),
-          'Fixed USDG/USD'
-        )
+        abi.encode(address(AaveV3Ethereum.ACL_MANAGER), 8, int256(1 * 1e8), 'Fixed USDG/USD')
       );
   }
 

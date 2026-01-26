@@ -11,12 +11,6 @@
       "rev": "e4a3241b1caebe64c2d803934ee0bd2081049e4a"
     }
   },
-  "lib/cl-synchronicity-price-adapter": {
-    "branch": {
-      "name": "main",
-      "rev": "67124f2e85ad91e7e2a9d61c9343d68d20ea3fdb"
-    }
-  },
   "lib/forge-std": {
     "rev": "0c71116a218268ee8c0157be8efcb13af0f7beaf"
   }
