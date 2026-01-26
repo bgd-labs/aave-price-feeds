@@ -5,8 +5,12 @@ pragma solidity ^0.8.0;
 
 import {Test} from 'forge-std/Test.sol';
 import {AaveV3Ethereum} from 'aave-address-book/AaveV3Ethereum.sol';
-import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IChainlinkAggregator.sol';
-import {DiscountedMKRSKYAdapter} from '../../src/contracts/misc-adapters/DiscountedMKRSKYAdapter.sol';
+import {
+  IChainlinkAggregator
+} from 'cl-synchronicity-price-adapter/interfaces/IChainlinkAggregator.sol';
+import {
+  DiscountedMKRSKYAdapter
+} from '../../src/contracts/misc-adapters/DiscountedMKRSKYAdapter.sol';
 import {IDiscountedMKRSKYAdapter} from '../../src/interfaces/IDiscountedMKRSKYAdapter.sol';
 import {BlockUtils} from '../utils/BlockUtils.sol';
 
@@ -62,9 +66,8 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
     assertGt(adapterPrice, 0, 'Adapter price should be positive');
 
     // Verify formula: MKR = SKY * EXCHANGE_RATE * (1 - discount)
-    int256 expectedPrice = int256(
-      ((uint256(skyPrice) * EXCHANGE_RATE) * (1e18 - discount)) / 1e18
-    );
+    // forge-lint: disable-next-line(unsafe-typecast)
+    int256 expectedPrice = int256(((uint256(skyPrice) * EXCHANGE_RATE) * (1e18 - discount)) / 1e18);
     assertEq(adapterPrice, expectedPrice, 'Price should match formula');
 
     // Log comparison with actual MKR/USD feed
@@ -105,12 +108,15 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
       assertGt(adapterPrice, 0, 'Adapter price should be positive');
 
       // Verify formula holds at each block
+      // forge-lint: disable-next-line(unsafe-typecast)
       int256 expectedPrice = int256(
+        // forge-lint: disable-next-line(unsafe-typecast)
         ((uint256(skyPrice) * EXCHANGE_RATE) * (1e18 - discount)) / 1e18
       );
       assertEq(adapterPrice, expectedPrice, 'Price should match formula');
 
       // Calculate MKR price without discount (just exchange rate)
+      // forge-lint: disable-next-line(unsafe-typecast)
       int256 noDiscountPrice = int256(uint256(skyPrice) * EXCHANGE_RATE);
 
       // Calculate discount from reference price in BPS
@@ -171,7 +177,11 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
       vm.serializeInt(key, 'noDiscountPrice', prices[i].noDiscountPrice);
       vm.serializeInt(key, 'referencePrice', prices[i].referencePrice);
       vm.serializeInt(key, 'skyPrice', prices[i].skyPrice);
-      string memory object = vm.serializeInt(key, 'discountFromReference', prices[i].discountFromReference);
+      string memory object = vm.serializeInt(
+        key,
+        'discountFromReference',
+        prices[i].discountFromReference
+      );
       content = vm.serializeString(pricesKey, key, object);
     }
 
@@ -185,7 +195,12 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
     // Build markdown content
     string memory md = '# DiscountedMKRSKYAdapter Historic Report\n\n';
     md = string(abi.encodePacked(md, '## Overview\n\n'));
-    md = string(abi.encodePacked(md, 'This adapter calculates the MKR price based on the SKY price using the formula:\n\n'));
+    md = string(
+      abi.encodePacked(
+        md,
+        'This adapter calculates the MKR price based on the SKY price using the formula:\n\n'
+      )
+    );
     md = string(abi.encodePacked(md, '```\n'));
     md = string(abi.encodePacked(md, 'MKR_price = SKY_price * EXCHANGE_RATE * (1 - DISCOUNT)\n'));
     md = string(abi.encodePacked(md, '```\n\n'));
@@ -193,18 +208,73 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
     md = string(abi.encodePacked(md, '| Parameter | Value |\n'));
     md = string(abi.encodePacked(md, '|-----------|-------|\n'));
     md = string(abi.encodePacked(md, '| Adapter Output | MKR/USD (calculated) |\n'));
-    md = string(abi.encodePacked(md, '| SKY/USD Feed | [', _addressToString(SKY_USD_FEED), '](https://etherscan.io/address/', _addressToString(SKY_USD_FEED), ') |\n'));
-    md = string(abi.encodePacked(md, '| MKR/USD Feed (Reference) | [', _addressToString(MKR_USD_FEED), '](https://etherscan.io/address/', _addressToString(MKR_USD_FEED), ') |\n'));
-    md = string(abi.encodePacked(md, '| Exchange Rate | ', vm.toString(EXCHANGE_RATE), ':1 (1 MKR = ', vm.toString(EXCHANGE_RATE), ' SKY) |\n'));
+    md = string(
+      abi.encodePacked(
+        md,
+        '| SKY/USD Feed | [',
+        _addressToString(SKY_USD_FEED),
+        '](https://etherscan.io/address/',
+        _addressToString(SKY_USD_FEED),
+        ') |\n'
+      )
+    );
+    md = string(
+      abi.encodePacked(
+        md,
+        '| MKR/USD Feed (Reference) | [',
+        _addressToString(MKR_USD_FEED),
+        '](https://etherscan.io/address/',
+        _addressToString(MKR_USD_FEED),
+        ') |\n'
+      )
+    );
+    md = string(
+      abi.encodePacked(
+        md,
+        '| Exchange Rate | ',
+        vm.toString(EXCHANGE_RATE),
+        ':1 (1 MKR = ',
+        vm.toString(EXCHANGE_RATE),
+        ' SKY) |\n'
+      )
+    );
     md = string(abi.encodePacked(md, '| Discount | Dynamic (fetched from MkrSky contract) |\n'));
     md = string(abi.encodePacked(md, '| Decimals | ', vm.toString(DECIMALS), ' |\n'));
     md = string(abi.encodePacked(md, '| Network | Ethereum Mainnet |\n'));
-    md = string(abi.encodePacked(md, '| Block Range | ', vm.toString(prices[0].blockNumber), ' - ', vm.toString(prices[prices.length - 1].blockNumber), ' |\n'));
-    md = string(abi.encodePacked(md, '| Date Range | ', _formatDate(prices[0].timestamp), ' - ', _formatDate(prices[prices.length - 1].timestamp), ' |\n\n'));
+    md = string(
+      abi.encodePacked(
+        md,
+        '| Block Range | ',
+        vm.toString(prices[0].blockNumber),
+        ' - ',
+        vm.toString(prices[prices.length - 1].blockNumber),
+        ' |\n'
+      )
+    );
+    md = string(
+      abi.encodePacked(
+        md,
+        '| Date Range | ',
+        _formatDate(prices[0].timestamp),
+        ' - ',
+        _formatDate(prices[prices.length - 1].timestamp),
+        ' |\n\n'
+      )
+    );
 
     md = string(abi.encodePacked(md, '## Historic Prices\n\n'));
-    md = string(abi.encodePacked(md, '| Block | Date | Timestamp | MKR/USD (calculated) | MKR/USD (calculated, no discount) | MKR/USD (Chainlink) | SKY/USD (Chainlink) | Discount from Ref |\n'));
-    md = string(abi.encodePacked(md, '|-------|------|-----------|----------------------|-----------------------------------|---------------------|---------------------|-------------------|\n'));
+    md = string(
+      abi.encodePacked(
+        md,
+        '| Block | Date | Timestamp | MKR/USD (calculated) | MKR/USD (calculated, no discount) | MKR/USD (Chainlink) | SKY/USD (Chainlink) | Discount from Ref |\n'
+      )
+    );
+    md = string(
+      abi.encodePacked(
+        md,
+        '|-------|------|-----------|----------------------|-----------------------------------|---------------------|---------------------|-------------------|\n'
+      )
+    );
 
     for (uint256 i = 0; i < prices.length; i++) {
       md = string(abi.encodePacked(md, _formatRow(prices[i])));
@@ -238,11 +308,7 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
       )
     );
     string memory part3 = string(
-      abi.encodePacked(
-        ' | ',
-        _formatBps(p.discountFromReference),
-        ' |\n'
-      )
+      abi.encodePacked(' | ', _formatBps(p.discountFromReference), ' |\n')
     );
     return string(abi.encodePacked(part1, part2, part3));
   }
@@ -268,10 +334,31 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
   function _formatBps(int256 bps) internal pure returns (string memory) {
     if (bps < 0) {
       // forge-lint: disable-next-line(unsafe-typecast)
-      return string(abi.encodePacked('-', vm.toString(uint256(-bps) / 100), '.', _padZeros(uint256(-bps) % 100, 2), '%'));
+      return
+        string(
+          abi.encodePacked(
+            '-',
+            // forge-lint: disable-next-line(unsafe-typecast)
+            vm.toString(uint256(-bps) / 100),
+            '.',
+            // forge-lint: disable-next-line(unsafe-typecast)
+            _padZeros(uint256(-bps) % 100, 2),
+            '%'
+          )
+        );
     }
     // forge-lint: disable-next-line(unsafe-typecast)
-    return string(abi.encodePacked(vm.toString(uint256(bps) / 100), '.', _padZeros(uint256(bps) % 100, 2), '%'));
+    return
+      string(
+        abi.encodePacked(
+          // forge-lint: disable-next-line(unsafe-typecast)
+          vm.toString(uint256(bps) / 100),
+          '.',
+          // forge-lint: disable-next-line(unsafe-typecast)
+          _padZeros(uint256(bps) % 100, 2),
+          '%'
+        )
+      );
   }
 
   function _padZeros(uint256 value, uint256 length) internal pure returns (string memory) {
@@ -296,19 +383,20 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
     uint256 hour = secs / 3600;
     uint256 minute = (secs % 3600) / 60;
 
-    return string(
-      abi.encodePacked(
-        vm.toString(year),
-        '-',
-        _padZeros(month, 2),
-        '-',
-        _padZeros(day, 2),
-        ' ',
-        _padZeros(hour, 2),
-        ':',
-        _padZeros(minute, 2)
-      )
-    );
+    return
+      string(
+        abi.encodePacked(
+          vm.toString(year),
+          '-',
+          _padZeros(month, 2),
+          '-',
+          _padZeros(day, 2),
+          ' ',
+          _padZeros(hour, 2),
+          ':',
+          _padZeros(minute, 2)
+        )
+      );
   }
 
   function _addressToString(address addr) internal pure returns (string memory) {
@@ -317,7 +405,9 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
 
   // Convert days since Unix epoch to year/month/day
   // Algorithm from https://howardhinnant.github.io/date_algorithms.html
-  function _daysToDate(uint256 _days) internal pure returns (uint256 year, uint256 month, uint256 day) {
+  function _daysToDate(
+    uint256 _days
+  ) internal pure returns (uint256 year, uint256 month, uint256 day) {
     unchecked {
       // forge-lint: disable-next-line(unsafe-typecast)
       int256 z = int256(_days) + 719468;
