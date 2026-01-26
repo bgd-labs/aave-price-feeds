@@ -114,6 +114,8 @@ deploy-pt-usde-09-apr-2026-plasma :; forge script scripts/DeployPlasma.s.sol:Dep
 deploy-pt-susde-05-feb-2026-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtSUSDe05FEB2026Ethereum --rpc-url mainnet $(common-flags)
 deploy-pt-usde-05-feb-2026-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtUSDe05FEB2026Ethereum --rpc-url mainnet $(common-flags)
 
+deploy-pt-srusde-02-apr-2026-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtSrUSDe02APR2026Ethereum --rpc-url mainnet $(common-flags)
+
 deploy-dpi-eth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployFixedDpiEthEthereum --rpc-url mainnet $(common-flags)
 deploy-dpi-usd-polygon :; forge script scripts/DeployPolygon.s.sol:DeployFixedDpiUsdPolygon --rpc-url polygon $(common-flags)
 deploy-dpi-eth-polygon :; forge script scripts/DeployPolygon.s.sol:DeployFixedDpiEthPolygon --rpc-url polygon $(common-flags)
