@@ -30,4 +30,20 @@ contract OneUSDFixedAdapterTest is Test {
   function test_ONE_USD() external view {
     assertEq(adapter.ONE_USD(), 1e8);
   }
+
+  function test_latestRoundData() external view {
+    (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    ) = adapter.latestRoundData();
+
+    assertEq(roundId, 0);
+    assertEq(answer, 1e8);
+    assertEq(startedAt, block.timestamp);
+    assertEq(updatedAt, block.timestamp);
+    assertEq(answeredInRound, 0);
+  }
 }
