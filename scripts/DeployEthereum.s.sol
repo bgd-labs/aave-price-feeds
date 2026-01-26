@@ -30,7 +30,6 @@ import {RETHPriceCapAdapter} from '../src/contracts/lst-adapters/RETHPriceCapAda
 import {CbETHPriceCapAdapter} from '../src/contracts/lst-adapters/CbETHPriceCapAdapter.sol';
 import {TETHPriceCapAdapter} from '../src/contracts/lst-adapters/TETHPriceCapAdapter.sol';
 import {CLSynchronicityPriceAdapterPegToBase} from '../src/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
-import {BaseAggregatorsMainnet} from '../src/lib/BaseAggregatorsMainnet.sol';
 import {EURPriceCapAdapterStable, IEURPriceCapAdapterStable} from '../src/contracts/misc-adapters/EURPriceCapAdapterStable.sol';
 import {LBTCPriceCapAdapter} from '../src/contracts/lst-adapters/LBTCPriceCapAdapter.sol';
 import {SyrupUSDCPriceCapAdapter} from '../src/contracts/lst-adapters/SyrupUSDCPriceCapAdapter.sol';
@@ -599,7 +598,7 @@ library CapAdaptersCodeEthereum {
         type(CLSynchronicityPriceAdapterPegToBase).creationCode,
         abi.encode(
           ChainlinkEthereum.SVR_BTC__USD,
-          BaseAggregatorsMainnet.WBTC_BTC_AGGREGATOR,
+          ChainlinkEthereum.WBTC__BTC,
           8,
           'wBTC/BTC/USD'
         )

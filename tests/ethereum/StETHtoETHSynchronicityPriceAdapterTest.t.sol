@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 import {Test} from 'forge-std/Test.sol';
 
 import {StETHtoETHSynchronicityPriceAdapter} from '../../src/contracts/misc-adapters/StETHtoETHSynchronicityPriceAdapter.sol';
-import {BaseAggregatorsMainnet} from '../../src/lib/BaseAggregators.sol';
 
 contract StETHtoETHSynchronicityPriceAdapterTest is Test {
   function setUp() public {

@@ -5,7 +5,11 @@ import {Test} from 'forge-std/Test.sol';
 
 import {CLSynchronicityPriceAdapterPegToBase} from '../src/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
 import {IChainlinkAggregator} from '../src/interfaces/IChainlinkAggregator.sol';
-import {BaseAggregatorsArbitrum, BaseAggregatorsMainnet, BaseAggregatorsOptimism, BaseAggregatorsPolygon, BaseAggregatorsBase} from '../src/lib/BaseAggregators.sol';
+import {BaseAggregatorsBase} from '../src/lib/BaseAggregatorsBase.sol';
+import {ChainlinkEthereum} from 'aave-address-book/ChainlinkEthereum.sol';
+import {ChainlinkArbitrum} from 'aave-address-book/ChainlinkArbitrum.sol';
+import {ChainlinkOptimism} from 'aave-address-book/ChainlinkOptimism.sol';
+import {ChainlinkBase} from 'aave-address-book/ChainlinkBase.sol';
 
 contract CLSynchronicityPriceAdapterPegToBaseTest is Test {
   uint256 public constant START_BLOCK = 15588955;
@@ -16,8 +20,8 @@ contract CLSynchronicityPriceAdapterPegToBaseTest is Test {
 
   function testLatestAnswer() public {
     CLSynchronicityPriceAdapterPegToBase adapter = new CLSynchronicityPriceAdapterPegToBase(
-      BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-      BaseAggregatorsMainnet.STETH_ETH_AGGREGATOR,
+      ChainlinkEthereum.ETH__USD,
+      ChainlinkEthereum.STETH__ETH,
       8,
       'stETH/ETH/USD'
     );
@@ -33,8 +37,8 @@ contract CLSynchronicityPriceAdapterPegToBaseTest is Test {
 
   function testLatestAnswerWbtc() public {
     CLSynchronicityPriceAdapterPegToBase adapter = new CLSynchronicityPriceAdapterPegToBase(
-      BaseAggregatorsMainnet.BTC_USD_AGGREGATOR,
-      BaseAggregatorsMainnet.WBTC_BTC_AGGREGATOR,
+      ChainlinkEthereum.BTC__USD,
+      ChainlinkEthereum.WBTC__BTC,
       8,
       'wBTC/BTC/USD'
     );
@@ -54,8 +58,8 @@ contract CLSynchronicityPriceAdapterPegToBaseTest is Test {
     vm.rollFork(START_BLOCK_CB_ETH);
 
     CLSynchronicityPriceAdapterPegToBase adapter = new CLSynchronicityPriceAdapterPegToBase(
-      BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-      BaseAggregatorsMainnet.CBETH_ETH_AGGREGATOR,
+      ChainlinkEthereum.ETH__USD,
+      ChainlinkEthereum.CBETH__ETH,
       8,
       'cbETH/ETH/USD'
     );
@@ -75,8 +79,8 @@ contract CLSynchronicityPriceAdapterPegToBaseTest is Test {
     vm.rollFork(START_BLOCK_LDO_ETH);
 
     CLSynchronicityPriceAdapterPegToBase adapter = new CLSynchronicityPriceAdapterPegToBase(
-      BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-      BaseAggregatorsMainnet.LDO_ETH_AGGREGATOR,
+      ChainlinkEthereum.ETH__USD,
+      ChainlinkEthereum.LDO__ETH,
       8,
       'LDO/ETH/USD'
     );
@@ -91,14 +95,12 @@ contract CLSynchronicityPriceAdapterPegToBaseTest is Test {
   }
 
   function testLatestAnswerWbtcRelativelyBtcFeed() public {
-    IChainlinkAggregator aggregator = IChainlinkAggregator(
-      BaseAggregatorsMainnet.BTC_USD_AGGREGATOR
-    );
+    IChainlinkAggregator aggregator = IChainlinkAggregator(ChainlinkEthereum.BTC__USD);
 
     for (uint256 i; i < 10; i++) {
       CLSynchronicityPriceAdapterPegToBase adapter = new CLSynchronicityPriceAdapterPegToBase(
-        BaseAggregatorsMainnet.BTC_USD_AGGREGATOR,
-        BaseAggregatorsMainnet.WBTC_BTC_AGGREGATOR,
+        ChainlinkEthereum.BTC__USD,
+        ChainlinkEthereum.WBTC__BTC,
         8,
         'wBTC/BTC/USD'
       );
@@ -186,8 +188,8 @@ contract CLrETHSynchronicityPriceAdapterTestArbitrum is Test {
 
   function testLatestAnswer() public {
     CLSynchronicityPriceAdapterPegToBase adapter = new CLSynchronicityPriceAdapterPegToBase(
-      BaseAggregatorsArbitrum.ETH_USD_AGGREGATOR,
-      BaseAggregatorsArbitrum.RETH_ETH_AGGREGATOR,
+      ChainlinkArbitrum.ETH__USD,
+      ChainlinkArbitrum.rETH_ETH_Exchange_Rate,
       8,
       'rETH/ETH/USD'
     );
@@ -209,8 +211,8 @@ contract CLrETHSynchronicityPriceAdapterTestOptimism is Test {
 
   function testLatestAnswer() public {
     CLSynchronicityPriceAdapterPegToBase adapter = new CLSynchronicityPriceAdapterPegToBase(
-      BaseAggregatorsOptimism.ETH_USD_AGGREGATOR,
-      BaseAggregatorsOptimism.RETH_ETH_AGGREGATOR,
+      ChainlinkOptimism.ETH__USD,
+      ChainlinkOptimism.rETH_ETH_Exchange_Rate,
       8,
       'rETH/ETH/USD'
     );
@@ -232,8 +234,8 @@ contract CLrETHSynchronicityPriceAdapterTestBase is Test {
 
   function testLatestAnswerWstEth() public {
     CLSynchronicityPriceAdapterPegToBase adapter = new CLSynchronicityPriceAdapterPegToBase(
-      BaseAggregatorsBase.ETH_USD_AGGREGATOR,
-      BaseAggregatorsBase.WSTETH_STETH_AGGREGATOR,
+      ChainlinkBase.ETH__USD,
+      ChainlinkBase.wstETH_stETH_Exchange_Rate,
       8,
       'wstETH/ETH/USD'
     );
@@ -245,8 +247,8 @@ contract CLrETHSynchronicityPriceAdapterTestBase is Test {
 
   function testLatestAnswerCbEth() public {
     CLSynchronicityPriceAdapterPegToBase adapter = new CLSynchronicityPriceAdapterPegToBase(
-      BaseAggregatorsBase.ETH_USD_AGGREGATOR,
-      BaseAggregatorsBase.CBETH_ETH_AGGREGATOR,
+      ChainlinkBase.ETH__USD,
+      ChainlinkBase.CBETH__ETH,
       8,
       'cbETH/ETH/USD'
     );

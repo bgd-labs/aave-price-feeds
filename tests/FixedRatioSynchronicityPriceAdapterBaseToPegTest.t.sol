@@ -6,7 +6,7 @@ import {Test} from 'forge-std/Test.sol';
 import {FixedRatioSynchronicityPriceAdapterBaseToPeg} from '../src/contracts/FixedRatioSynchronicityPriceAdapterBaseToPeg.sol';
 import {ICLSynchronicityPriceAdapter} from '../src/interfaces/ICLSynchronicityPriceAdapter.sol';
 import {IChainlinkAggregator} from '../src/interfaces/IChainlinkAggregator.sol';
-import {BaseAggregatorsMainnet} from '../src/lib/BaseAggregators.sol';
+import {ChainlinkEthereum} from 'aave-address-book/ChainlinkEthereum.sol';
 
 contract FixedRatioSynchronicityPriceAdapterBaseToPegTest is Test {
   function setUp() public {
@@ -17,7 +17,7 @@ contract FixedRatioSynchronicityPriceAdapterBaseToPegTest is Test {
     vm.expectRevert(ICLSynchronicityPriceAdapter.DecimalsAboveLimit.selector);
 
     new FixedRatioSynchronicityPriceAdapterBaseToPeg(
-      BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
+      ChainlinkEthereum.ETH__USD,
       95_00,
       20,
       '0.95/USD/ETH'
@@ -28,7 +28,7 @@ contract FixedRatioSynchronicityPriceAdapterBaseToPegTest is Test {
     vm.expectRevert(ICLSynchronicityPriceAdapter.RatioOutOfBounds.selector);
 
     new FixedRatioSynchronicityPriceAdapterBaseToPeg(
-      BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
+      ChainlinkEthereum.ETH__USD,
       100_00,
       18,
       '0.95/USD/ETH'
@@ -37,7 +37,7 @@ contract FixedRatioSynchronicityPriceAdapterBaseToPegTest is Test {
     vm.expectRevert(ICLSynchronicityPriceAdapter.RatioOutOfBounds.selector);
 
     new FixedRatioSynchronicityPriceAdapterBaseToPeg(
-      BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
+      ChainlinkEthereum.ETH__USD,
       0,
       18,
       '0.95/USD/ETH'
@@ -46,7 +46,7 @@ contract FixedRatioSynchronicityPriceAdapterBaseToPegTest is Test {
 
   function testLatestAnswer() public {
     FixedRatioSynchronicityPriceAdapterBaseToPeg adapter = new FixedRatioSynchronicityPriceAdapterBaseToPeg(
-        BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
+        ChainlinkEthereum.ETH__USD,
         95_00,
         18,
         '0.95/USD/ETH'
