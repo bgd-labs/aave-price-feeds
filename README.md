@@ -1,4 +1,4 @@
-# Aave Correlated-assets price oracle (CAPO)
+# Aave Price Feeds
 
 Price oracle adapter smart contracts, introducing different types of range price protection on oracle feeds used by the Aave protocol.
 
@@ -13,6 +13,19 @@ The contracts in this repository use the Shanghai EVM version, please check netw
 [Described here](/how-to.md).
 
 ## Types
+
+### [CLSynchronicityPriceAdapterBaseToPeg](/src/contracts/CLSynchronicityPriceAdapter.sol)
+
+- Price adapter smart contract where `ChainlinkAggregator` addresses for `Asset / USD` and `ETH / USD` are set.
+- Feeds must have the same decimals value.
+- Using this two feeds, it calculates the price for pair `Asset / ETH`.
+- Returning price is calculated with up to 18 decimals.
+
+### [CLSynchronicityPriceAdapterPegToBase](/src/contracts/CLSynchronicityPriceAdapterPegToBase.sol)
+
+- Price adapter smart contract where `ChainlinkAggregator` addresses for `Asset / ETH` and `ETH / USD` are set.
+- Using this two feeds, it calculates the price for pair `Asset / USD`.
+- Returning price is calculated with up to 18 decimals.
 
 ### [RatioCapPriceAdapter](./src/contracts/PriceCapAdapterBase.sol)
 
@@ -47,9 +60,21 @@ Initially we thought to model this as a sub-case of `RatioCapPriceAdapter`, with
 
 <br>
 
+### Audits
+
+[SigmaP](./security/sigmap/audit-report.md)
+
+[Certora](./security/Certora/Certora%20Review.pdf)
+
+### Repository History
+
+- The original contracts of this repository were developed inside the [CL Synchronicity Price Adapter](https://github.com/bgd-labs/cl-synchronicity-price-adapter) repository.
+- They were later moved and improved in the [Aave Capo](https://github.com/bgd-labs/aave-capo) repository.
+- The [Aave Capo](https://github.com/bgd-labs/aave-capo) repository was later renamed to [Aave Price Feeds](https://github.com/bgd-labs/aave-price-feeds) to better reflect its purpose and moved to the [aave-dao](https://github.com/aave-dao/aave-price-feeds) organization.
+
 ## License
 
-Copyright © 2024, Aave DAO, represented by its governance smart contracts.
+Copyright © 2026, Aave DAO, represented by its governance smart contracts.
 
 Created by [BGD Labs](https://bgdlabs.com/).
 
