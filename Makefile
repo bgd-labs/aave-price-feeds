@@ -63,6 +63,7 @@ deploy-fixed-musd-linea :; forge script scripts/DeployLinea.s.sol:DeployFixedMUS
 deploy-fixed-musd-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployFixedMUSDEthereum --rpc-url mainnet $(common-flags)
 
 deploy-fixed-usdg-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployFixedUSDGEthereum --rpc-url mainnet $(common-flags)
+deploy-one-usd-fixed-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployOneUSDFixedAdapterEthereum --rpc-url mainnet $(common-flags)
 
 deploy-weETH-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeployWeEthZkSync --rpc-url zksync $(common-flags)
 deploy-sUSDe-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeploySUSDeZkSync --rpc-url zksync $(common-flags)
@@ -116,6 +117,7 @@ deploy-pt-usde-05-feb-2026-mainnet :; forge script scripts/DeployEthereum.s.sol:
 deploy-pt-srusde-02-apr-2026-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtSrUSDe02APR2026Ethereum --rpc-url mainnet $(common-flags)
 
 deploy-dpi-eth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployFixedDpiEthEthereum --rpc-url mainnet $(common-flags)
+deploy-discounted-mkr-sky-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployDiscountedMKRSKYEthereum --rpc-url mainnet $(common-flags)
 deploy-dpi-usd-polygon :; forge script scripts/DeployPolygon.s.sol:DeployFixedDpiUsdPolygon --rpc-url polygon $(common-flags)
 deploy-dpi-eth-polygon :; forge script scripts/DeployPolygon.s.sol:DeployFixedDpiEthPolygon --rpc-url polygon $(common-flags)
 

@@ -10,6 +10,7 @@ import {ChainlinkEthereum} from 'aave-address-book/ChainlinkEthereum.sol';
 
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 import {FixedPriceAdapter} from '../src/contracts/misc-adapters/FixedPriceAdapter.sol';
+import {OneUSDFixedAdapter} from '../src/contracts/misc-adapters/OneUSDFixedAdapter.sol';
 import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCapAdapter.sol';
 import {IPriceCapAdapterStable} from '../src/interfaces/IPriceCapAdapterStable.sol';
 import {WeETHPriceCapAdapter} from '../src/contracts/lst-adapters/WeETHPriceCapAdapter.sol';
@@ -34,6 +35,8 @@ import {EURPriceCapAdapterStable, IEURPriceCapAdapterStable} from '../src/contra
 import {LBTCPriceCapAdapter} from '../src/contracts/lst-adapters/LBTCPriceCapAdapter.sol';
 import {SyrupUSDCPriceCapAdapter} from '../src/contracts/lst-adapters/SyrupUSDCPriceCapAdapter.sol';
 import {SyrupUSDTPriceCapAdapter} from '../src/contracts/lst-adapters/SyrupUSDTPriceCapAdapter.sol';
+import {DiscountedMKRSKYAdapter} from '../src/contracts/misc-adapters/DiscountedMKRSKYAdapter.sol';
+import {IDiscountedMKRSKYAdapter} from '../src/interfaces/IDiscountedMKRSKYAdapter.sol';
 
 library CapAdaptersCodeEthereum {
   using SafeCast for uint256;
@@ -72,6 +75,7 @@ library CapAdaptersCodeEthereum {
   address public constant EURC_PRICE_FEED = 0x04F84020Fdf10d9ee64D1dcC2986EDF2F556DA11;
   address public constant EUR_PRICE_FEED = 0xb49f677943BC038e9857d61E7d053CaA2C1734C1;
   address public constant LBTC_STAKE_ORACLE = 0x1De9fcfeDF3E51266c188ee422fbA1c7860DA0eF;
+  address public constant SKY_USD_FEED = 0xee10fE5E7aa92dd7b136597449c3d5813cFC5F18;
 
   function ptSrUSDeApril2026AdapterCode() internal pure returns (bytes memory) {
     return
@@ -780,6 +784,14 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
+
+  function discountedMKRSKYAdapterCode() internal pure returns (bytes memory) {
+    return type(DiscountedMKRSKYAdapter).creationCode;
+  }
+
+  function oneUSDFixedAdapterCode() internal pure returns (bytes memory) {
+    return abi.encodePacked(type(OneUSDFixedAdapter).creationCode);
+  }
 }
 
 contract DeployLBTCEthereum is EthereumScript {
@@ -1007,6 +1019,18 @@ contract DeployPtUSDe05FEB2026Ethereum is EthereumScript {
 contract DeployPtSUSDe05FEB2026Ethereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptSUSDeFebruary2026AdapterCode());
+  }
+}
+
+contract DeployDiscountedMKRSKYEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.discountedMKRSKYAdapterCode());
+  }
+}
+
+contract DeployOneUSDFixedAdapterEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.oneUSDFixedAdapterCode());
   }
 }
 

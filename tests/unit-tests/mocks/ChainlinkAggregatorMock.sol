@@ -4,14 +4,20 @@ pragma solidity ^0.8.19;
 import {IChainlinkAggregator} from '../../../src/interfaces/IPriceCapAdapter.sol';
 
 contract ChainlinkAggregatorMock is IChainlinkAggregator {
+  int256 public latestAnswer;
+  uint8 internal _decimals;
+
   constructor(int256 latestAnswer_) {
     latestAnswer = latestAnswer_;
+    _decimals = 8;
   }
-
-  int256 public latestAnswer;
 
   function setLatestAnswer(int256 latestAnswer_) external {
     latestAnswer = latestAnswer_;
+  }
+
+  function setDecimals(uint8 decimals_) external {
+    _decimals = decimals_;
   }
 
   function getAnswer(uint256) external view returns (int256) {
@@ -30,7 +36,7 @@ contract ChainlinkAggregatorMock is IChainlinkAggregator {
     return 0;
   }
 
-  function decimals() external pure returns (uint8) {
-    return 8;
+  function decimals() external view returns (uint8) {
+    return _decimals;
   }
 }

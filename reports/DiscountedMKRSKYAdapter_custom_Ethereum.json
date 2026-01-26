@@ -1,0 +1,496 @@
+{
+  "decimals": 8,
+  "exchangeRate": 24000,
+  "prices": {
+    "23881000": {
+      "adapterPrice": 102453571440,
+      "discountFromReference": 1,
+      "noDiscountPrice": 103488456000,
+      "referencePrice": 102466655430,
+      "skyPrice": 4312019,
+      "timestamp": 1764136859
+    },
+    "23888300": {
+      "adapterPrice": 114479956800,
+      "discountFromReference": 31,
+      "noDiscountPrice": 115636320000,
+      "referencePrice": 114843534694,
+      "skyPrice": 4818180,
+      "timestamp": 1764225311
+    },
+    "23895600": {
+      "adapterPrice": 116761083120,
+      "discountFromReference": 19,
+      "noDiscountPrice": 117940488000,
+      "referencePrice": 116994921619,
+      "skyPrice": 4914187,
+      "timestamp": 1764313823
+    },
+    "23902900": {
+      "adapterPrice": 121872381840,
+      "discountFromReference": 58,
+      "noDiscountPrice": 123103416000,
+      "referencePrice": 122583588169,
+      "skyPrice": 5129309,
+      "timestamp": 1764402155
+    },
+    "23910200": {
+      "adapterPrice": 126463146480,
+      "discountFromReference": 48,
+      "noDiscountPrice": 127740552000,
+      "referencePrice": 127074373950,
+      "skyPrice": 5322523,
+      "timestamp": 1764490295
+    },
+    "23917500": {
+      "adapterPrice": 120704910480,
+      "discountFromReference": 55,
+      "noDiscountPrice": 121924152000,
+      "referencePrice": 121383635068,
+      "skyPrice": 5080173,
+      "timestamp": 1764578423
+    },
+    "23924800": {
+      "adapterPrice": 128304736560,
+      "discountFromReference": -87,
+      "noDiscountPrice": 129600744000,
+      "referencePrice": 127189122784,
+      "skyPrice": 5400031,
+      "timestamp": 1764666671
+    },
+    "23932100": {
+      "adapterPrice": 138402047520,
+      "discountFromReference": -73,
+      "noDiscountPrice": 139800048000,
+      "referencePrice": 137387198270,
+      "skyPrice": 5825002,
+      "timestamp": 1764755003
+    },
+    "23939400": {
+      "adapterPrice": 135898622640,
+      "discountFromReference": -43,
+      "noDiscountPrice": 137271336000,
+      "referencePrice": 135315671600,
+      "skyPrice": 5719639,
+      "timestamp": 1764847739
+    },
+    "23946700": {
+      "adapterPrice": 130235901840,
+      "discountFromReference": 70,
+      "noDiscountPrice": 131551416000,
+      "referencePrice": 131163553515,
+      "skyPrice": 5481309,
+      "timestamp": 1764937103
+    },
+    "23954000": {
+      "adapterPrice": 125018134560,
+      "discountFromReference": 9,
+      "noDiscountPrice": 126280944000,
+      "referencePrice": 125132364363,
+      "skyPrice": 5261706,
+      "timestamp": 1765026059
+    },
+    "23961300": {
+      "adapterPrice": 125771540400,
+      "discountFromReference": -23,
+      "noDiscountPrice": 127041960000,
+      "referencePrice": 125472300037,
+      "skyPrice": 5293415,
+      "timestamp": 1765114643
+    },
+    "23968600": {
+      "adapterPrice": 128456848080,
+      "discountFromReference": -74,
+      "noDiscountPrice": 129754392000,
+      "referencePrice": 127508583523,
+      "skyPrice": 5406433,
+      "timestamp": 1765203131
+    },
+    "23975900": {
+      "adapterPrice": 128226875040,
+      "discountFromReference": 97,
+      "noDiscountPrice": 129522096000,
+      "referencePrice": 129488282416,
+      "skyPrice": 5396754,
+      "timestamp": 1765291595
+    },
+    "23983200": {
+      "adapterPrice": 133544268000,
+      "discountFromReference": -50,
+      "noDiscountPrice": 134893200000,
+      "referencePrice": 132871158209,
+      "skyPrice": 5620550,
+      "timestamp": 1765380467
+    },
+    "23990500": {
+      "adapterPrice": 127962354960,
+      "discountFromReference": 49,
+      "noDiscountPrice": 129254904000,
+      "referencePrice": 128599294969,
+      "skyPrice": 5385621,
+      "timestamp": 1765468907
+    },
+    "23997800": {
+      "adapterPrice": 135987888960,
+      "discountFromReference": -208,
+      "noDiscountPrice": 137361504000,
+      "referencePrice": 133212619742,
+      "skyPrice": 5723396,
+      "timestamp": 1765557731
+    },
+    "24005100": {
+      "adapterPrice": 135716929920,
+      "discountFromReference": 70,
+      "noDiscountPrice": 137087808000,
+      "referencePrice": 136684981366,
+      "skyPrice": 5711992,
+      "timestamp": 1765646027
+    },
+    "24012400": {
+      "adapterPrice": 140010789600,
+      "discountFromReference": 117,
+      "noDiscountPrice": 141425040000,
+      "referencePrice": 141677657487,
+      "skyPrice": 5892710,
+      "timestamp": 1765734059
+    },
+    "24019700": {
+      "adapterPrice": 135224429760,
+      "discountFromReference": -32,
+      "noDiscountPrice": 137984112000,
+      "referencePrice": 134790581997,
+      "skyPrice": 5749338,
+      "timestamp": 1765822175
+    },
+    "24027000": {
+      "adapterPrice": 135020064480,
+      "discountFromReference": 65,
+      "noDiscountPrice": 137775576000,
+      "referencePrice": 135911821200,
+      "skyPrice": 5740649,
+      "timestamp": 1765910183
+    },
+    "24034300": {
+      "adapterPrice": 134938144320,
+      "discountFromReference": 5,
+      "noDiscountPrice": 137691984000,
+      "referencePrice": 135010822602,
+      "skyPrice": 5737166,
+      "timestamp": 1765998251
+    },
+    "24041600": {
+      "adapterPrice": 137828799360,
+      "discountFromReference": -74,
+      "noDiscountPrice": 140641632000,
+      "referencePrice": 136810196572,
+      "skyPrice": 5860068,
+      "timestamp": 1766086415
+    },
+    "24048900": {
+      "adapterPrice": 137660866560,
+      "discountFromReference": 80,
+      "noDiscountPrice": 140470272000,
+      "referencePrice": 138781876576,
+      "skyPrice": 5852928,
+      "timestamp": 1766174579
+    },
+    "24056200": {
+      "adapterPrice": 146241197760,
+      "discountFromReference": 113,
+      "noDiscountPrice": 149225712000,
+      "referencePrice": 147918887481,
+      "skyPrice": 6217738,
+      "timestamp": 1766262527
+    },
+    "24063500": {
+      "adapterPrice": 152483923200,
+      "discountFromReference": -16,
+      "noDiscountPrice": 155595840000,
+      "referencePrice": 152228112059,
+      "skyPrice": 6483160,
+      "timestamp": 1766350391
+    },
+    "24070800": {
+      "adapterPrice": 159013780800,
+      "discountFromReference": -66,
+      "noDiscountPrice": 162258960000,
+      "referencePrice": 157970024833,
+      "skyPrice": 6760790,
+      "timestamp": 1766438459
+    },
+    "24078100": {
+      "adapterPrice": 149594161920,
+      "discountFromReference": 150,
+      "noDiscountPrice": 152647104000,
+      "referencePrice": 151875464700,
+      "skyPrice": 6360296,
+      "timestamp": 1766526539
+    },
+    "24085400": {
+      "adapterPrice": 158843754720,
+      "discountFromReference": 47,
+      "noDiscountPrice": 162085464000,
+      "referencePrice": 159607244022,
+      "skyPrice": 6753561,
+      "timestamp": 1766614511
+    },
+    "24092700": {
+      "adapterPrice": 162388101120,
+      "discountFromReference": -64,
+      "noDiscountPrice": 165702144000,
+      "referencePrice": 161349393000,
+      "skyPrice": 6904256,
+      "timestamp": 1766702591
+    },
+    "24100000": {
+      "adapterPrice": 152273936640,
+      "discountFromReference": -103,
+      "noDiscountPrice": 155381568000,
+      "referencePrice": 150717084349,
+      "skyPrice": 6474232,
+      "timestamp": 1766790647
+    },
+    "24107300": {
+      "adapterPrice": 146120210880,
+      "discountFromReference": 26,
+      "noDiscountPrice": 149102256000,
+      "referencePrice": 146515777200,
+      "skyPrice": 6212594,
+      "timestamp": 1766878727
+    },
+    "24114600": {
+      "adapterPrice": 151888820160,
+      "discountFromReference": -96,
+      "noDiscountPrice": 154988592000,
+      "referencePrice": 150434837300,
+      "skyPrice": 6457858,
+      "timestamp": 1766966675
+    },
+    "24121900": {
+      "adapterPrice": 145411953120,
+      "discountFromReference": -39,
+      "noDiscountPrice": 148379544000,
+      "referencePrice": 144840401900,
+      "skyPrice": 6182481,
+      "timestamp": 1767054755
+    },
+    "24129200": {
+      "adapterPrice": 141717125760,
+      "discountFromReference": -99,
+      "noDiscountPrice": 144609312000,
+      "referencePrice": 140321472784,
+      "skyPrice": 6025388,
+      "timestamp": 1767142991
+    },
+    "24136500": {
+      "adapterPrice": 135969025920,
+      "discountFromReference": -11,
+      "noDiscountPrice": 138743904000,
+      "referencePrice": 135812854666,
+      "skyPrice": 5780996,
+      "timestamp": 1767230987
+    },
+    "24143800": {
+      "adapterPrice": 141597691200,
+      "discountFromReference": 68,
+      "noDiscountPrice": 144487440000,
+      "referencePrice": 142579033189,
+      "skyPrice": 6020310,
+      "timestamp": 1767318971
+    },
+    "24151100": {
+      "adapterPrice": 147381071040,
+      "discountFromReference": 121,
+      "noDiscountPrice": 150388848000,
+      "referencePrice": 149194297475,
+      "skyPrice": 6266202,
+      "timestamp": 1767406907
+    },
+    "24158400": {
+      "adapterPrice": 147096243840,
+      "discountFromReference": 62,
+      "noDiscountPrice": 150098208000,
+      "referencePrice": 148015051686,
+      "skyPrice": 6254092,
+      "timestamp": 1767494831
+    },
+    "24165700": {
+      "adapterPrice": 147052143840,
+      "discountFromReference": 67,
+      "noDiscountPrice": 150053208000,
+      "referencePrice": 148047713000,
+      "skyPrice": 6252217,
+      "timestamp": 1767582791
+    },
+    "24173000": {
+      "adapterPrice": 150008490240,
+      "discountFromReference": 17,
+      "noDiscountPrice": 153069888000,
+      "referencePrice": 150268642767,
+      "skyPrice": 6377912,
+      "timestamp": 1767670799
+    },
+    "24180300": {
+      "adapterPrice": 148556671200,
+      "discountFromReference": 140,
+      "noDiscountPrice": 151588440000,
+      "referencePrice": 150680707333,
+      "skyPrice": 6316185,
+      "timestamp": 1767758711
+    },
+    "24187600": {
+      "adapterPrice": 145482912960,
+      "discountFromReference": -68,
+      "noDiscountPrice": 148451952000,
+      "referencePrice": 144491551537,
+      "skyPrice": 6185498,
+      "timestamp": 1767846827
+    },
+    "24194900": {
+      "adapterPrice": 136514666400,
+      "discountFromReference": 69,
+      "noDiscountPrice": 139300680000,
+      "referencePrice": 137469171669,
+      "skyPrice": 5804195,
+      "timestamp": 1767934919
+    },
+    "24202200": {
+      "adapterPrice": 130975141920,
+      "discountFromReference": -61,
+      "noDiscountPrice": 133648104000,
+      "referencePrice": 130179898171,
+      "skyPrice": 5568671,
+      "timestamp": 1768022867
+    },
+    "24209500": {
+      "adapterPrice": 139075218240,
+      "discountFromReference": 31,
+      "noDiscountPrice": 141913488000,
+      "referencePrice": 139517647376,
+      "skyPrice": 5913062,
+      "timestamp": 1768110803
+    },
+    "24216800": {
+      "adapterPrice": 138943529760,
+      "discountFromReference": 65,
+      "noDiscountPrice": 141779112000,
+      "referencePrice": 139854856300,
+      "skyPrice": 5907463,
+      "timestamp": 1768198775
+    },
+    "24224100": {
+      "adapterPrice": 133189314720,
+      "discountFromReference": 114,
+      "noDiscountPrice": 135907464000,
+      "referencePrice": 134737824933,
+      "skyPrice": 5662811,
+      "timestamp": 1768286831
+    },
+    "24231400": {
+      "adapterPrice": 138998731200,
+      "discountFromReference": 45,
+      "noDiscountPrice": 141835440000,
+      "referencePrice": 139639913671,
+      "skyPrice": 5909810,
+      "timestamp": 1768375103
+    },
+    "24238700": {
+      "adapterPrice": 140597362080,
+      "discountFromReference": 26,
+      "noDiscountPrice": 143466696000,
+      "referencePrice": 140968001200,
+      "skyPrice": 5977779,
+      "timestamp": 1768463087
+    },
+    "24246000": {
+      "adapterPrice": 140865889920,
+      "discountFromReference": 131,
+      "noDiscountPrice": 143740704000,
+      "referencePrice": 142739406900,
+      "skyPrice": 5989196,
+      "timestamp": 1768550999
+    },
+    "24253300": {
+      "adapterPrice": 152618434080,
+      "discountFromReference": -123,
+      "noDiscountPrice": 155733096000,
+      "referencePrice": 150754369095,
+      "skyPrice": 6488879,
+      "timestamp": 1768638911
+    },
+    "24260600": {
+      "adapterPrice": 149446973760,
+      "discountFromReference": 70,
+      "noDiscountPrice": 152496912000,
+      "referencePrice": 150510235550,
+      "skyPrice": 6354038,
+      "timestamp": 1768726775
+    },
+    "24267900": {
+      "adapterPrice": 150101370720,
+      "discountFromReference": 83,
+      "noDiscountPrice": 153164664000,
+      "referencePrice": 151366791357,
+      "skyPrice": 6381861,
+      "timestamp": 1768814651
+    },
+    "24275200": {
+      "adapterPrice": 150270550080,
+      "discountFromReference": -141,
+      "noDiscountPrice": 153337296000,
+      "referencePrice": 148175529345,
+      "skyPrice": 6389054,
+      "timestamp": 1768902623
+    },
+    "24282500": {
+      "adapterPrice": 146883035040,
+      "discountFromReference": -137,
+      "noDiscountPrice": 149880648000,
+      "referencePrice": 144885853253,
+      "skyPrice": 6245027,
+      "timestamp": 1768990523
+    },
+    "24289800": {
+      "adapterPrice": 153192275040,
+      "discountFromReference": 37,
+      "noDiscountPrice": 156318648000,
+      "referencePrice": 153775772798,
+      "skyPrice": 6513277,
+      "timestamp": 1769078555
+    },
+    "24297100": {
+      "adapterPrice": 156440292960,
+      "discountFromReference": -134,
+      "noDiscountPrice": 159632952000,
+      "referencePrice": 154369176750,
+      "skyPrice": 6651373,
+      "timestamp": 1769166647
+    },
+    "24304400": {
+      "adapterPrice": 156419830560,
+      "discountFromReference": 2,
+      "noDiscountPrice": 159612072000,
+      "referencePrice": 156460467844,
+      "skyPrice": 6650503,
+      "timestamp": 1769254619
+    },
+    "24311700": {
+      "adapterPrice": 158922052800,
+      "discountFromReference": -94,
+      "noDiscountPrice": 162165360000,
+      "referencePrice": 157441389409,
+      "skyPrice": 6756890,
+      "timestamp": 1769342591
+    },
+    "24319000": {
+      "adapterPrice": 155762117280,
+      "discountFromReference": 2,
+      "noDiscountPrice": 158940936000,
+      "referencePrice": 155796242870,
+      "skyPrice": 6622539,
+      "timestamp": 1769430443
+    }
+  },
+  "reference": "MKR / USD (Chainlink)",
+  "source": "MKR/USD (calculated)"
+}

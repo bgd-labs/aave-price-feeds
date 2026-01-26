@@ -70,7 +70,7 @@ Initially we thought to model this as a sub-case of `RatioCapPriceAdapter`, with
 
 - The original contracts of this repository were developed inside the [CL Synchronicity Price Adapter](https://github.com/bgd-labs/cl-synchronicity-price-adapter) repository.
 - They were later moved and improved in the [Aave Capo](https://github.com/bgd-labs/aave-capo) repository.
-- The [Aave Capo](https://github.com/bgd-labs/aave-capo) repository was later renamed to [Aave Price Feeds](https://github.com/bgd-labs/aave-price-feeds) to better reflect its purpose and moved to the [aave-dao](https://github.com/aave-dao/aave-price-feeds) organization.
+- The [Aave Capo](https://github.com/bgd-labs/aave-capo) repository was later renamed to [Aave Price Feeds](https://github.com/bgd-labs/aave-price-feeds) to better reflect its purpose.
 
 ## License
 
