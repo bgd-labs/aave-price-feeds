@@ -94,6 +94,7 @@ contract DiscountedMKRSKYAdapter is IDiscountedMKRSKYAdapter {
       int256(((referenceFeedPrice * EXCHANGE_RATE) * (1e18 - discount())) / 1e18);
   }
 
+  /// @inheritdoc IDiscountedMKRSKYAdapter
   function discount() public view returns (uint256) {
     /// @dev In the MkrSky migration contract, 1e18 = 100%, 0.1e18 = 10%, 0.01e18 = 1%
     /// The value is bounded to 100%
