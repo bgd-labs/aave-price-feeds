@@ -110,9 +110,7 @@ contract DiscountedMKRSKYAdapterTest is Test {
     uint256 fee1Percent = 0.01 ether; // 1% in MkrSky format (1 ether = 100%)
     MkrSkyMock(MKR_SKY_ADDRESS).setFee(fee1Percent);
 
-    expectedPrice = int256(
-      ((uint256(SKY_PRICE) * EXCHANGE_RATE) * (1e18 - fee1Percent)) / 1e18
-    );
+    expectedPrice = int256(((uint256(SKY_PRICE) * EXCHANGE_RATE) * (1e18 - fee1Percent)) / 1e18);
     assertEq(adapter.latestAnswer(), expectedPrice);
     assertEq(adapter.discount(), fee1Percent);
   }
@@ -151,6 +149,7 @@ contract DiscountedMKRSKYAdapterTest is Test {
     uint256 fee90Percent = 0.9 ether;
     MkrSkyMock(MKR_SKY_ADDRESS).setFee(fee90Percent);
     // (6650503 * 24000) * (1e18 - 0.9e18) / 1e18 = 159612072 * 0.1 = 15961207
+    // forge-lint: disable-next-line(unsafe-typecast)
     int256 expectedPrice = int256(
       ((uint256(SKY_PRICE) * EXCHANGE_RATE) * (1e18 - fee90Percent)) / 1e18
     );
@@ -175,12 +174,14 @@ contract DiscountedMKRSKYAdapterTest is Test {
     feeInEther = bound(feeInEther, 0.001 ether, 1 ether);
 
     // Update mock values
+    // forge-lint: disable-next-line(unsafe-typecast)
     ChainlinkAggregatorMock(SKY_USD_FEED).setLatestAnswer(int256(skyPrice));
     MkrSkyMock(MKR_SKY_ADDRESS).setFee(feeInEther);
 
     // Calculate expected price using the same formula as the contract
     uint256 expectedPrice = ((skyPrice * EXCHANGE_RATE) * (1e18 - feeInEther)) / 1e18;
 
+    // forge-lint: disable-next-line(unsafe-typecast)
     assertEq(adapter.latestAnswer(), int256(expectedPrice));
     assertGe(adapter.latestAnswer(), 0);
   }

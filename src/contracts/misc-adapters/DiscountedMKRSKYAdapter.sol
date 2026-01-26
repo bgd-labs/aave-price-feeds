@@ -43,8 +43,11 @@ import {
  */
 contract DiscountedMKRSKYAdapter is IDiscountedMKRSKYAdapter {
   /// @dev MkrSky migration contract on Ethereum that provides the dynamic fee/discount and exchange rate
+  /// @inheritdoc IDiscountedMKRSKYAdapter
   address public constant DISCOUNT_PROVIDER = 0xA1Ea1bA18E88C381C724a75F23a130420C403f9a;
+
   /// @dev Chainlink SKY/USD price feed on Ethereum
+  /// @inheritdoc IDiscountedMKRSKYAdapter
   IChainlinkAggregator public constant REFERENCE_FEED =
     IChainlinkAggregator(0xee10fE5E7aa92dd7b136597449c3d5813cFC5F18);
 
@@ -60,6 +63,7 @@ contract DiscountedMKRSKYAdapter is IDiscountedMKRSKYAdapter {
 
   /// @dev MKR/SKY exchange rate cached from MkrSky.rate() (24000 = 1 MKR = 24000 SKY).
   ///      Constant in MkrSky, cached here to avoid external calls on every price query.
+  /// @inheritdoc IDiscountedMKRSKYAdapter
   uint256 public immutable EXCHANGE_RATE;
 
   constructor() {
@@ -90,8 +94,7 @@ contract DiscountedMKRSKYAdapter is IDiscountedMKRSKYAdapter {
     // e.g. (6650503 * 24000) * (1e18 - 0.02e18) / 1e18 = 156489827040 (~$1564 with 8 decimals)
     // Safe to cast as final price will always fit into int256
     // forge-lint: disable-next-line(unsafe-typecast)
-    return
-      int256(((referenceFeedPrice * EXCHANGE_RATE) * (1e18 - discount())) / 1e18);
+    return int256(((referenceFeedPrice * EXCHANGE_RATE) * (1e18 - discount())) / 1e18);
   }
 
   /// @inheritdoc IDiscountedMKRSKYAdapter
