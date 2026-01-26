@@ -4,10 +4,7 @@ pragma solidity ^0.8.0;
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {EthereumScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
-import {
-  AaveV3EthereumLido,
-  AaveV3EthereumLidoAssets
-} from 'aave-address-book/AaveV3EthereumLido.sol';
+import {AaveV3EthereumLido, AaveV3EthereumLidoAssets} from 'aave-address-book/AaveV3EthereumLido.sol';
 import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
 import {ChainlinkEthereum} from 'aave-address-book/ChainlinkEthereum.sol';
 
@@ -22,31 +19,18 @@ import {EthXPriceCapAdapter} from '../src/contracts/lst-adapters/EthXPriceCapAda
 import {SUSDePriceCapAdapter} from '../src/contracts/lst-adapters/SUSDePriceCapAdapter.sol';
 import {sUSDSPriceCapAdapter} from '../src/contracts/lst-adapters/sUSDSPriceCapAdapter.sol';
 import {EzETHPriceCapAdapter} from '../src/contracts/lst-adapters/EzETHPriceCapAdapter.sol';
-import {
-  sDAIMainnetPriceCapAdapter
-} from '../src/contracts/lst-adapters/sDAIMainnetPriceCapAdapter.sol';
+import {sDAIMainnetPriceCapAdapter} from '../src/contracts/lst-adapters/sDAIMainnetPriceCapAdapter.sol';
 import {RsETHPriceCapAdapter} from '../src/contracts/lst-adapters/RsETHPriceCapAdapter.sol';
 import {EBTCPriceCapAdapter} from '../src/contracts/lst-adapters/EBTCPriceCapAdapter.sol';
-import {
-  PendlePriceCapAdapter,
-  IPendlePriceCapAdapter
-} from '../src/contracts/PendlePriceCapAdapter.sol';
+import {PendlePriceCapAdapter, IPendlePriceCapAdapter} from '../src/contracts/PendlePriceCapAdapter.sol';
 import {SafeCast} from 'openzeppelin-contracts/contracts/utils/math/SafeCast.sol';
 import {EUSDePriceCapAdapter} from '../src/contracts/lst-adapters/EUSDePriceCapAdapter.sol';
 import {WstETHPriceCapAdapter} from '../src/contracts/lst-adapters/WstETHPriceCapAdapter.sol';
 import {RETHPriceCapAdapter} from '../src/contracts/lst-adapters/RETHPriceCapAdapter.sol';
 import {CbETHPriceCapAdapter} from '../src/contracts/lst-adapters/CbETHPriceCapAdapter.sol';
 import {TETHPriceCapAdapter} from '../src/contracts/lst-adapters/TETHPriceCapAdapter.sol';
-import {
-  CLSynchronicityPriceAdapterPegToBase
-} from 'cl-synchronicity-price-adapter/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
-import {
-  BaseAggregatorsMainnet
-} from 'cl-synchronicity-price-adapter/lib/BaseAggregatorsMainnet.sol';
-import {
-  EURPriceCapAdapterStable,
-  IEURPriceCapAdapterStable
-} from '../src/contracts/misc-adapters/EURPriceCapAdapterStable.sol';
+import {CLSynchronicityPriceAdapterPegToBase} from '../src/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
+import {EURPriceCapAdapterStable, IEURPriceCapAdapterStable} from '../src/contracts/misc-adapters/EURPriceCapAdapterStable.sol';
 import {LBTCPriceCapAdapter} from '../src/contracts/lst-adapters/LBTCPriceCapAdapter.sol';
 import {SyrupUSDCPriceCapAdapter} from '../src/contracts/lst-adapters/SyrupUSDCPriceCapAdapter.sol';
 import {SyrupUSDTPriceCapAdapter} from '../src/contracts/lst-adapters/SyrupUSDTPriceCapAdapter.sol';
@@ -614,7 +598,7 @@ library CapAdaptersCodeEthereum {
         type(CLSynchronicityPriceAdapterPegToBase).creationCode,
         abi.encode(
           ChainlinkEthereum.SVR_BTC__USD,
-          BaseAggregatorsMainnet.WBTC_BTC_AGGREGATOR,
+          ChainlinkEthereum.WBTC__BTC,
           8,
           'wBTC/BTC/USD'
         )
@@ -1048,6 +1032,7 @@ contract DeployOneUSDFixedAdapterEthereum is EthereumScript {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.oneUSDFixedAdapterCode());
   }
 }
+
 contract DeployPtSrUSDe02APR2026Ethereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptSrUSDeApril2026AdapterCode());

@@ -2,8 +2,8 @@
 pragma solidity ^0.8.0;
 
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
-import {ICLSynchronicityPriceAdapter} from 'cl-synchronicity-price-adapter/interfaces/ICLSynchronicityPriceAdapter.sol';
-import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IChainlinkAggregator.sol';
+import {ICLSynchronicityPriceAdapter} from '../../src/interfaces/ICLSynchronicityPriceAdapter.sol';
+import {IChainlinkAggregator} from '../../src/interfaces/IChainlinkAggregator.sol';
 
 interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
   /**
