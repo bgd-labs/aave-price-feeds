@@ -2,9 +2,8 @@
 pragma solidity ^0.8.0;
 
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
-// import {MegaETHScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
-// import {AaveV3MegaETH, AaveV3MegaETHAssets} from 'aave-address-book/AaveV3MegaETH.sol';
-// import {ChainlinkMegaETH} from 'aave-address-book/ChainlinkMegaETH.sol';
+import {MegaEthScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
+import {AaveV3MegaEth} from 'aave-address-book/AaveV3MegaEth.sol';
 
 import {CLRatePriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
 import {PriceCapAdapterStable, IPriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
@@ -24,7 +23,7 @@ library CapAdaptersCodeMegaETH {
         type(PriceCapAdapterStable).creationCode,
         abi.encode(
           IPriceCapAdapterStable.CapAdapterStableParams({
-            aclManager: AaveV3MegaETH.ACL_MANAGER,
+            aclManager: AaveV3MegaEth.ACL_MANAGER,
             assetToUsdAggregator: IChainlinkAggregator(USDT_USD_PRICE_FEED),
             adapterDescription: 'Capped USDT/USD',
             priceCap: int256(1.04 * 1e8)
@@ -39,14 +38,14 @@ library CapAdaptersCodeMegaETH {
         type(CLRatePriceCapAdapter).creationCode,
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
-            aclManager: AaveV3MegaETH.ACL_MANAGER,
+            aclManager: AaveV3MegaEth.ACL_MANAGER,
             baseAggregatorAddress: BTC_USD_PRICE_FEED,
             ratioProviderAddress: LBTC_BTC_Exchange_Rate,
             pairDescription: 'Capped LBTC / BTC / USD',
             minimumSnapshotDelay: 0 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 0,
-              snapshotTimestamp: 0, 
+              snapshotTimestamp: 0,
               maxYearlyRatioGrowthPercent: 0
             })
           })
@@ -60,14 +59,14 @@ library CapAdaptersCodeMegaETH {
         type(CLRatePriceCapAdapter).creationCode,
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
-            aclManager: AaveV3MegaETH.ACL_MANAGER,
+            aclManager: AaveV3MegaEth.ACL_MANAGER,
             baseAggregatorAddress: ETH_USD_PRICE_FEED,
             ratioProviderAddress: wstETH_stETH_Exchange_Rate,
             pairDescription: 'Capped wstETH / stETH(ETH) / USD',
             minimumSnapshotDelay: 0 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 0,
-              snapshotTimestamp: 0, 
+              snapshotTimestamp: 0,
               maxYearlyRatioGrowthPercent: 0
             })
           })
@@ -81,14 +80,14 @@ library CapAdaptersCodeMegaETH {
         type(CLRatePriceCapAdapter).creationCode,
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
-            aclManager: AaveV3MegaETH.ACL_MANAGER,
+            aclManager: AaveV3MegaEth.ACL_MANAGER,
             baseAggregatorAddress: ETH_USD_PRICE_FEED,
             ratioProviderAddress: rsETH_ETH_Exchange_Rate,
             pairDescription: 'Capped rsETH / ETH / USD',
             minimumSnapshotDelay: 0 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 0,
-              snapshotTimestamp: 0, 
+              snapshotTimestamp: 0,
               maxYearlyRatioGrowthPercent: 0
             })
           })
@@ -97,23 +96,23 @@ library CapAdaptersCodeMegaETH {
   }
 }
 
-contract DeployUSDT0MegaETH is MegaETHScript {
+contract DeployUSDT0MegaETH is MegaEthScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeMegaETH.USDT0AdapterCode());
   }
 }
 
-contract DeployLBTCMegaETH is MegaETHScript {
+contract DeployLBTCMegaETH is MegaEthScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeMegaETH.LBTCAdapterCode());
   }
 }
-contract DeployWstETHMegaETH is MegaETHScript {
+contract DeployWstETHMegaETH is MegaEthScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeMegaETH.wstETHAdapterCode());
   }
 }
-contract DeployRsETHMegaETH is MegaETHScript {
+contract DeployRsETHMegaETH is MegaEthScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeMegaETH.rsETHAdapterCode());
   }

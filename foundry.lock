@@ -1,14 +1,14 @@
 {
   "lib/aave-address-book": {
     "branch": {
-      "name": "main",
-      "rev": "7c65232c4ba81909344542161c51a3c17f0fedf5"
+      "name": "feat/megaeth",
+      "rev": "64ad39c7cfeb45b3e3d800ccf4f2d4ee61d2490f"
     }
   },
   "lib/aave-helpers": {
     "branch": {
-      "name": "main",
-      "rev": "e4a3241b1caebe64c2d803934ee0bd2081049e4a"
+      "name": "feat/megaeth",
+      "rev": "1009dde32e04430654dd21ec49b7d8397af3f14c"
     }
   },
   "lib/cl-synchronicity-price-adapter": {
