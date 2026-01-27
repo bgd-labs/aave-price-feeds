@@ -76,6 +76,10 @@ library BlockUtils {
       return 43_200;
     }
 
+    if (keccak256(bytes(network)) == keccak256(bytes('megaeth'))) {
+      return 86_400;
+    }
+
     return 7300;
   }
 }
