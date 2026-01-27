@@ -75,6 +75,25 @@ interface IPendlePriceCapAdapter is ICLSynchronicityPriceAdapter {
   function getCurrentDiscount() external view returns (uint256 currentDiscount);
 
   /**
+   * @notice Calculates the answer from the latest round based on the aggregators.
+   * @return roundId
+   * @return answer
+   * @return startedAt
+   * @return updatedAt
+   * @return answeredInRound
+   */
+  function latestRoundData()
+    external
+    view
+    returns (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    );
+
+  /**
    * @notice Price feed for (ASSET / USD) pair
    */
   function ASSET_TO_USD_AGGREGATOR() external view returns (IChainlinkAggregator);

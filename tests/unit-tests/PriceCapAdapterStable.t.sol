@@ -82,30 +82,78 @@ contract PriceCapAdapterStableTest is Test {
     vm.assertEq(stableCapo.description(), 'description');
     vm.assertEq(stableCapo.decimals(), 8);
 
+    uint256 timestamp = vm.getBlockTimestamp();
+    (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    ) = stableCapo.latestRoundData();
+
     vm.assertEq(stableCapo.latestAnswer(), 1e8);
     vm.assertEq(stableCapo.getPriceCap(), 1.04e8);
     vm.assertEq(stableCapo.isCapped(), false);
+    vm.assertEq(roundId, uint80(timestamp));
+    vm.assertEq(answer, 1e8);
+    vm.assertEq(startedAt, timestamp);
+    vm.assertEq(updatedAt, timestamp);
+    vm.assertEq(answeredInRound, uint80(timestamp));
   }
 
   function test_capo() public {
     vm.assertEq(stableCapo.latestAnswer(), 1e8);
+    uint256 timestamp = vm.getBlockTimestamp();
+    (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    ) = stableCapo.latestRoundData();
+    vm.assertEq(roundId, uint80(timestamp));
+    vm.assertEq(answer, 1e8);
+    vm.assertEq(startedAt, timestamp);
+    vm.assertEq(updatedAt, timestamp);
+    vm.assertEq(answeredInRound, uint80(timestamp));
 
     // Cap restricts only price growth
     chainlinkAggregator.setLatestAnswer(1.05e8);
     vm.assertEq(stableCapo.getPriceCap(), 1.04e8);
     vm.assertEq(stableCapo.latestAnswer(), 1.04e8);
     vm.assertEq(stableCapo.isCapped(), true);
+    timestamp = vm.getBlockTimestamp();
+    (roundId, answer, startedAt, updatedAt, answeredInRound) = stableCapo.latestRoundData();
+    vm.assertEq(roundId, uint80(timestamp));
+    vm.assertEq(answer, 1.04e8);
+    vm.assertEq(startedAt, timestamp);
+    vm.assertEq(updatedAt, timestamp);
+    vm.assertEq(answeredInRound, uint80(timestamp));
 
     chainlinkAggregator.setLatestAnswer(0);
     vm.assertEq(stableCapo.getPriceCap(), 1.04e8);
     vm.assertEq(stableCapo.latestAnswer(), 0);
     vm.assertEq(stableCapo.isCapped(), false);
+    timestamp = vm.getBlockTimestamp();
+    (roundId, answer, startedAt, updatedAt, answeredInRound) = stableCapo.latestRoundData();
+    vm.assertEq(roundId, uint80(timestamp));
+    vm.assertEq(answer, 0);
+    vm.assertEq(startedAt, timestamp);
+    vm.assertEq(updatedAt, timestamp);
+    vm.assertEq(answeredInRound, uint80(timestamp));
 
     // In case price somehow become negative
     chainlinkAggregator.setLatestAnswer(-1);
     vm.assertEq(stableCapo.getPriceCap(), 1.04e8);
     vm.assertEq(stableCapo.latestAnswer(), 0);
     vm.assertEq(stableCapo.isCapped(), false);
+    timestamp = vm.getBlockTimestamp();
+    (roundId, answer, startedAt, updatedAt, answeredInRound) = stableCapo.latestRoundData();
+    vm.assertEq(roundId, uint80(timestamp));
+    vm.assertEq(answer, 0);
+    vm.assertEq(startedAt, timestamp);
+    vm.assertEq(updatedAt, timestamp);
+    vm.assertEq(answeredInRound, uint80(timestamp));
   }
 
   function test_manager() public {
