@@ -5,17 +5,18 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {MegaEthScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {AaveV3MegaEth} from 'aave-address-book/AaveV3MegaEth.sol';
 
+import {OneUSDFixedAdapter} from '../src/contracts/misc-adapters/OneUSDFixedAdapter.sol';
 import {CLRatePriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
 import {PriceCapAdapterStable, IPriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCapAdapter.sol';
 
-library CapAdaptersCodeMegaETH {
+library CapAdaptersCodeMegaEth {
   address public constant BTC_USD_PRICE_FEED = 0xc6E3007B597f6F5a6330d43053D1EF73cCbbE721;
   address public constant ETH_USD_PRICE_FEED = 0xC3E01CC87A99A48081282F6566E1286fccC80d36;
   address public constant USDT_USD_PRICE_FEED = 0x0683E2424d1088C70f86B2cB788eAA8cf7a82AF6;
-  address public constant LBTC_BTC_Exchange_Rate = 0x132ACc50CF438733c64210e6FE50764E9d25E01f;
   address public constant wstETH_stETH_Exchange_Rate = 0xe020C0Abc50E6581A95cb79Ff1021728C9Ec0640;
   address public constant rsETH_ETH_Exchange_Rate = 0x1de97D40C58AA167b7eaEB922f9801bcd0B12781;
+  address public constant ezETH_ETH_Exchange_Rate = 0x6d924215a8A8e48651F774312b7bA549c1E09df9;
 
   function USDT0AdapterCode() internal pure returns (bytes memory) {
     return
@@ -32,28 +33,11 @@ library CapAdaptersCodeMegaETH {
       );
   }
 
-  function LBTCAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(CLRatePriceCapAdapter).creationCode,
-        abi.encode(
-          IPriceCapAdapter.CapAdapterParams({
-            aclManager: AaveV3MegaEth.ACL_MANAGER,
-            baseAggregatorAddress: BTC_USD_PRICE_FEED,
-            ratioProviderAddress: LBTC_BTC_Exchange_Rate,
-            pairDescription: 'Capped LBTC / BTC / USD',
-            minimumSnapshotDelay: 0 days,
-            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 0,
-              snapshotTimestamp: 0,
-              maxYearlyRatioGrowthPercent: 0
-            })
-          })
-        )
-      );
+  function oneUSDFixedAdapterCode() internal pure returns (bytes memory) {
+    return abi.encodePacked(type(OneUSDFixedAdapter).creationCode);
   }
 
-  function wstETHAdapterCode() internal pure returns (bytes memory) {
+  function wstEthAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
         type(CLRatePriceCapAdapter).creationCode,
@@ -63,18 +47,18 @@ library CapAdaptersCodeMegaETH {
             baseAggregatorAddress: ETH_USD_PRICE_FEED,
             ratioProviderAddress: wstETH_stETH_Exchange_Rate,
             pairDescription: 'Capped wstETH / stETH(ETH) / USD',
-            minimumSnapshotDelay: 0 days,
+            minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 0,
-              snapshotTimestamp: 0,
-              maxYearlyRatioGrowthPercent: 0
+              snapshotRatio: 1_224765524214769828,
+              snapshotTimestamp: 1768797011, // 19 Jan 2026 (Block: 6000000)
+              maxYearlyRatioGrowthPercent: 9_68
             })
           })
         )
       );
   }
 
-  function rsETHAdapterCode() internal pure returns (bytes memory) {
+  function wrsEthAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
         type(CLRatePriceCapAdapter).creationCode,
@@ -83,12 +67,33 @@ library CapAdaptersCodeMegaETH {
             aclManager: AaveV3MegaEth.ACL_MANAGER,
             baseAggregatorAddress: ETH_USD_PRICE_FEED,
             ratioProviderAddress: rsETH_ETH_Exchange_Rate,
-            pairDescription: 'Capped rsETH / ETH / USD',
-            minimumSnapshotDelay: 0 days,
+            pairDescription: 'Capped wrsETH / ETH / USD',
+            minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 0,
-              snapshotTimestamp: 0,
-              maxYearlyRatioGrowthPercent: 0
+              snapshotRatio: 1_062963262677405278,
+              snapshotTimestamp: 1768797011, // 19 Jan 2026 (Block: 6000000)
+              maxYearlyRatioGrowthPercent: 6_67
+            })
+          })
+        )
+      );
+  }
+
+  function ezEthAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLRatePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3MegaEth.ACL_MANAGER,
+            baseAggregatorAddress: ETH_USD_PRICE_FEED,
+            ratioProviderAddress: ezETH_ETH_Exchange_Rate,
+            pairDescription: 'Capped ezETH / ETH / USD',
+            minimumSnapshotDelay: 14 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_069243893690457003,
+              snapshotTimestamp: 1768197011, // 12 Jan 2026 (Block: 5400000)
+              maxYearlyRatioGrowthPercent: 10_89
             })
           })
         )
@@ -96,24 +101,32 @@ library CapAdaptersCodeMegaETH {
   }
 }
 
-contract DeployUSDT0MegaETH is MegaEthScript {
+contract DeployUSDT0MegaEth is MegaEthScript {
   function run() external broadcast {
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeMegaETH.USDT0AdapterCode());
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeMegaEth.USDT0AdapterCode());
   }
 }
 
-contract DeployLBTCMegaETH is MegaEthScript {
+contract DeployOneUSDFixedAdapterMegaEth is MegaEthScript {
   function run() external broadcast {
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeMegaETH.LBTCAdapterCode());
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeMegaEth.oneUSDFixedAdapterCode());
   }
 }
-contract DeployWstETHMegaETH is MegaEthScript {
+
+contract DeployWstEthMegaEth is MegaEthScript {
   function run() external broadcast {
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeMegaETH.wstETHAdapterCode());
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeMegaEth.wstEthAdapterCode());
   }
 }
-contract DeployRsETHMegaETH is MegaEthScript {
+
+contract DeployWrsEthMegaEth is MegaEthScript {
   function run() external broadcast {
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeMegaETH.rsETHAdapterCode());
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeMegaEth.wrsEthAdapterCode());
+  }
+}
+
+contract DeployEzEthMegaEth is MegaEthScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeMegaEth.ezEthAdapterCode());
   }
 }

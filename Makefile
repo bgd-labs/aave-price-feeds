@@ -127,6 +127,12 @@ deploy-susde-mantle :; forge script scripts/DeployMantle.s.sol:DeploySUSDeMantle
 deploy-syrupusdt-mantle :; forge script scripts/DeployMantle.s.sol:DeploySyrupUSDTMantle --rpc-url mantle $(common-flags)
 deploy-wrseth-mantle :; forge script scripts/DeployMantle.s.sol:DeployWrsETHMantle --rpc-url mantle $(common-flags)
 
+deploy-usdt-megaeth :; forge script scripts/DeployMegaEth.s.sol:DeployUSDT0MegaEth --rpc-url megaeth $(common-flags)
+deploy-one-usd-megaeth :; forge script scripts/DeployMegaEth.s.sol:DeployOneUSDFixedAdapterMegaEth --rpc-url megaeth $(common-flags)
+deploy-wstEth-megaeth :; forge script scripts/DeployMegaEth.s.sol:DeployWstEthMegaEth --rpc-url megaeth $(common-flags)
+deploy-wrsEth-megaeth :; forge script scripts/DeployMegaEth.s.sol:DeployWrsEthMegaEth --rpc-url megaeth $(common-flags)
+deploy-ezEth-megaeth :; forge script scripts/DeployMegaEth.s.sol:DeployEzEthMegaEth --rpc-url megaeth $(common-flags)
+
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :
