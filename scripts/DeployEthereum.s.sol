@@ -65,6 +65,8 @@ library CapAdaptersCodeEthereum {
   address public constant PT_USDe_27_NOV_2025 = 0x62C6E813b9589C3631Ba0Cdb013acdB8544038B7;
   address public constant PT_sUSDe_05_FEB_2026 = 0xE8483517077afa11A9B07f849cee2552f040d7b2;
   address public constant PT_USDe_05_FEB_2026 = 0x1F84a51296691320478c98b8d77f2Bbd17D34350;
+  address public constant PT_sUSDe_07_MAY_2026 = 0x3de0ff76E8b528C092d47b9DaC775931cef80F49;
+  address public constant PT_USDe_07_MAY_2026 = 0xAeBf0Bb9f57E89260d57f31AF34eB58657d96Ce0;
   address public constant PT_srUSDe_02_APR_2026 = 0x9Bf45ab47747F4B4dD09B3C2c73953484b4eB375;
   address public constant stETH = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84;
   address public constant rETH = 0xae78736Cd615f374D3085123A210448E74Fc6393;
@@ -784,6 +786,40 @@ library CapAdaptersCodeEthereum {
       );
   }
 
+  function ptUSDeMay2026AdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PendlePriceCapAdapter).creationCode,
+        abi.encode(
+          IPendlePriceCapAdapter.PendlePriceCapAdapterParams({
+            assetToUsdAggregator: AaveV3EthereumAssets.USDT_ORACLE,
+            pendlePrincipalToken: PT_USDe_07_MAY_2026,
+            maxDiscountRatePerYear: uint256(25.69e16).toUint64(),
+            discountRatePerYear: uint256(4.95e16).toUint64(),
+            aclManager: address(AaveV3Ethereum.ACL_MANAGER),
+            description: 'PT Capped USDe USDT/USD linear discount 07MAY2026'
+          })
+        )
+      );
+  }
+
+  function ptSUSDeMay2026AdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PendlePriceCapAdapter).creationCode,
+        abi.encode(
+          IPendlePriceCapAdapter.PendlePriceCapAdapterParams({
+            assetToUsdAggregator: AaveV3EthereumAssets.USDT_ORACLE,
+            pendlePrincipalToken: PT_sUSDe_07_MAY_2026,
+            maxDiscountRatePerYear: uint256(25.67e16).toUint64(),
+            discountRatePerYear: uint256(5.02e16).toUint64(),
+            aclManager: address(AaveV3Ethereum.ACL_MANAGER),
+            description: 'PT Capped sUSDe USDT/USD linear discount 07MAY2026'
+          })
+        )
+      );
+  }
+
   function discountedMKRSKYAdapterCode() internal pure returns (bytes memory) {
     return type(DiscountedMKRSKYAdapter).creationCode;
   }
@@ -1018,6 +1054,18 @@ contract DeployPtUSDe05FEB2026Ethereum is EthereumScript {
 contract DeployPtSUSDe05FEB2026Ethereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptSUSDeFebruary2026AdapterCode());
+  }
+}
+
+contract DeployPtUSDe07May2026Ethereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptUSDeMay2026AdapterCode());
+  }
+}
+
+contract DeployPtSUSDe07May2026Ethereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptSUSDeMay2026AdapterCode());
   }
 }
 
