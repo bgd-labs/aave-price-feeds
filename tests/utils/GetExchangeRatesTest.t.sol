@@ -48,6 +48,7 @@ import {CapAdaptersCodeLinea} from '../../scripts/DeployLinea.s.sol';
 import {CapAdaptersCodeSonic} from '../../scripts/DeploySonic.s.sol';
 import {CapAdaptersCodePlasma} from '../../scripts/DeployPlasma.s.sol';
 import {CapAdaptersCodeInk} from '../../scripts/DeployInk.s.sol';
+import {CapAdaptersCodeMegaEth} from '../../scripts/DeployMegaEth.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
@@ -416,6 +417,23 @@ contract ExchangeRatesInk is Test {
     int256 ezETHRate = IChainlinkAggregator(CapAdaptersCodeInk.EzETH_ETH_PRICE_FEED).latestAnswer();
 
     console.log('wrstETHRate', wrstETHRate);
+    console.log('ezETHRate', ezETHRate);
+    console.log(block.timestamp);
+  }
+}
+
+contract ExchangeRatesMegaEth is Test {
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl('megaeth'), 5400000); // Jan 12 2026
+  }
+
+  function test_exchangeRate() public view {
+    int256 rsETHRate = IChainlinkAggregator(CapAdaptersCodeMegaEth.rsETH_ETH_Exchange_Rate).latestAnswer();
+    int256 ezETHRate = IChainlinkAggregator(CapAdaptersCodeMegaEth.ezETH_ETH_Exchange_Rate).latestAnswer();
+    int256 wstETHRate = IChainlinkAggregator(CapAdaptersCodeMegaEth.wstETH_stETH_Exchange_Rate).latestAnswer();
+
+    console.log('rsETHRate', rsETHRate);
+    console.log('wstETHRate', wstETHRate);
     console.log('ezETHRate', ezETHRate);
     console.log(block.timestamp);
   }
