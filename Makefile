@@ -100,6 +100,7 @@ deploy-wrseth-ink :; forge script scripts/DeployInk.s.sol:DeployWRsETHInk --rpc-
 deploy-wsteth-ink :; forge script scripts/DeployInk.s.sol:DeployWStETHInk --rpc-url ink $(common-flags)
 deploy-weeth-ink :; forge script scripts/DeployInk.s.sol:DeployWeETHInk --rpc-url ink $(common-flags)
 deploy-ezeth-ink :; forge script scripts/DeployInk.s.sol:DeployEzETHInk --rpc-url ink $(common-flags)
+deploy-susde-ink :; forge script scripts/DeployInk.s.sol:DeploySUSDeInk --rpc-url ink $(common-flags)
 
 deploy-susde-plasma :; forge script scripts/DeployPlasma.s.sol:DeploySUSDePlasma --rpc-url plasma $(common-flags)
 deploy-wsteth-plasma :; forge script scripts/DeployPlasma.s.sol:DeployWstETHPlasma --rpc-url plasma $(common-flags)
