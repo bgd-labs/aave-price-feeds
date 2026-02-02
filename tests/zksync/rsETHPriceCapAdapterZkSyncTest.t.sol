@@ -4,14 +4,14 @@ pragma solidity ^0.8.0;
 import '../BaseTest.sol';
 
 import {CLRatePriceCapAdapter} from '../../src/contracts/CLRatePriceCapAdapter.sol';
-import {CapAdaptersCodeZkSync} from '../../scripts/DeployZkSync.s.sol';
+import {CapAdaptersCodeZkSync, AaveV3ZkSyncAssets, AaveV3ZkSync} from '../../scripts/DeployZkSync.s.sol';
 
 contract rsETHPriceCapAdapterZkSyncTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeZkSync.rsETHAdapterParams(),
-      5,
-      ForkParams({network: 'zksync', blockNumber: 58320360}),
+      14,
+      ForkParams({network: 'zksync', blockNumber: 60120360}),
       'rsETH_ZkSync'
     )
   {}

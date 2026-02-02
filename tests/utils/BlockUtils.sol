@@ -53,7 +53,7 @@ library BlockUtils {
     }
 
     if (keccak256(bytes(network)) == keccak256(bytes('zksync'))) {
-      return 60_000;
+      return 80_000;
     }
 
     if (keccak256(bytes(network)) == keccak256(bytes('linea'))) {
