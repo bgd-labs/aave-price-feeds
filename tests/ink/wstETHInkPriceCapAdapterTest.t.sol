@@ -8,8 +8,8 @@ contract wstETHInkPriceCapAdapterTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodeInk.wstETHAdapterCode(),
-      1,
-      ForkParams({network: 'ink', blockNumber: 29965203}),
+      14,
+      ForkParams({network: 'ink', blockNumber: 31174803}),
       'wstETH_Ink'
     )
   {}

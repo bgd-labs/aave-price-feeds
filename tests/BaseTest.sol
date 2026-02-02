@@ -302,13 +302,15 @@ abstract contract BaseTest is Test {
 
   function _mockRatioProviderRate(uint256 amount) internal virtual {}
 
-  /// @dev verifies that if growth in a year is greater than zero, growth per second must be greater than zero
+  /// @dev verifies that if growth in a year is greater than zero, growth per second scaled must be greater than zero
   /// and growth in a year won't be more than 100%
   function _validateGrowth(IPriceCapAdapter adapter) private view {
     uint256 maxYearlyGrowthRatePercent = adapter.getMaxYearlyGrowthRatePercent();
 
     if (maxYearlyGrowthRatePercent > 0) {
-      assertGt(adapter.getMaxRatioGrowthPerSecond(), 0);
+      // @dev For small values of the initial `snapshotRatio` and `maxYearlyRatioGrowthPercent` it can take a zero value
+      assertGe(adapter.getMaxRatioGrowthPerSecond(), 0);
+      // @dev In these cases it is recommended to look at `getMaxRatioGrowthPerSecondScaled()`
       assertGt(adapter.getMaxRatioGrowthPerSecondScaled(), 0);
     }
 
