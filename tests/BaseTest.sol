@@ -289,8 +289,15 @@ abstract contract BaseTest is Test {
   function _getMaxRatio(IPriceCapAdapter adapter) private view returns (uint256) {
     uint256 snapshotRatio = adapter.getSnapshotRatio();
     uint256 snapshotTimestamp = adapter.getSnapshotTimestamp();
-    uint256 maxGrowthPerSecond = adapter.getMaxRatioGrowthPerSecond();
-    return (snapshotRatio + maxGrowthPerSecond * (block.timestamp - snapshotTimestamp));
+    uint256 maxGrowthPerSecondScaled = adapter.getMaxRatioGrowthPerSecondScaled();
+    uint256 SCALING_FACTOR = adapter.SCALING_FACTOR();
+
+    return
+      uint256(
+        snapshotRatio +
+          (maxGrowthPerSecondScaled * (block.timestamp - snapshotTimestamp)) /
+          SCALING_FACTOR
+      );
   }
 
   function _mockRatioProviderRate(uint256 amount) internal virtual {}
