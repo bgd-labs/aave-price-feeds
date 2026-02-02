@@ -8,8 +8,8 @@ contract wstETHPriceCapAdapterPlasmaTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodePlasma.wstETHAdapterCode(),
-      1,
-      ForkParams({network: 'plasma', blockNumber: 3527800}),
+      14,
+      ForkParams({network: 'plasma', blockNumber: 6119800}),
       'wstETH_plasma'
     )
   {}

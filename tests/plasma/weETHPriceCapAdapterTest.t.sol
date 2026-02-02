@@ -8,8 +8,8 @@ contract weETHPriceCapAdapterPlasmaTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodePlasma.weETHAdapterCode(),
-      30,
-      ForkParams({network: 'plasma', blockNumber: 1101555}),
+      14,
+      ForkParams({network: 'plasma', blockNumber: 3693500}),
       'weETH_plasma'
     )
   {}
