@@ -1,6 +1,6 @@
 # Capo Report
 
-| Capped sUSDe / USDT / USD | Capped USDT/USD | Diff | Date | 14-day growth in yearly % |
+| Capped wrsETH / ETH / USD | ETH / USD | Diff | Date | 14-day growth in yearly % |
 | --- | --- | --- | --- | --- |
 
 
@@ -9,7 +9,7 @@
 
 | Max Yearly % | Max Day-to-day yearly % | Max 14-day yearly % | 
 | --- | --- | --- |
-| 15.19% | 4.44% | 0.00% | 
+| 6.67% | 3.50% | 0.00% | 
 
 
 * Max day-to-day yearly % indicates the maximum growth between two emissions as an annualized percentage. 
