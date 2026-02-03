@@ -151,9 +151,9 @@ contract ExchangeRatesAvax is Test {
   }
 
   function test_getExchangeRate() public view {
-    uint256 sAvaxRate = ISAvax(AaveV3AvalancheAssets.sAVAX_UNDERLYING).getPooledAvaxByShares(
-      10 ** 18
-    );
+    // uint256 sAvaxRate = ISAvax(AaveV3AvalancheAssets.sAVAX_UNDERLYING).getPooledAvaxByShares(
+    //   10 ** 18
+    // );
 
     int256 wrsETHRate = IChainlinkAggregator(ChainlinkAvalanche.WRSETH_ETH_Exchange_Rate)
       .latestAnswer();

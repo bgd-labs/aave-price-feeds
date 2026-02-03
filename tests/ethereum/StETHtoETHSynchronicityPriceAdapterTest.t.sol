@@ -16,7 +16,8 @@ contract StETHtoETHSynchronicityPriceAdapterTest is Test {
     );
 
     int256 price = adapter.latestAnswer();
-
+    
+    // forge-lint: disable-next-line(unsafe-typecast)
     assertEq(uint256(price), 1000000000000000000);
   }
 }

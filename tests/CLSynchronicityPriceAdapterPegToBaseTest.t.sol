@@ -28,6 +28,7 @@ contract CLSynchronicityPriceAdapterPegToBaseTest is Test {
     int256 price = adapter.latestAnswer();
 
     assertApproxEqAbs(
+      // forge-lint: disable-next-line(unsafe-typecast)
       uint256(price),
       129500000000, // value calculated manually for selected block
       100000000
@@ -45,6 +46,7 @@ contract CLSynchronicityPriceAdapterPegToBaseTest is Test {
     int256 price = adapter.latestAnswer();
 
     assertApproxEqAbs(
+      // forge-lint: disable-next-line(unsafe-typecast)
       uint256(price),
       1923700000000, // value calculated manually for selected block
       10 ** 8
@@ -66,6 +68,7 @@ contract CLSynchronicityPriceAdapterPegToBaseTest is Test {
     int256 price = adapter.latestAnswer();
 
     assertApproxEqAbs(
+      // forge-lint: disable-next-line(unsafe-typecast)
       uint256(price),
       162417252778, // value calculated manually for selected block (1003504805547725400 & 161850000000)
       10 ** 8
@@ -87,6 +90,7 @@ contract CLSynchronicityPriceAdapterPegToBaseTest is Test {
     int256 price = adapter.latestAnswer();
 
     assertApproxEqAbs(
+      // forge-lint: disable-next-line(unsafe-typecast)
       uint256(price),
       252715331, // value calculated manually for selected block (1003504805547725400 & 161850000000)
       10 ** 8
@@ -176,6 +180,7 @@ contract CLSynchronicityPriceAdapterPegToBaseTestPolygon is Test {
 
     int256 price = adapter.latestAnswer();
 
+    // forge-lint: disable-next-line(unsafe-typecast)
     assertApproxEqAbs(uint256(price), 224312645700, 10 ** 8);
   }
 }
@@ -196,6 +201,7 @@ contract CLrETHSynchronicityPriceAdapterTestArbitrum is Test {
     int256 price = adapter.latestAnswer();
 
     assertApproxEqAbs(
+      // forge-lint: disable-next-line(unsafe-typecast)
       uint256(price),
       198221827481, // value calculated manually for selected block, there is a diff with DEXes at the moment
       10000
@@ -219,6 +225,7 @@ contract CLrETHSynchronicityPriceAdapterTestOptimism is Test {
     int256 price = adapter.latestAnswer();
 
     assertApproxEqAbs(
+      // forge-lint: disable-next-line(unsafe-typecast)
       uint256(price),
       202660356782, // value calculated manually for selected block, there is a diff with DEXes at the moment
       10000
@@ -241,6 +248,7 @@ contract CLrETHSynchronicityPriceAdapterTestBase is Test {
 
     int256 price = adapter.latestAnswer();
 
+    // forge-lint: disable-next-line(unsafe-typecast)
     assertApproxEqAbs(uint256(price), 208883070000, 10000);
   }
 
@@ -254,6 +262,7 @@ contract CLrETHSynchronicityPriceAdapterTestBase is Test {
 
     int256 price = adapter.latestAnswer();
 
+    // forge-lint: disable-next-line(unsafe-typecast)
     assertApproxEqAbs(uint256(price), 192079109243, 10000);
   }
 }

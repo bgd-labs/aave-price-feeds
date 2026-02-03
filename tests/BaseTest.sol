@@ -282,7 +282,9 @@ abstract contract BaseTest is Test {
     uint256 previousTimestamp
   ) private pure returns (int256) {
     return
+      // forge-lint: disable-next-line(unsafe-typecast)
       (((ratio - previousRatio) * int256(SECONDS_PER_YEAR)) * 100_00) /
+      // forge-lint: disable-next-line(unsafe-typecast)
       (previousRatio * int256(currentTimestamp - previousTimestamp));
   }
 
