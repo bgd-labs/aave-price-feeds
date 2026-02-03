@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol';
-import {IPot} from 'cl-synchronicity-price-adapter/interfaces/IPot.sol';
+import {IPot} from '../../interfaces/IPot.sol';
 
 /**
  * @title sDAIMainnetPriceCapAdapter

@@ -11,7 +11,7 @@ import {IPriceCapAdapterStable} from '../../src/interfaces/IPriceCapAdapterStabl
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {ChainlinkEthereum} from 'aave-address-book/ChainlinkEthereum.sol';
 
-import {CLSynchronicityPriceAdapterPegToBase} from 'cl-synchronicity-price-adapter/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
+import {CLSynchronicityPriceAdapterPegToBase} from '../../src/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
 
 library CAPO_SVR {
   // https://etherscan.io/address/0x87625393534d5C102cADB66D37201dF24cc26d4C

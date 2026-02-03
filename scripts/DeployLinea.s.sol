@@ -152,12 +152,7 @@ library CapAdaptersCodeLinea {
     return
       abi.encodePacked(
         type(FixedPriceAdapter).creationCode,
-        abi.encode(
-          address(AaveV3Linea.ACL_MANAGER),
-          8,
-          int256(1 * 1e8),
-          'Fixed mUSD/USD'
-        )
+        abi.encode(address(AaveV3Linea.ACL_MANAGER), 8, int256(1 * 1e8), 'Fixed mUSD/USD')
       );
   }
 }

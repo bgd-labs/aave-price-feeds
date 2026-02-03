@@ -2,9 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {IBasicFeed} from './IBasicFeed.sol';
-import {
-  IChainlinkAggregator
-} from 'cl-synchronicity-price-adapter/interfaces/IChainlinkAggregator.sol';
+import {IChainlinkAggregator} from './IChainlinkAggregator.sol';
 
 /**
  * @title IDiscountedMKRSKYAdapter
