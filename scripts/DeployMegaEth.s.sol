@@ -12,8 +12,8 @@ import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCa
 
 library CapAdaptersCodeMegaEth {
   address public constant BTC_USD_PRICE_FEED = 0xc6E3007B597f6F5a6330d43053D1EF73cCbbE721;
-  address public constant ETH_USD_PRICE_FEED = 0xC3E01CC87A99A48081282F6566E1286fccC80d36;
-  address public constant USDT_USD_PRICE_FEED = 0x0683E2424d1088C70f86B2cB788eAA8cf7a82AF6;
+  address public constant ETH_USD_PRICE_FEED = 0xcA4e254D95637DE95E2a2F79244b03380d697feD;
+  address public constant USDT_USD_PRICE_FEED = 0xA533f4164d8d9F8C3995FC83F2f022a622d1765D;
   address public constant wstETH_stETH_Exchange_Rate = 0xe020C0Abc50E6581A95cb79Ff1021728C9Ec0640;
   address public constant rsETH_ETH_Exchange_Rate = 0x1de97D40C58AA167b7eaEB922f9801bcd0B12781;
   address public constant ezETH_ETH_Exchange_Rate = 0x6d924215a8A8e48651F774312b7bA549c1E09df9;

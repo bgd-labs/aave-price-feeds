@@ -8,8 +8,8 @@ contract wstETHPriceCapAdapterMegaEthTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodeMegaEth.wstEthAdapterCode(),
-      8,
-      ForkParams({network: 'megaeth', blockNumber: 6702723}),
+      0,
+      ForkParams({network: 'megaeth', blockNumber: 7304587}),
       'wstETH_megaEth'
     )
   {}

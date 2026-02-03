@@ -5,12 +5,12 @@ import '../BaseStableTest.sol';
 import {PriceCapAdapterStable} from '../../src/contracts/PriceCapAdapterStable.sol';
 import {CapAdaptersCodeMegaEth} from '../../scripts/DeployMegaEth.s.sol';
 
-contract USDTMegaEthPriceCapAdapterTest is BaseStableTest {
+contract USDTPriceCapAdapterMegaEthTest is BaseStableTest {
   constructor()
     BaseStableTest(
       CapAdaptersCodeMegaEth.USDT0AdapterCode(),
-      10,
-      ForkParams({network: 'megaeth', blockNumber: 6702723})
+      0,
+      ForkParams({network: 'megaeth', blockNumber: 7304587})
     )
   {}
 }
