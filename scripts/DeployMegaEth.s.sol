@@ -68,7 +68,7 @@ library CapAdaptersCodeMegaEth {
             baseAggregatorAddress: ETH_USD_PRICE_FEED,
             ratioProviderAddress: rsETH_ETH_Exchange_Rate,
             pairDescription: 'Capped wrsETH / ETH / USD',
-            minimumSnapshotDelay: 7 days,
+            minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1_062963262677405278,
               snapshotTimestamp: 1768797011, // 19 Jan 2026 (Block: 6000000)
