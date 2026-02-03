@@ -2,12 +2,18 @@
 # (-include to ignore error if it does not exist)
 -include .env
 
+# Setup
+install:; forge install && npm install
+
 # deps
 update:; forge update
 
 # Build & test
 build  :; forge build --sizes
-test   :; forge test -vvv
+test   :; FOUNDRY_PROFILE=default forge test -vvv
+## Zksync 
+build-zksync:; forge build --zksync --sizes
+test-zksync   :; FOUNDRY_PROFILE=zksync forge test --zksync -vvv
 
 # Common
 common-flags := --ledger --mnemonic-indexes $(MNEMONIC_INDEX) --sender $(LEDGER_SENDER) --verify -vvvv --broadcast --slow
