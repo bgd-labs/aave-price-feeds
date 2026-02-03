@@ -2,7 +2,7 @@
   "lib/aave-address-book": {
     "branch": {
       "name": "main",
-      "rev": "43878a8c46d08de9a70a0f9d6c5659e90b151b72"
+      "rev": "bb421a3ddac99feb3d42522f58a04643b8167713"
     }
   },
   "lib/aave-helpers": {
