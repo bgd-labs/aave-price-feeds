@@ -9,7 +9,7 @@ contract wstETHInkPriceCapAdapterTest is CLAdapterBaseTest {
     CLAdapterBaseTest(
       CapAdaptersCodeInk.wstETHAdapterCode(),
       14,
-      ForkParams({network: 'ink', blockNumber: 31174803}),
+      ForkParams({network: 'ink', blockNumber: 32384403}),
       'wstETH_Ink'
     )
   {}
