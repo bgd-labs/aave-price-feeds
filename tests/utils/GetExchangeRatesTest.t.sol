@@ -43,7 +43,6 @@ import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrum.s.sol';
 import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 import {CapAdaptersCodeScroll} from '../../scripts/DeployScroll.s.sol';
 import {CapAdaptersCodeBNB} from '../../scripts/DeployBnb.s.sol';
-import {CapAdaptersCodeZkSync} from '../../scripts/DeployZkSync.s.sol';
 import {CapAdaptersCodeLinea} from '../../scripts/DeployLinea.s.sol';
 import {CapAdaptersCodeSonic} from '../../scripts/DeploySonic.s.sol';
 import {CapAdaptersCodePlasma} from '../../scripts/DeployPlasma.s.sol';
@@ -317,32 +316,6 @@ contract ExchangeRatesBNB is Test {
     console.log('BNB');
     console.log('wstEthRate', wstEthRate);
     console.log('bnbxRate', bnbxRate);
-    console.log(block.timestamp);
-  }
-}
-
-contract ExchangeRatesZKSync is Test {
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('zksync'), 57550360); // Mar-12-2025
-  }
-
-  function test_getExchangeRate() public view {
-    uint256 weETHRate = uint256(
-      IChainlinkAggregator(CapAdaptersCodeZkSync.weETH_eETH_AGGREGATOR).latestAnswer()
-    );
-
-    uint256 sUSDeRate = uint256(
-      IChainlinkAggregator(CapAdaptersCodeZkSync.sUSDe_USDe_AGGREGATOR).latestAnswer()
-    );
-
-    uint256 rsETHRate = uint256(
-      IChainlinkAggregator(CapAdaptersCodeZkSync.rsETH_ETH_AGGREGATOR).latestAnswer()
-    );
-
-    console.log('ZkSync');
-    console.log('weETHRate', weETHRate);
-    console.log('sUSDeRate', sUSDeRate);
-    console.log('rsETHRate', rsETHRate);
     console.log(block.timestamp);
   }
 }

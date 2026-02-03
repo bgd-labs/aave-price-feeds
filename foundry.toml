@@ -1,11 +1,10 @@
 [profile.default]
 src = 'src'
-test = 'tests'
+test = 'tests/'
 script = 'scripts'
 out = 'out'
 libs = ['lib']
-remappings = [
-]
+remappings = []
 solc = '0.8.27'
 ffi = true
 fs_permissions = [{ access = "write", path = "./reports" }]
@@ -14,7 +13,7 @@ optimizer = true
 
 [profile.zksync]
 src = 'zksync'
-test = 'tests/zksync'
+test = 'zksync/tests'
 libs = ['lib']
 solc = '0.8.27'
 optimizer = true
@@ -51,7 +50,7 @@ base = "${RPC_BASE}"
 zkevm = "${RPC_ZKEVM}"
 gnosis = "${RPC_GNOSIS}"
 bnb = "${RPC_BNB}"
-scroll="${RPC_SCROLL}"
+scroll = "${RPC_SCROLL}"
 zksync = "${RPC_ZKSYNC}"
 linea = "${RPC_LINEA}"
 sonic = "${RPC_SONIC}"
@@ -61,24 +60,24 @@ plasma = "${RPC_PLASMA}"
 mantle = "${RPC_MANTLE}"
 
 [etherscan]
-mainnet = { key="${ETHERSCAN_API_KEY_MAINNET}", chainId=1 }
-optimism = { key="${ETHERSCAN_API_KEY_OPTIMISM}", chainId=10 }
-avalanche = { key="${ETHERSCAN_API_KEY_AVALANCHE}", chainId=43114 }
-polygon = { key="${ETHERSCAN_API_KEY_POLYGON}", chainId=137 }
-arbitrum = { key="${ETHERSCAN_API_KEY_ARBITRUM}", chainId=42161 }
-fantom = { key="${ETHERSCAN_API_KEY_FANTOM}", chainId=250 }
-metis = { key="any", chainId=1088, url='https://andromeda-explorer.metis.io/' }
-base = { key="${ETHERSCAN_API_KEY_BASE}", chainId=8453 }
-zkevm = { key="${ETHERSCAN_API_KEY_ZKEVM}", chainId=1101 }
-gnosis = { key="${ETHERSCAN_API_KEY_GNOSIS}", chainId=100 }
-bnb = { key="${ETHERSCAN_API_KEY_BNB}", chainId=56,url='https://api.bscscan.com/api' }
-scroll = { key="${ETHERSCAN_API_KEY_SCROLL}", chainId=534352 }
-zksync = { key="${ETHERSCAN_API_KEY_ZKSYNC}", chain = 324 }
-linea = { key="${ETHERSCAN_API_KEY_LINEA}", chain = 59144 }
-sonic = { key="${ETHERSCAN_API_KEY_SONIC}", chain = 146 }
-soneium = { key="any", chainId=1868, url='https://soneium.blockscout.com/api' }
-ink = { key="any", chainId=57073, url='https://explorer.inkonchain.com/api' }
-plasma = { key="any", chainId=9745 }
-mantle = { key="${ETHERSCAN_API_KEY_MANTLE}", chainId=5000 }
+mainnet = { key = "${ETHERSCAN_API_KEY_MAINNET}", chainId = 1 }
+optimism = { key = "${ETHERSCAN_API_KEY_OPTIMISM}", chainId = 10 }
+avalanche = { key = "${ETHERSCAN_API_KEY_AVALANCHE}", chainId = 43114 }
+polygon = { key = "${ETHERSCAN_API_KEY_POLYGON}", chainId = 137 }
+arbitrum = { key = "${ETHERSCAN_API_KEY_ARBITRUM}", chainId = 42161 }
+fantom = { key = "${ETHERSCAN_API_KEY_FANTOM}", chainId = 250 }
+metis = { key = "any", chainId = 1088, url = 'https://andromeda-explorer.metis.io/' }
+base = { key = "${ETHERSCAN_API_KEY_BASE}", chainId = 8453 }
+zkevm = { key = "${ETHERSCAN_API_KEY_ZKEVM}", chainId = 1101 }
+gnosis = { key = "${ETHERSCAN_API_KEY_GNOSIS}", chainId = 100 }
+bnb = { key = "${ETHERSCAN_API_KEY_BNB}", chainId = 56, url = 'https://api.bscscan.com/api' }
+scroll = { key = "${ETHERSCAN_API_KEY_SCROLL}", chainId = 534352 }
+zksync = { key = "${ETHERSCAN_API_KEY_ZKSYNC}", chain = 324 }
+linea = { key = "${ETHERSCAN_API_KEY_LINEA}", chain = 59144 }
+sonic = { key = "${ETHERSCAN_API_KEY_SONIC}", chain = 146 }
+soneium = { key = "any", chainId = 1868, url = 'https://soneium.blockscout.com/api' }
+ink = { key = "any", chainId = 57073, url = 'https://explorer.inkonchain.com/api' }
+plasma = { key = "any", chainId = 9745 }
+mantle = { key = "${ETHERSCAN_API_KEY_MANTLE}", chainId = 5000 }
 
 # See more config options https://github.com/gakonst/foundry/tree/master/config

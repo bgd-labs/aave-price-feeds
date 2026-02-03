@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import '../BaseTest.sol';
+import '../../tests/BaseTest.sol';
 
 import {CLRatePriceCapAdapter} from '../../src/contracts/CLRatePriceCapAdapter.sol';
 import {CapAdaptersCodeZkSync} from '../../scripts/DeployZkSync.s.sol';
