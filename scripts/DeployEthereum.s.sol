@@ -243,8 +243,11 @@ library CapAdaptersCodeEthereum {
             pairDescription: 'Capped weETH / eETH(ETH) / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1034656878645040505,
-              snapshotTimestamp: 1711416299, // 26-03-2024
+              // snapshotRatio: 1034656878645040505,
+              // snapshotTimestamp: 1711416299, // 26-03-2024
+              // @dev Due to test fixes, we needed to update the snapshots. The snapshots used on live adapters are shown above.
+              snapshotRatio: 1085398877350667572,
+              snapshotTimestamp: 1767755099, // Jan-07-2026 (block: 24180000)
               maxYearlyRatioGrowthPercent: 8_75
             })
           })
@@ -366,28 +369,7 @@ library CapAdaptersCodeEthereum {
             aclManager: AaveV3Ethereum.ACL_MANAGER,
             assetToUsdAggregator: IChainlinkAggregator(DAI_PRICE_FEED),
             adapterDescription: 'Capped USDS <-> DAI / USD',
-            priceCap: int256(1.04 * 1e18)
-          })
-        )
-      );
-  }
-
-  function sUSDSAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(sUSDSPriceCapAdapter).creationCode,
-        abi.encode(
-          IPriceCapAdapter.CapAdapterParams({
-            aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: GovV3Helpers.predictDeterministicAddress(USDSAdapterCode()),
-            ratioProviderAddress: sUSDS,
-            pairDescription: 'Capped sUSDS / USDS <-> DAI / USD',
-            minimumSnapshotDelay: 4 days,
-            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1000000000000000000,
-              snapshotTimestamp: 1725455495,
-              maxYearlyRatioGrowthPercent: 15_00
-            })
+            priceCap: int256(1.04 * 1e8)
           })
         )
       );
@@ -525,8 +507,11 @@ library CapAdaptersCodeEthereum {
             pairDescription: 'Capped wstETH / stETH(ETH) / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_157209899495068171,
-              snapshotTimestamp: 1708004591, // Feb-15-2024
+              // snapshotRatio: 1_157209899495068171,
+              // snapshotTimestamp: 1708004591, // Feb-15-2024
+              // @dev Due to test fixes, we needed to update the snapshots. The snapshots used on live adapters are shown above.
+              snapshotRatio: 1223767905094668534,
+              snapshotTimestamp: 1767755099, // Jan-07-2026 (block: 24180000)
               maxYearlyRatioGrowthPercent: 9_68
             })
           })
@@ -929,12 +914,6 @@ contract DeploySUSDeEthereum is EthereumScript {
 contract DeployUSDSEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDSAdapterCode());
-  }
-}
-
-contract DeploysUSDSEthereum is EthereumScript {
-  function run() external broadcast {
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.sUSDSAdapterCode());
   }
 }
 

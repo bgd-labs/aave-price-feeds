@@ -10,8 +10,8 @@ contract wstETHPriceCapAdapterCoreTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeEthereum.wstETHAdapterCode(),
-      7,
-      ForkParams({network: 'mainnet', blockNumber: 22195655}),
+      30,
+      ForkParams({network: 'mainnet', blockNumber: 24231100}),
       'wstETH_Ethereum'
     )
   {}
