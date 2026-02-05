@@ -133,27 +133,25 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   }
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
-  function latestAnswer() external view override returns (int256) {
-    // get the current lst to underlying ratio
-    int256 currentRatio = getRatio();
-    // get the base price
-    int256 basePrice = BASE_TO_USD_AGGREGATOR.latestAnswer();
+  function latestAnswer() external view returns (int256) {
+    return _latestAnswer();
+  }
 
-    if (basePrice <= 0 || currentRatio <= 0) {
-      return 0;
-    }
-
-    // calculate the ratio based on snapshot ratio and max growth rate
-    int256 maxRatio = _getMaxRatio();
-
-    if (maxRatio < currentRatio) {
-      currentRatio = maxRatio;
-    }
-
-    // calculate the price of the underlying asset
-    int256 price = (basePrice * currentRatio) / int256(10 ** RATIO_DECIMALS);
-
-    return price;
+  /// @inheritdoc IPriceCapAdapter
+  function latestRoundData()
+    external
+    view
+    returns (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    )
+  {
+    uint256 timestamp = block.timestamp;
+    answer = _latestAnswer();
+    return (uint80(timestamp), answer, timestamp, timestamp, uint80(timestamp));
   }
 
   /**
@@ -220,5 +218,28 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
           (_maxRatioGrowthPerSecondScaled * (block.timestamp - _snapshotTimestamp)) /
           SCALING_FACTOR
       );
+  }
+
+  function _latestAnswer() internal view virtual returns (int256) {
+    // get the current lst to underlying ratio
+    int256 currentRatio = getRatio();
+    // get the base price
+    int256 basePrice = BASE_TO_USD_AGGREGATOR.latestAnswer();
+
+    if (basePrice <= 0 || currentRatio <= 0) {
+      return 0;
+    }
+
+    // calculate the ratio based on snapshot ratio and max growth rate
+    int256 maxRatio = _getMaxRatio();
+
+    if (maxRatio < currentRatio) {
+      currentRatio = maxRatio;
+    }
+
+    // calculate the price of the underlying asset
+    int256 price = (basePrice * currentRatio) / int256(10 ** RATIO_DECIMALS);
+
+    return price;
   }
 }

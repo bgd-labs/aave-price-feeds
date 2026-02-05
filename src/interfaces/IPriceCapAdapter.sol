@@ -151,6 +151,25 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
    */
   function isCapped() external view returns (bool);
 
+  /**
+   * @notice Calculates the answer from the latest round based on the aggregators.
+   * @return roundId
+   * @return answer
+   * @return startedAt
+   * @return updatedAt
+   * @return answeredInRound
+   */
+  function latestRoundData()
+    external
+    view
+    returns (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    );
+
   error ACLManagerIsZeroAddress();
   error WrongRatioDecimals();
   error SnapshotRatioIsZero();

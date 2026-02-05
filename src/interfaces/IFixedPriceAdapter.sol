@@ -52,6 +52,25 @@ interface IFixedPriceAdapter {
    */
   function latestAnswer() external view returns (int256);
 
+  /**
+   * @notice Returns the fixed hardcoded price of the feed at the specified round.
+   * @return roundId
+   * @return answer
+   * @return startedAt
+   * @return updatedAt
+   * @return answeredInRound
+   */
+  function latestRoundData()
+    external
+    view
+    returns (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    );
+
   error ACLManagerIsZeroAddress();
   error CallerIsNotPoolAdmin();
   error InvalidPrice();

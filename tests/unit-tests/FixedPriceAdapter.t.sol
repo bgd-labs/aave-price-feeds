@@ -30,6 +30,23 @@ contract FixedPriceAdapterTest is Test {
     assertEq(fixedPriceAdapter.price(), FIXED_PRICE);
   }
 
+  function test_latestRoundData() external view {
+    (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    ) = fixedPriceAdapter.latestRoundData();
+
+    uint256 timestamp = vm.getBlockTimestamp();
+    assertEq(roundId, uint80(timestamp));
+    assertEq(answer, FIXED_PRICE);
+    assertEq(startedAt, timestamp);
+    assertEq(updatedAt, timestamp);
+    assertEq(answeredInRound, uint80(timestamp));
+  }
+
   function test_decimals() external view {
     assertEq(fixedPriceAdapter.decimals(), DECIMALS);
     assertEq(fixedPriceAdapter.DECIMALS(), DECIMALS);

@@ -90,15 +90,24 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
   function latestAnswer() external view returns (int256) {
-    int256 currentAssetPrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
-    if (currentAssetPrice <= 0) {
-      return 0;
-    }
+    return _latestAnswer();
+  }
 
-    uint256 price = (uint256(currentAssetPrice) * (PERCENTAGE_FACTOR - getCurrentDiscount())) /
-      PERCENTAGE_FACTOR;
-
-    return int256(price);
+  /// @inheritdoc IPendlePriceCapAdapter
+  function latestRoundData()
+    external
+    view
+    returns (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    )
+  {
+    uint256 timestamp = block.timestamp;
+    answer = _latestAnswer();
+    return (uint80(timestamp), answer, timestamp, timestamp, uint80(timestamp));
   }
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
@@ -129,5 +138,17 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
     discountRatePerYear = discountRatePerYear_;
 
     emit DiscountRatePerYearUpdated(oldMaxDiscountPerYear, discountRatePerYear_);
+  }
+
+  function _latestAnswer() internal view virtual returns (int256) {
+    int256 currentAssetPrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
+    if (currentAssetPrice <= 0) {
+      return 0;
+    }
+
+    uint256 price = (uint256(currentAssetPrice) * (PERCENTAGE_FACTOR - getCurrentDiscount())) /
+      PERCENTAGE_FACTOR;
+
+    return int256(price);
   }
 }

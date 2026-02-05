@@ -43,19 +43,25 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
   }
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
-  function latestAnswer() external view override returns (int256) {
-    int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
-    int256 priceCap = _priceCap;
+  function latestAnswer() external view returns (int256) {
+    return _latestAnswer();
+  }
 
-    if (basePrice > priceCap) {
-      return priceCap;
-    }
-
-    if (basePrice <= 0) {
-      return 0;
-    }
-
-    return basePrice;
+  /// @inheritdoc IPriceCapAdapterStable
+  function latestRoundData()
+    external
+    view
+    returns (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    )
+  {
+    uint256 timestamp = block.timestamp;
+    answer = _latestAnswer();
+    return (uint80(timestamp), answer, timestamp, timestamp, uint80(timestamp));
   }
 
   /// @inheritdoc IPriceCapAdapterStable
@@ -94,5 +100,20 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
     _priceCap = priceCap;
 
     emit PriceCapUpdated(priceCap);
+  }
+
+  function _latestAnswer() internal view virtual returns (int256) {
+    int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
+    int256 priceCap = _priceCap;
+
+    if (basePrice > priceCap) {
+      return priceCap;
+    }
+
+    if (basePrice <= 0) {
+      return 0;
+    }
+
+    return basePrice;
   }
 }
