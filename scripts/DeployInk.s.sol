@@ -17,7 +17,7 @@ library CapAdaptersCodeInk {
   address public constant WsTETH_stETH_PRICE_FEED = 0x0eA85E34b26ff769e63c24776baBA60782446166;
   address public constant WeETH_eETH_PRICE_FEED = 0x15D2126ab8a9E88249d99A4bAf7d080BF3AEAb8A;
   address public constant EzETH_ETH_PRICE_FEED = 0x7AebbD32bDd12E8fd5bB5ff6D7F2230c86dfC1fF;
-  address public constant sUSDe_USDe_Exchange_rate = address(0);
+  address public constant sUSDe_USDe_Exchange_rate = 0x02c7c0CCE407299ABB0B1aaA481DBe23de7a1dBc;
 
   function USDTAdapterCode() internal pure returns (bytes memory) {
     return
@@ -153,8 +153,8 @@ library CapAdaptersCodeInk {
             pairDescription: 'Capped sUSDe / USDT / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_216128592010342907, // snapshot from mainnet
-              snapshotTimestamp: 1768446215, // Jan-15-2026 (block: 24237300)
+              snapshotRatio: 1_217396774850780700, // snapshot from mainnet
+              snapshotTimestamp: 1769137643, // Jan-23-2026 (block: 24294700)
               maxYearlyRatioGrowthPercent: 15_19
             })
           })

@@ -51,7 +51,7 @@ import {CapAdaptersCodeInk} from '../../scripts/DeployInk.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), (24237300)); // Jan-15-2026
+    vm.createSelectFork(vm.rpcUrl('mainnet'), (24294700)); // Jan-23-2026
   }
 
   function test_getExchangeRate() public view {
