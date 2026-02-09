@@ -52,7 +52,7 @@ import {CapAdaptersCodeMegaEth} from '../../scripts/DeployMegaEth.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), (24180000)); // Jan-07-2026
+    vm.createSelectFork(vm.rpcUrl('mainnet'), (24294700)); // Jan-23-2026
   }
 
   function test_getExchangeRate() public view {
@@ -75,7 +75,7 @@ contract ExchangeRatesEth is Test {
     // uint256 ezETHRate = ((totalTVL * 1 ether) /
     //   IEzETHRestakeManager(CapAdaptersCodeEthereum.ezETH_RESTAKE_MANAGER).ezETH().totalSupply());
 
-    uint256 rsETHRate = IRsETH(CapAdaptersCodeEthereum.rsETH_LRT_ORACLE).rsETHPrice();
+    // uint256 rsETHRate = IRsETH(CapAdaptersCodeEthereum.rsETH_LRT_ORACLE).rsETHPrice();
     // uint256 eBTCRate = IEBTC(CapAdaptersCodeEthereum.eBTC_ACCOUNTANT).getRate();
     // uint256 eUSDeRate = IERC4626(CapAdaptersCodeEthereum.eUSDe).convertToAssets(10 ** 18);
     // uint256 tETHtoWstETH = IERC4626(CapAdaptersCodeEthereum.tETH).convertToAssets(10 ** 18);
@@ -85,9 +85,9 @@ contract ExchangeRatesEth is Test {
     // uint256 syrupUSDCRate = IMaplePool(CapAdaptersCodeEthereum.syrupUSDC).convertToExitAssets(
     //   10 ** 18
     // );
-    uint256 syrupUSDTRate = IMaplePool(CapAdaptersCodeEthereum.syrupUSDT).convertToExitAssets(
-      10 ** 18
-    );
+    // uint256 syrupUSDTRate = IMaplePool(CapAdaptersCodeEthereum.syrupUSDT).convertToExitAssets(
+    //   10 ** 18
+    // );
 
     // console.log('cbEthRate', cbEthRate);
     // console.log('rEthRate', rEthRate);
@@ -95,7 +95,7 @@ contract ExchangeRatesEth is Test {
     console.log('sUSDe', sUSDeRate);
     // console.log('wstEthRate', wstEthRate);
     // console.log('stEurRate', stEurRate);
-    console.log('rsETHRate', rsETHRate);
+    // console.log('rsETHRate', rsETHRate);
     // console.log('weEthRate', weEthRate);
     // console.log('osEthRate', osEthRate);
     // console.log('ethXRate', ethXRate);
@@ -107,7 +107,7 @@ contract ExchangeRatesEth is Test {
     // console.log('eUSDeRate', eUSDeRate);
     // console.log('tETHRate', tETHRate);
     // console.log('syrupUSDCRate', syrupUSDCRate);
-    console.log('syrupUSDTRate', syrupUSDTRate);
+    // console.log('syrupUSDTRate', syrupUSDTRate);
 
     console.log(block.timestamp);
   }
