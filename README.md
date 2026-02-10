@@ -21,7 +21,7 @@ Aave protocol relies on external oracles for asset prices. If an oracle returns 
 For Liquid Staking Tokens (wstETH, rETH, weETH, etc.) that grow in value over time.
 
 - Price capped based on maximum allowed yearly growth rate
-- Uses snapshot ratio, timestamp, and max growth percentage
+- Uses snapshot ratio and timestamp as reference values to determine growth since then
 - Returns capped ratio if current ratio exceeds calculated maximum
 
 **Base contract:** [`PriceCapAdapterBase`](./src/contracts/PriceCapAdapterBase.sol)—see [detailed documentation](./src/contracts/README.md)
