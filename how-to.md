@@ -42,16 +42,16 @@ Risk providers give you growth rate and delay, but you need `snapshotRatio` and 
 
 Add deployment function to the network script (e.g., [`DeployEthereum.s.sol`](scripts/DeployEthereum.s.sol)):
 
-| Parameter                     | Description                                          |
-| ----------------------------- | ---------------------------------------------------- |
-| `aclManager`                  | ACL manager of the pool                              |
-| `baseAggregatorAddress`       | Base asset feed (e.g., `ETH/USD` for ETH-based LSTs) |
-| `ratioProviderAddress`        | Contract providing exchange ratio                    |
-| `pairDescription`             | Adapter description                                  |
-| `minimumSnapshotDelay`        | From risk provider (typically 7 or 14 days)          |
-| `snapshotRatio`               | Exchange ratio at snapshot time                      |
-| `snapshotTimestamp`           | Timestamp of snapshot                                |
-| `maxYearlyRatioGrowthPercent` | From risk provider                                   |
+| Parameter                     | Description                                                  |
+| ----------------------------- | ------------------------------------------------------------ |
+| `aclManager`                  | ACL manager of the pool                                      |
+| `baseAggregatorAddress`       | Base asset feed (e.g., `ETH/USD` for ETH-based LSTs)         |
+| `ratioProviderAddress`        | Contract providing exchange ratio (native or Chainlink feed) |
+| `pairDescription`             | Adapter description (e.g, `capped rsETH / ETH / USD`)        |
+| `minimumSnapshotDelay`        | From risk provider (typically 7 or 14 days)                  |
+| `snapshotRatio`               | Exchange ratio at snapshot time                              |
+| `snapshotTimestamp`           | Timestamp of snapshot                                        |
+| `maxYearlyRatioGrowthPercent` | From risk provider                                           |
 
 > **zkSync:** Return encoded parameters instead of deployment code.
 
