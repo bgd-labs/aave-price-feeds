@@ -38,6 +38,7 @@ For USD-pegged stablecoins (USDC, USDT, DAI) with fixed 1:1 peg.
 ### Synchronicity Adapters
 
 Combine two price feeds to derive a third pair.
+- Does not cap the price derived from the feed's composition
 
 | Adapter                                                                                            | Input Feeds         | Output    |
 | -------------------------------------------------------------------------------------------------- | ------------------- | --------- |
