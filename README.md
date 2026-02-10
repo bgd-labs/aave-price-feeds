@@ -95,8 +95,18 @@ The currently audited adapters expose only `latestAnswer()`, which is used by Aa
 
 **For v4 compatibility:**
 
-1. Add `latestRoundData()` to the adapter's interface
-2. Implement it in the `PriceCapAdapterBase` contract
+1. Add the `latestRoundData()` method to the `ICLSynchronicityPriceAdapter` interface: 
+```solidity
+  function latestRoundData()
+    external
+    view
+    returns (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    );
 
 ## Security
 
