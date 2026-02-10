@@ -1,11 +1,12 @@
 # How to Add a New CAPO Adapter
 
-This guide covers adding price cap adapters for LST or stablecoin assets.
+This guide covers adding price cap adapters for LST, stablecoin, or Pendle PT assets.
 
 **Before you start:** Contact risk providers for CAPO parameters:
 
 - **LST**: `maxYearlyGrowthPercent` and `minimumSnapshotDelay`
 - **Stablecoin**: fixed cap value
+- **Pendle PT**: `maxDiscountRatePerYear` and `discountRatePerYear`
 
 ---
 
@@ -31,12 +32,12 @@ Use the generic [`CLRatePriceCapAdapter`](src/contracts/CLRatePriceCapAdapter.so
 
 ### 2. Get Snapshot Parameters
 
-Risk providers give you growth rate and delay, but you need `snapshotRatio` and `snapshotTimestamp`:
+Risk providers give you growth rate and minimum snapshot delay, but you need `snapshotRatio` and `snapshotTimestamp`:
 
 1. Use [GetExchangeRatesTest](tests/utils/GetExchangeRatesTest.t.sol):
    - Add a method to get the rate for the corresponding network (see [osETH example](tests/utils/GetExchangeRatesTest.t.sol#L66))
-   - Set block number to approximately `now - minimumSnapshotDelay`
-   - Run test with console output
+   - Set block number to approximately `now - minimumSnapshotDelay in blocks`; (tip: you can check blocks per day in [BlockUtils.sol](tests/utils/BlockUtils.sol))
+   - Run test with console output to obtain the rate `snapshotRatio` and timestamp `snapshotTimestamp`
 
 ### 3. Deploy
 
@@ -92,6 +93,40 @@ Add deployment command to Makefile.
 ### 2. Test
 
 Inherit from [`BaseStableTest`](tests/BaseStableTest.sol) and specify deployment code, retrospective days, and fork parameters.
+
+---
+
+## Pendle PT Adapter
+
+For Pendle Principal Tokens (PT) that trade at a discount decaying linearly to zero at maturity.
+
+Use existing [`PendlePriceCapAdapter`](src/contracts/PendlePriceCapAdapter.sol)—no new contract needed.
+
+**Before you start:** Contact risk providers for:
+
+- `maxDiscountRatePerYear`: Maximum allowed discount rate
+- `discountRatePerYear`: Current discount rate
+
+### 1. Deploy
+
+Add deployment function to the network script:
+
+| Parameter                | Description                                            |
+| ------------------------ | ------------------------------------------------------ |
+| `aclManager`             | ACL manager of the pool                                |
+| `assetToUsdAggregator`   | Underlying asset feed (e.g., `USDT/USD`)               |
+| `pendlePrincipalToken`   | PT token contract address                              |
+| `maxDiscountRatePerYear` | From risk provider (e.g., `27.9e16` for 27.9%)         |
+| `discountRatePerYear`    | From risk provider (e.g., `8.52e16` for 8.52%)         |
+| `description`            | Adapter description (e.g., `PT Capped sUSDe USDT/USD`) |
+
+> Maturity is read automatically from the PT token contract.
+
+Add deployment command to Makefile.
+
+### 2. Test
+
+Inherit from [`BaseTest`](tests/BaseTest.sol) and configure test parameters similarly to LST adapters.
 
 ---
 
