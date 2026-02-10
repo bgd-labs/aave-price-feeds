@@ -65,7 +65,7 @@ Add deployment command to Makefile.
 3. Configure test parameters:
    - Adapter code
    - Retrospective days (default: 90)
-   - Fork parameters (network, block)
+   - Fork parameters (network, block) (tip: use the `now` block you used to obtain the snapshot block)
    - Report name (e.g., `osETH_Ethereum`)
 
 > **zkSync:** Add `salt` parameter: `new CLRatePriceCapAdapter{salt: 'test'}(params)`
