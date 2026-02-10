@@ -5,7 +5,7 @@ These adapters wrap Chainlink price feeds and cap prices to prevent oracle manip
 
 ## Overview
 
-Aave protocol relies on external oracles for asset prices. If an oracle returns an abnormally high price
+Aave protocol relies on external oracles for asset prices. If an oracle returns a negative, zero, or an abnormally high price
 (due to bugs, manipulation, or errors), it could lead to protocol exploits. This repository provides protective wrappers that:
 
 1. Fetches prices from Chainlink oracles
