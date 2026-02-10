@@ -30,8 +30,8 @@ For Liquid Staking Tokens (wstETH, rETH, weETH, etc.) that grow in value over ti
 
 For USD-pegged stablecoins (USDC, USDT, DAI) with fixed 1:1 peg.
 
-- Price capped at configured maximum (e.g., $1.04 for 4% cap)
-- Does not include growth component
+- Price capped at a single configured maximum value (e.g., $1.04 for 4% cap)
+- Returns capped price if current price exceeds the fixed maximum
 
 **Contract:** [`PriceCapAdapterStable`](./src/contracts/PriceCapAdapterStable.sol)
 
