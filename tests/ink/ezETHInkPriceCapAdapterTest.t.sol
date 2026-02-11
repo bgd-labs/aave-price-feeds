@@ -8,8 +8,8 @@ contract ezETHInkPriceCapAdapterTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodeInk.ezETHAdapterCode(),
-      1,
-      ForkParams({network: 'ink', blockNumber: 29965203}),
+      14,
+      ForkParams({network: 'ink', blockNumber: 31174803}),
       'ezETH_Ink'
     )
   {}

@@ -238,13 +238,16 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH__USD,
+            baseAggregatorAddress: ChainlinkEthereum.AAVE_SVR_ETH__USD,
             ratioProviderAddress: weETH,
             pairDescription: 'Capped weETH / eETH(ETH) / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1034656878645040505,
-              snapshotTimestamp: 1711416299, // 26-03-2024
+              // snapshotRatio: 1034656878645040505,
+              // snapshotTimestamp: 1711416299, // 26-03-2024
+              // @dev Due to test fixes, we needed to update the snapshots. The snapshots used on live adapters are shown above.
+              snapshotRatio: 1085398877350667572,
+              snapshotTimestamp: 1767755099, // Jan-07-2026 (block: 24180000)
               maxYearlyRatioGrowthPercent: 8_75
             })
           })
@@ -259,13 +262,16 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH__USD,
+            baseAggregatorAddress: ChainlinkEthereum.AAVE_SVR_ETH__USD,
             ratioProviderAddress: osETH_VAULT_CONTROLLER,
             pairDescription: 'Capped osETH / ETH / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1014445878439441413,
-              snapshotTimestamp: 1713934379, // 24-04-2024
+              // snapshotRatio: 1014445878439441413,
+              // snapshotTimestamp: 1713934379, // 24-04-2024
+              // @dev Due to test fixes, we needed to update the snapshots. The snapshots used on live adapters are shown above.
+              snapshotRatio: 1062861062304584905,
+              snapshotTimestamp: 1767755099, // Jan-07-2026 (block: 24180000)
               maxYearlyRatioGrowthPercent: 8_75
             })
           })
@@ -295,13 +301,16 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH__USD,
+            baseAggregatorAddress: ChainlinkEthereum.AAVE_SVR_ETH__USD,
             ratioProviderAddress: STADER_STAKE_POOLS_MANAGER,
             pairDescription: 'Capped ethX / ETH / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1029650229444067238,
-              snapshotTimestamp: 1715877911,
+              // snapshotRatio: 1029650229444067238,
+              // snapshotTimestamp: 1715877911,
+              // @dev Due to test fixes, we needed to update the snapshots. The snapshots used on live adapters are shown above.
+              snapshotRatio: 1078527564601112449,
+              snapshotTimestamp: 1767755099, // Jan-07-2026 (block: 24180000)
               maxYearlyRatioGrowthPercent: 9_24
             })
           })
@@ -360,28 +369,7 @@ library CapAdaptersCodeEthereum {
             aclManager: AaveV3Ethereum.ACL_MANAGER,
             assetToUsdAggregator: IChainlinkAggregator(DAI_PRICE_FEED),
             adapterDescription: 'Capped USDS <-> DAI / USD',
-            priceCap: int256(1.04 * 1e18)
-          })
-        )
-      );
-  }
-
-  function sUSDSAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(sUSDSPriceCapAdapter).creationCode,
-        abi.encode(
-          IPriceCapAdapter.CapAdapterParams({
-            aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: GovV3Helpers.predictDeterministicAddress(USDSAdapterCode()),
-            ratioProviderAddress: sUSDS,
-            pairDescription: 'Capped sUSDS / USDS <-> DAI / USD',
-            minimumSnapshotDelay: 4 days,
-            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1000000000000000000,
-              snapshotTimestamp: 1725455495,
-              maxYearlyRatioGrowthPercent: 15_00
-            })
+            priceCap: int256(1.04 * 1e8)
           })
         )
       );
@@ -394,13 +382,16 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3EthereumLido.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH__USD,
+            baseAggregatorAddress: ChainlinkEthereum.AAVE_SVR_ETH__USD,
             ratioProviderAddress: ezETH_RESTAKE_MANAGER,
             pairDescription: 'Capped ezETH / ezETH(ETH) / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1019883708003361006,
-              snapshotTimestamp: 1727172839, // Sep-24-2024
+              // snapshotRatio: 1019883708003361006,
+              // snapshotTimestamp: 1727172839, // Sep-24-2024
+              // @dev Due to test fixes, we needed to update the snapshots. The snapshots used on live adapters are shown above.
+              snapshotRatio: 1068867248982492586,
+              snapshotTimestamp: 1767755099, // Jan-07-2026 (block: 24180000)
               maxYearlyRatioGrowthPercent: 10_89
             })
           })
@@ -415,13 +406,16 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH__USD,
+            baseAggregatorAddress: ChainlinkEthereum.AAVE_SVR_ETH__USD,
             ratioProviderAddress: rsETH_LRT_ORACLE,
             pairDescription: 'Capped rsETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1026549069391100903,
-              snapshotTimestamp: 1728904283, // Oct-14-2024
+              // snapshotRatio: 1026549069391100903,
+              // snapshotTimestamp: 1728904283, // Oct-14-2024
+              // @dev Due to test fixes, we needed to update the snapshots. The snapshots used on live adapters are shown above.
+              snapshotRatio: 1062260252819733848,
+              snapshotTimestamp: 1767755099, // Jan-07-2026 (block: 24180000)
               maxYearlyRatioGrowthPercent: 9_83
             })
           })
@@ -436,7 +430,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkEthereum.SVR_BTC__USD,
+            baseAggregatorAddress: ChainlinkEthereum.AAVE_SVR_BTC__USD,
             ratioProviderAddress: eBTC_ACCOUNTANT,
             pairDescription: 'Capped eBTC / BTC / USD',
             minimumSnapshotDelay: 7 days,
@@ -508,13 +502,16 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH__USD,
+            baseAggregatorAddress: ChainlinkEthereum.AAVE_SVR_ETH__USD,
             ratioProviderAddress: stETH,
             pairDescription: 'Capped wstETH / stETH(ETH) / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_157209899495068171,
-              snapshotTimestamp: 1708004591, // Feb-15-2024
+              // snapshotRatio: 1_157209899495068171,
+              // snapshotTimestamp: 1708004591, // Feb-15-2024
+              // @dev Due to test fixes, we needed to update the snapshots. The snapshots used on live adapters are shown above.
+              snapshotRatio: 1223767905094668534,
+              snapshotTimestamp: 1767755099, // Jan-07-2026 (block: 24180000)
               maxYearlyRatioGrowthPercent: 9_68
             })
           })
@@ -529,13 +526,16 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH__USD,
+            baseAggregatorAddress: ChainlinkEthereum.AAVE_SVR_ETH__USD,
             ratioProviderAddress: rETH,
             pairDescription: 'Capped rETH / ETH / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_098284517740008249,
-              snapshotTimestamp: 1708004591, // Feb-15-2024
+              // snapshotRatio: 1_098284517740008249,
+              // snapshotTimestamp: 1708004591, // Feb-15-2024
+              // @dev Due to test fixes, we needed to update the snapshots. The snapshots used on live adapters are shown above.
+              snapshotRatio: 1154375968446318881,
+              snapshotTimestamp: 1767755099, // Jan-07-2026 (block: 24180000)
               maxYearlyRatioGrowthPercent: 9_30
             })
           })
@@ -550,13 +550,16 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH__USD,
+            baseAggregatorAddress: ChainlinkEthereum.AAVE_SVR_ETH__USD,
             ratioProviderAddress: AaveV3EthereumAssets.cbETH_UNDERLYING,
             pairDescription: 'Capped cbETH / ETH / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_063814269953974334,
-              snapshotTimestamp: 1708004591, // Feb-15-2024
+              // snapshotRatio: 1_063814269953974334,
+              // snapshotTimestamp: 1708004591, // Feb-15-2024
+              // @dev Due to test fixes, we needed to update the snapshots. The snapshots used on live adapters are shown above.
+              snapshotRatio: 1_119844863689801777,
+              snapshotTimestamp: 1767755099, // Jan-07-2026 (block: 24180000)
               maxYearlyRatioGrowthPercent: 8_12
             })
           })
@@ -571,7 +574,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapterStable.CapAdapterStableParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            assetToUsdAggregator: IChainlinkAggregator(ChainlinkEthereum.SVR_USDC__USD),
+            assetToUsdAggregator: IChainlinkAggregator(ChainlinkEthereum.AAVE_SVR_USDC__USD),
             adapterDescription: 'Capped USDC / USD',
             priceCap: int256(1.04 * 1e8)
           })
@@ -586,7 +589,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapterStable.CapAdapterStableParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            assetToUsdAggregator: IChainlinkAggregator(ChainlinkEthereum.SVR_USDT__USD),
+            assetToUsdAggregator: IChainlinkAggregator(ChainlinkEthereum.AAVE_SVR_USDT__USD),
             adapterDescription: 'Capped USDT / USD',
             priceCap: int256(1.04 * 1e8)
           })
@@ -599,7 +602,7 @@ library CapAdaptersCodeEthereum {
       abi.encodePacked(
         type(CLSynchronicityPriceAdapterPegToBase).creationCode,
         abi.encode(
-          ChainlinkEthereum.SVR_BTC__USD,
+          ChainlinkEthereum.AAVE_SVR_BTC__USD,
           ChainlinkEthereum.WBTC__BTC,
           8,
           'wBTC/BTC/USD'
@@ -631,7 +634,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3EthereumLido.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH__USD,
+            baseAggregatorAddress: ChainlinkEthereum.AAVE_SVR_ETH__USD,
             ratioProviderAddress: tETH,
             pairDescription: 'Capped tETH / wstETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
@@ -652,7 +655,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkEthereum.SVR_BTC__USD,
+            baseAggregatorAddress: ChainlinkEthereum.AAVE_SVR_BTC__USD,
             ratioProviderAddress: LBTC_STAKE_ORACLE,
             pairDescription: 'Capped LBTC / BTC / USD',
             minimumSnapshotDelay: 7 days,
@@ -916,12 +919,6 @@ contract DeploySUSDeEthereum is EthereumScript {
 contract DeployUSDSEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDSAdapterCode());
-  }
-}
-
-contract DeploysUSDSEthereum is EthereumScript {
-  function run() external broadcast {
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.sUSDSAdapterCode());
   }
 }
 

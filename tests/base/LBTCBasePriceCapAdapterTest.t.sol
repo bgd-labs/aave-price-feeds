@@ -3,23 +3,23 @@ pragma solidity ^0.8.0;
 
 import '../BaseTest.sol';
 
-import {LBTCPriceCapAdapter} from '../../src/contracts/lst-adapters/LBTCPriceCapAdapter.sol';
-import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
+import {LBTCPriceCapAdapter, IPriceCapAdapter} from '../../src/contracts/lst-adapters/LBTCPriceCapAdapter.sol';
+import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 import {ILBTC} from '../../src/interfaces/ILBTC.sol';
 
-contract LBTCPriceCapAdapterTest is BaseTest {
+contract LBTCBasePriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
-      CapAdaptersCodeEthereum.lBTCAdapterCode(),
+      CapAdaptersCodeBase.lBTCAdapterCode(),
       7,
-      ForkParams({network: 'mainnet', blockNumber: 23033850}),
-      'LBTC_Ethereum'
+      ForkParams({network: 'base', blockNumber: 33556903}),
+      'LBTC_Base'
     )
   {}
 
   function _mockRatioProviderRate(uint256 amount) internal override {
     vm.mockCall(
-      CapAdaptersCodeEthereum.LBTC_STAKE_ORACLE,
+      CapAdaptersCodeBase.LBTC_STAKE_ORACLE,
       abi.encodeWithSelector(ILBTC.getRate.selector),
       abi.encode(amount)
     );

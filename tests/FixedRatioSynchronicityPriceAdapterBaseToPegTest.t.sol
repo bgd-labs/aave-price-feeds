@@ -55,6 +55,7 @@ contract FixedRatioSynchronicityPriceAdapterBaseToPegTest is Test {
     int256 price = adapter.latestAnswer();
 
     assertApproxEqAbs(
+      // forge-lint: disable-next-line(unsafe-typecast)
       uint256(price),
       495094400000000, // value calculated manually for selected block
       100000000

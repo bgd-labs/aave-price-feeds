@@ -181,12 +181,14 @@ contract PriceCapAdapterBaseTest is Test {
       minimumSnapshotDelay: 0,
       priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
         snapshotRatio: 1e8,
+        // forge-lint: disable-next-line(unsafe-typecast)
         snapshotTimestamp: uint48(timestamp),
         maxYearlyRatioGrowthPercent: 10_00
       })
     });
 
     vm.expectRevert(
+      // forge-lint: disable-next-line(unsafe-typecast)
       abi.encodeWithSelector(IPriceCapAdapter.InvalidRatioTimestamp.selector, uint48(timestamp))
     );
     newCapAdapter = new CLRatePriceCapAdapter(params);
@@ -248,6 +250,7 @@ contract PriceCapAdapterBaseTest is Test {
       });
     capAdapter.setCapParameters(priceCapParams);
 
+    // forge-lint: disable-next-line(unsafe-typecast)
     ratioProviderMock.set(1e8, int16(int256(uint256(increasedRate))));
 
     skip(180 days);

@@ -5,12 +5,12 @@ import '../BaseTest.sol';
 
 import {CapAdaptersCodeLinea, CLRatePriceCapAdapter} from '../../scripts/DeployLinea.s.sol';
 
-contract wstETHPriceCapAdapterTestL is BaseTest {
+contract wstETHPriceLineaCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeLinea.wstETHAdapterCode(),
-      1,
-      ForkParams({network: 'linea', blockNumber: 14810572}),
+      14,
+      ForkParams({network: 'linea', blockNumber: 15415372}),
       'wstETH_Linea'
     )
   {}

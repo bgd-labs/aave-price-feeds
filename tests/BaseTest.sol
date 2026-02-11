@@ -282,26 +282,37 @@ abstract contract BaseTest is Test {
     uint256 previousTimestamp
   ) private pure returns (int256) {
     return
+      // forge-lint: disable-next-line(unsafe-typecast)
       (((ratio - previousRatio) * int256(SECONDS_PER_YEAR)) * 100_00) /
+      // forge-lint: disable-next-line(unsafe-typecast)
       (previousRatio * int256(currentTimestamp - previousTimestamp));
   }
 
   function _getMaxRatio(IPriceCapAdapter adapter) private view returns (uint256) {
     uint256 snapshotRatio = adapter.getSnapshotRatio();
     uint256 snapshotTimestamp = adapter.getSnapshotTimestamp();
-    uint256 maxGrowthPerSecond = adapter.getMaxRatioGrowthPerSecond();
-    return (snapshotRatio + maxGrowthPerSecond * (block.timestamp - snapshotTimestamp));
+    uint256 maxGrowthPerSecondScaled = adapter.getMaxRatioGrowthPerSecondScaled();
+    uint256 SCALING_FACTOR = adapter.SCALING_FACTOR();
+
+    return
+      uint256(
+        snapshotRatio +
+          (maxGrowthPerSecondScaled * (block.timestamp - snapshotTimestamp)) /
+          SCALING_FACTOR
+      );
   }
 
   function _mockRatioProviderRate(uint256 amount) internal virtual {}
 
-  /// @dev verifies that if growth in a year is greater than zero, growth per second must be greater than zero
+  /// @dev verifies that if growth in a year is greater than zero, growth per second scaled must be greater than zero
   /// and growth in a year won't be more than 100%
   function _validateGrowth(IPriceCapAdapter adapter) private view {
     uint256 maxYearlyGrowthRatePercent = adapter.getMaxYearlyGrowthRatePercent();
 
     if (maxYearlyGrowthRatePercent > 0) {
-      assertGt(adapter.getMaxRatioGrowthPerSecond(), 0);
+      // @dev For small values of the initial `snapshotRatio` and `maxYearlyRatioGrowthPercent` it can take a zero value
+      assertGe(adapter.getMaxRatioGrowthPerSecond(), 0);
+      // @dev In these cases it is recommended to look at `getMaxRatioGrowthPerSecondScaled()`
       assertGt(adapter.getMaxRatioGrowthPerSecondScaled(), 0);
     }
 

@@ -13,4 +13,9 @@ contract wstETHPriceCapAdapterMegaEthTest is CLAdapterBaseTest {
       'wstETH_megaEth'
     )
   {}
+
+  function test_latestAnswerRetrospective() public pure override {
+    // cannot test due to newly base feed deployed
+    assertTrue(true);
+  }
 }

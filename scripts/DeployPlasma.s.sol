@@ -95,19 +95,22 @@ library CapAdaptersCodePlasma {
 
   function sUSDeAdapterParams() internal pure returns (bytes memory) {
     return
-      abi.encode(
-        IPriceCapAdapter.CapAdapterParams({
-          aclManager: AaveV3Plasma.ACL_MANAGER,
-          baseAggregatorAddress: USDT_CAPO_PRICE_FEED,
-          ratioProviderAddress: sUSDe_USDe_AGGREGATOR,
-          pairDescription: 'Capped sUSDe / USDe / USD',
-          minimumSnapshotDelay: 14 days,
-          priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-            snapshotRatio: 1_193972665854975048,
-            snapshotTimestamp: 1756871339, // 3-SEPT-2025
-            maxYearlyRatioGrowthPercent: 15_19
+      abi.encodePacked(
+        type(CLRatePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Plasma.ACL_MANAGER,
+            baseAggregatorAddress: USDT_CAPO_PRICE_FEED,
+            ratioProviderAddress: sUSDe_USDe_AGGREGATOR,
+            pairDescription: 'Capped sUSDe / USDe / USD',
+            minimumSnapshotDelay: 14 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_193972665854975048,
+              snapshotTimestamp: 1756871339, // 3-SEPT-2025
+              maxYearlyRatioGrowthPercent: 15_19
+            })
           })
-        })
+        )
       );
   }
 

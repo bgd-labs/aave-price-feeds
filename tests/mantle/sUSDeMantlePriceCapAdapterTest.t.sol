@@ -8,8 +8,8 @@ contract sUSDeMantlePriceCapAdapterTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodeMantle.sUSDeAdapterCode(),
-      7,
-      ForkParams({network: 'mantle', blockNumber: 90211167}),
+      3,
+      ForkParams({network: 'mantle', blockNumber: 90952191}),
       'sUSDe_Mantle'
     )
   {}

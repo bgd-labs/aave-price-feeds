@@ -5,12 +5,12 @@ import '../BaseStableTest.sol';
 import {PriceCapAdapterStable} from '../../src/contracts/PriceCapAdapterStable.sol';
 import {CapAdaptersCodePlasma} from '../../scripts/DeployPlasma.s.sol';
 
-contract USDTPriceCapAdapterTest is BaseStableTest {
+contract USDTPriceCapAdapterPlasmaTest is BaseStableTest {
   constructor()
     BaseStableTest(
       CapAdaptersCodePlasma.USDTAdapterCode(),
       14,
-      ForkParams({network: 'plasma', blockNumber: 1101555})
+      ForkParams({network: 'plasma', blockNumber: 3693555})
     )
   {}
 }

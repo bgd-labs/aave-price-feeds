@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import '../BaseTest.sol';
+import '../../tests/BaseTest.sol';
 
 import {CLRatePriceCapAdapter} from '../../src/contracts/CLRatePriceCapAdapter.sol';
-import {CapAdaptersCodeZkSync} from '../../scripts/DeployZkSync.s.sol';
+import {CapAdaptersCodeZkSync, AaveV3ZkSyncAssets, AaveV3ZkSync} from '../../scripts/DeployZkSync.s.sol';
 
-contract sUSDePriceCapAdapterZkSyncTest is BaseTest {
+contract rsETHPriceCapAdapterZkSyncTest is BaseTest {
   constructor()
     BaseTest(
-      CapAdaptersCodeZkSync.sUSDeAdapterParams(),
-      35,
-      ForkParams({network: 'zksync', blockNumber: 53221414}),
-      'sUSDe_ZkSync'
+      CapAdaptersCodeZkSync.rsETHAdapterParams(),
+      14,
+      ForkParams({network: 'zksync', blockNumber: 60120360}),
+      'rsETH_ZkSync'
     )
   {}
 

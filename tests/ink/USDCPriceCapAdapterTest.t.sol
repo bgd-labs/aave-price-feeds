@@ -10,7 +10,7 @@ contract USDCInkPriceCapAdapterTest is BaseStableTest {
     BaseStableTest(
       CapAdaptersCodeInk.USDCAdapterCode(),
       10,
-      ForkParams({network: 'ink', blockNumber: 29613000})
+      ForkParams({network: 'ink', blockNumber: 30822600})
     )
   {}
 }

@@ -23,6 +23,7 @@ contract StablecoinPriceAdapterFormulaTest is Test {
 
     for (uint256 i = 1; i <= TESTS_NUM; i++) {
       address mockAggregator = address(0);
+      // forge-lint: disable-next-line(unsafe-typecast)
       int256 mockPrice = ethPrice / int256(i);
       _setMockPrice(mockAggregator, mockPrice, 8);
 
@@ -34,9 +35,11 @@ contract StablecoinPriceAdapterFormulaTest is Test {
       );
 
       int256 price = adapter.latestAnswer();
+      // forge-lint: disable-next-line(unsafe-typecast)
       int256 expectedPriceInEth = int256(1 ether / i);
 
       int256 maxDiff = int256(10 ** (ethAggregatorDecimals));
+      // forge-lint: disable-next-line(unsafe-typecast)
       assertApproxEqAbs(uint256(price), uint256(expectedPriceInEth), uint256(maxDiff));
     }
   }
