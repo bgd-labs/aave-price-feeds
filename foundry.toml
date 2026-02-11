@@ -20,15 +20,13 @@ optimizer = true
 optimizer_runs = 200
 fs_permissions = [{ access = "write", path = "./reports" }]
 ffi = true
-out = 'out/shanghai'
+out = 'out'
 evm_version = 'shanghai'
-cache_path = 'cache/shanghai'
+cache_path = 'cache'
 
 [profile.zksync.zksync]
 bytecode_hash = 'none'
 compile = true
-fallback_oz = true
-mode = '3'
 zksolc = '1.5.13'
 
 [profile.sonic]

@@ -9,6 +9,7 @@ import {CapAdaptersCodeAvalanche} from '../../scripts/DeployAvalanche.s.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeMantle} from '../../scripts/DeployMantle.s.sol';
 import {CapAdaptersCodePlasma} from '../../scripts/DeployPlasma.s.sol';
+import {CapAdaptersCodeInk} from '../../scripts/DeployInk.s.sol';
 
 // was tested with USDe / USD feed for a longer period
 contract sUSDeEthereumTest is BaseTest {
@@ -59,4 +60,20 @@ contract sUSDePlasmaTest is CLAdapterBaseTest {
       'sUSDe_Plasma'
     )
   {}
+}
+
+contract sUSDeInkPriceCapAdapterTest is CLAdapterBaseTest {
+  constructor()
+    CLAdapterBaseTest(
+      CapAdaptersCodeInk.sUSDeAdapterCode(),
+      1,
+      ForkParams({network: 'ink', blockNumber: 36873000}), // Feb 06 2026
+      'sUSDe_Ink'
+    )
+  {}
+
+  function test_latestAnswerRetrospective() public pure override {
+    // cannot test due to newly base feed deployed
+    assertTrue(true);
+  }
 }

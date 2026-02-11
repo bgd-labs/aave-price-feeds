@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {InkScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
-import {AaveV3InkWhitelabel} from 'aave-address-book/AaveV3InkWhitelabel.sol';
+import {AaveV3InkWhitelabel, AaveV3InkWhitelabelAssets} from 'aave-address-book/AaveV3InkWhitelabel.sol';
 import {FixedPriceAdapter} from '../src/contracts/misc-adapters/FixedPriceAdapter.sol';
 import {PriceCapAdapterStable, IPriceCapAdapterStable, IChainlinkAggregator} from '../src/contracts/PriceCapAdapterStable.sol';
 import {CLRatePriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
@@ -17,6 +17,7 @@ library CapAdaptersCodeInk {
   address public constant WsTETH_stETH_PRICE_FEED = 0x0eA85E34b26ff769e63c24776baBA60782446166;
   address public constant WeETH_eETH_PRICE_FEED = 0x15D2126ab8a9E88249d99A4bAf7d080BF3AEAb8A;
   address public constant EzETH_ETH_PRICE_FEED = 0x7AebbD32bDd12E8fd5bB5ff6D7F2230c86dfC1fF;
+  address public constant sUSDe_USDe_Exchange_rate = 0x02c7c0CCE407299ABB0B1aaA481DBe23de7a1dBc;
 
   function USDTAdapterCode() internal pure returns (bytes memory) {
     return
@@ -139,6 +140,27 @@ library CapAdaptersCodeInk {
         )
       );
   }
+
+  function sUSDeAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLRatePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3InkWhitelabel.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3InkWhitelabelAssets.USDT_ORACLE,
+            ratioProviderAddress: sUSDe_USDe_Exchange_rate,
+            pairDescription: 'Capped sUSDe / USDT / USD',
+            minimumSnapshotDelay: 14 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_217396774850780700, // snapshot from mainnet
+              snapshotTimestamp: 1769137643, // Jan-23-2026 (block: 24294700)
+              maxYearlyRatioGrowthPercent: 15_19
+            })
+          })
+        )
+      );
+  }
 }
 
 contract DeployUSDGInk is InkScript {
@@ -180,5 +202,11 @@ contract DeployWeETHInk is InkScript {
 contract DeployEzETHInk is InkScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeInk.ezETHAdapterCode());
+  }
+}
+
+contract DeploySUSDeInk is InkScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeInk.sUSDeAdapterCode());
   }
 }
