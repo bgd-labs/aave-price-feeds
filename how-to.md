@@ -1,107 +1,136 @@
-# How to add a new CAPO adapter
+# How to Add a New CAPO Adapter
 
-This documentation describes the steps required to add a new price cap adapter for LST or stablecoin asset.
+This guide covers adding price cap adapters for LST, stablecoin, or Pendle PT assets.
 
-As a first step, contact risk providers for recommendations on capo parameters:
+**Before you start:** Contact risk providers for CAPO parameters:
 
-- `maxYearlyGrowthPercent` and `minimumSnapshotDelay` parameters in case of an LST asset
-- fixed capo value for the stablecoin asset
+- **LST**: `maxYearlyGrowthPercent` and `minimumSnapshotDelay`
+- **Stablecoin**: fixed cap value
+- **Pendle PT**: `maxDiscountRatePerYear` and `discountRatePerYear`
 
-Deploying a new cap adapter consists of three simple steps:
+---
 
-- (optional) add a specific adapter for the new asset
-- write a deployment script
-- add and run tests
+## LST Adapter
 
-There are situations, when the sync adapter should be used together with the cap adapter. Detailed description is in the [separate section](#synchronicity-adapters).
+### 1. Create Adapter (if needed)
 
-## 1. Creating an adapter for LST
+#### Option A: Native exchange rate
 
-Depending on the asset type and data source, two options are possible:
+If the LST contract provides a native rate method:
 
-### Native exchange rate
+1. Add interface to [`/src/interfaces/`](/src/interfaces/). Examples:
+   - [`IWeEth.sol`](/src/interfaces/IWeEth.sol)—`getRate()` on
+     [token contract](https://etherscan.io/token/0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee#readProxyContract#F8)
+   - [`IOsTokenVaultController.sol`](/src/interfaces/IOsTokenVaultController.sol)—`convertToAssets()` on
+     [vault controller](https://etherscan.io/address/0x2a261e60fb14586b474c208b1b7ac6d0f5000306#readContract#F3)
+2. Add adapter to [`/src/contracts/lst-adapters/`](/src/contracts/lst-adapters/).
+   Inherit from [`PriceCapAdapterBase`](/src/contracts/PriceCapAdapterBase.sol) and implement `getRatio()`.
 
-When an LST asset adapter is added and the native contract specifies a rate:
+#### Option B: Chainlink rate feed
 
-1. Determine which method of which contract provides the rate, and add a simplified version of the interface to the [`interfaces`](/src/interfaces/) folder. For example, for [`weETH`](/src/interfaces/IWeEth.sol) this is the `getRate()` method on the [token contract](https://etherscan.io/token/0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee#readProxyContract#F8), and for [`osETH`] this is `convertToAssets(uint256 shares)` on a separate [vault controller](https://etherscan.io/address/0x2a261e60fb14586b474c208b1b7ac6d0f5000306#readContract#F3).
+Use the generic [`CLRatePriceCapAdapter`](src/contracts/CLRatePriceCapAdapter.sol)—no new contract needed.
 
-2. Add the specific adapter contract to the [`lst-adapters`](/src/contracts/lst-adapters/) folder. The contract must inherit from [`PriceCapAdapterBase`](/src/contracts/PriceCapAdapterBase.sol) and implement only one `getRatio()` method.
+### 2. Get Snapshot Parameters
 
-### Chainlink oracle providing rate
+Risk providers give you growth rate and minimum snapshot delay, but you need `snapshotRatio` and `snapshotTimestamp`:
 
-If there is no native contract providing an exchange rate and the Chainlink feed will be used, there is no need to add a new adapter as the generic [`CLRatePriceCapAdapter](src/contracts/CLRatePriceCapAdapter.sol) should be used.
+1. Use [GetExchangeRatesTest](tests/utils/GetExchangeRatesTest.t.sol):
+   - Add a method to get the rate for the corresponding network (see [osETH example](tests/utils/GetExchangeRatesTest.t.sol#L66))
+   - Set block number to approximately `now - minimumSnapshotDelay in blocks`; (tip: you can check blocks per day in [BlockUtils.sol](tests/utils/BlockUtils.sol))
+   - Run test with console output to obtain the rate `snapshotRatio` and timestamp `snapshotTimestamp`
 
-## 2. Deployment
+### 3. Deploy
 
-As risk entities only provide growth rate and snapshot delay while `snapshotRatio` and `snapshotTimestamp` are flexible, you need to get them by yourself to use in deployment.
+Add deployment function to the network script (e.g., [`DeployEthereum.s.sol`](scripts/DeployEthereum.s.sol)):
 
-### Get params for the deployment
+| Parameter                     | Description                                                  |
+| ----------------------------- | ------------------------------------------------------------ |
+| `aclManager`                  | ACL manager of the pool                                      |
+| `baseAggregatorAddress`       | Base asset feed (e.g., `ETH/USD` for ETH-based LSTs)         |
+| `ratioProviderAddress`        | Contract providing exchange ratio (native or Chainlink feed) |
+| `pairDescription`             | Adapter description (e.g, `capped rsETH / ETH / USD`)        |
+| `minimumSnapshotDelay`        | From risk provider (typically 7 or 14 days)                  |
+| `snapshotRatio`               | Exchange ratio at snapshot time                              |
+| `snapshotTimestamp`           | Timestamp of snapshot                                        |
+| `maxYearlyRatioGrowthPercent` | From risk provider                                           |
 
-1. The first option is to use [GetExchangeRatesTest](tests/utils/GetExchangeRatesTest.t.sol):
-   - Add a method to get the rate and console log for the corresponding network test. Example for [`osETH`](tests/utils/GetExchangeRatesTest.t.sol#46)
-   - set the block number to approximately `now - minimumSnapshotDelay` and run the test contract with output to the console.
-2. The second option is to do it any other way you want.
+> **zkSync:** Return encoded parameters instead of deployment code.
 
-### Script
+Add deployment command to Makefile.
 
-Alter the appropriate deployment script:
+### 4. Test
 
-1. Add a function that will return the deployment code to the library. Example for [`weETH`](scripts/DeployEthereum.s.sol#15). The following parameters should be specified:
+1. Add test to `tests/<network>/` folder
+2. Inherit from [`BaseTest`](tests/BaseTest.sol) and implement `_createAdapter()`,
+   or use [`CLAdapterBaseTest`](tests/CLAdapterBaseTest.sol) for Chainlink-based adapters
+3. Configure test parameters:
+   - Adapter code
+   - Retrospective days (default: 90)
+   - Fork parameters (network, block) (tip: use the `now` block you used to obtain the snapshot block)
+   - Report name `{asset}_{network}` (e.g., `osETH_Ethereum`)
 
-   - `aclManager`: ACL manager of he pool
-   - `baseAggregatorAddress`: the address of the base asset feed, for ETH-based LSTs it should be `ETH / USD` oracle
-   - `ratioProviderAddress`: the address of the contract, which provides the exchange ratio
-   - `pairDescription`: description of the adapter
-   - `minimumSnapshotDelay`: the delay provided by the risk entity, typically 7 or 14 days
-   - `snapshotRatio`: the value of the exchange ratio X days ago
-   - `snapshotTimestamp`: timestamp of the snapshot ratio
-   - `maxYearlyRatioGrowthPercent`: the maximum possible annual LST growth percentage
+> **zkSync:** Add `salt` parameter: `new CLRatePriceCapAdapter{salt: 'test'}(params)`
 
-     1.1 If the adapter is deployed on zkSync network, you'll need to create a function that only returns the encoded parameters above instead of returning the deployment code.
+---
 
-2. Add the deployment script and command to the Makefile.
+## Stablecoin Adapter
 
-## 3. Testing
+Use existing [`PriceCapAdapterStable`](src/contracts/PriceCapAdapterStable.sol)—no new contract needed.
 
-To test the adapter:
+### 1. Deploy
 
-1. Add the test to the destination network folder inside `tests`.
-2. Inherit it from [`BaseTest`](tests/BaseTest.sol) and implement the simple `_createAdapter()` method, when the specific adapter is created. Or just inherit the test from [CLAdapterBaseTest.sol](tests/CLAdapterBaseTest.sol) when Chainlink oracle is used.
+Add deployment function to the network script:
 
-   2.1. If the adapter will be tested against the zksync network:
+| Parameter              | Description                                   |
+| ---------------------- | --------------------------------------------- |
+| `aclManager`           | ACL manager of the pool                       |
+| `assetToUsdAggregator` | `Asset/USD` feed address                      |
+| `adapterDescription`   | Adapter description                           |
+| `priceCap`             | Cap value (e.g., `int256(1.04 * 1e8)` for 4%) |
 
-   - add the `salt` parameter using the `new` keyword for deployment: e.g.: `new CLRatePriceCapAdapter{salt: 'test'}(capAdapterParams)`
+Add deployment command to Makefile.
 
-3. Specify the following test parameters:
-   - adapter code
-   - number of days for retrospective testing (default is 90). Check that with the specified parameters the adapter has not been capped for the last X days. A report comparing prices with the base aggregator is also generated.
-   - fork parameters: network and block number
-   - name for the report (something like `osETH_Ethereum`)
+### 2. Test
 
-# Adapter for Stablecoin
+Inherit from [`BaseStableTest`](tests/BaseStableTest.sol) and specify deployment code, retrospective days, and fork parameters.
 
-No need to add a specific adapter, existing [`PriceCapAdapterStable`](src/contracts/PriceCapAdapterStable.sol) should be used.
+---
 
-## Deployment
+## Pendle PT Adapter
 
-1. Add a function that will return the deployment code to the library in the appropriate network's deployment script. The following parameters should be specified:
+For Pendle Principal Tokens (PT) that trade at a discount decaying linearly to zero at maturity.
 
-   - `aclManager`: the ACL manager of the pool
-   - `assetToUsdAggregator`: the address of the `asset / USD` feed
-   - `adapterDescription`: description of the adapter
-   - `priceCap`: the value of the price cap, for example for 4% it would be `int256(1.04 * 1e8)`
+Use existing [`PendlePriceCapAdapter`](src/contracts/PendlePriceCapAdapter.sol)—no new contract needed.
 
-2. Add the deployment script and command to the Makefile.
+**Before you start:** Contact risk providers for:
 
-## Testing
+- `maxDiscountRatePerYear`: Maximum allowed discount rate
+- `discountRatePerYear`: Current discount rate
 
-Base test for stables would be added soon. Stay tuned.
+### 1. Deploy
 
-## Sync adapter
+Add deployment function to the network script:
 
-When you need to cap the asset which is not pegged to the base asset of the pool (to `USD`), such as `agEUR`, then you need to use a combination of adapters:
+| Parameter                | Description                                            |
+| ------------------------ | ------------------------------------------------------ |
+| `aclManager`             | ACL manager of the pool                                |
+| `assetToUsdAggregator`   | Underlying asset feed (e.g., `USDT/USD`)               |
+| `pendlePrincipalToken`   | PT token contract address                              |
+| `maxDiscountRatePerYear` | From risk provider (e.g., `27.9e16` for 27.9%)         |
+| `discountRatePerYear`    | From risk provider (e.g., `8.52e16` for 8.52%)         |
+| `description`            | Adapter description (e.g., `PT Capped sUSDe USDT/USD`) |
 
-1.  Cap adapter for `agEUR / EUR` as `agEUR` should be capped against `EUR`.
-2.  [CLSynchronicityPriceAdapterPegToBase](https://github.com/bgd-labs/cl-synchronicity-price-adapter/blob/main/src/contracts/CLSynchronicityPriceAdapterPegToBase.sol) to combine capped adapter with `EUR / USD` feed to create capped `agEUR / EUR / USD`.
+> Maturity is read automatically from the PT token contract.
 
-[Here is the example](scripts/Example.s.sol).
+Add deployment command to Makefile.
+
+---
+
+## Synchronicity Adapters
+
+When capping an asset not pegged to the pool's base currency (e.g., `agEUR` against `EUR` instead of `USD`), combine adapters:
+
+1. Cap adapter for `agEUR/EUR`
+2. [`CLSynchronicityPriceAdapterPegToBase`](src/contracts/CLSynchronicityPriceAdapterPegToBase.sol) to combine with `EUR/USD` feed → capped `agEUR/USD`
+
+See [example script](scripts/Example.s.sol).
