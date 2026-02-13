@@ -124,10 +124,6 @@ Add deployment function to the network script:
 
 Add deployment command to Makefile.
 
-### 2. Test
-
-Inherit from [`BaseTest`](tests/BaseTest.sol) and configure test parameters similarly to LST adapters.
-
 ---
 
 ## Synchronicity Adapters
