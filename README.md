@@ -38,6 +38,7 @@ For USD-pegged stablecoins (USDC, USDT, DAI) with fixed 1:1 peg.
 ### Synchronicity Adapters
 
 Combine two price feeds to derive a third pair.
+
 - Does not cap the price derived from the feed's composition
 
 | Adapter                                                                                            | Input Feeds         | Output    |
@@ -95,18 +96,20 @@ The currently audited adapters expose only `latestAnswer()`, which is used by Aa
 
 **For v4 compatibility:**
 
-1. Add the `latestRoundData()` method to the `ICLSynchronicityPriceAdapter` interface: 
+1. Add the `latestRoundData()` method to the `ICLSynchronicityPriceAdapter` interface:
+
 ```solidity
-  function latestRoundData()
-    external
-    view
-    returns (
-      uint80 roundId,
-      int256 answer,
-      uint256 startedAt,
-      uint256 updatedAt,
-      uint80 answeredInRound
-    );
+function latestRoundData()
+  external
+  view
+  returns (
+    uint80 roundId,
+    int256 answer,
+    uint256 startedAt,
+    uint256 updatedAt,
+    uint80 answeredInRound
+  );
+```
 
 ## Security
 
