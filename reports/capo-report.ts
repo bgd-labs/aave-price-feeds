@@ -1,5 +1,6 @@
 import {formatUnits} from 'viem';
 import {readFileSync, writeFileSync} from 'node:fs';
+import {format as formatWithPrettier} from 'prettier';
 
 type CapoPrice = {
   referencePrice: number;
@@ -86,7 +87,8 @@ export async function generateCapoReport(snapshot: CapoSnapshot) {
 
   content += `* Max day-to-day yearly % indicates the maximum growth between two emissions as an annualized percentage. \n`;
 
-  return content;
+  const formatted = formatWithPrettier(content, {parser: 'markdown'});
+  return await Promise.resolve(formatted);
 }
 
 function formatTimestamp(timestampInSec: number) {
