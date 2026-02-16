@@ -360,7 +360,7 @@ abstract contract BaseTest is Test {
     uint16 maxYearlyGrowthPercent,
     uint256 snapshotDelayDays
   ) internal returns (string memory) {
-    string memory path = string(abi.encodePacked('./reports/', reportName, '.json'));
+    string memory path = string(abi.encodePacked('./reports/out/', reportName, '.json'));
     vm.serializeString('root', 'source', sourceName);
     vm.serializeString('root', 'reference', referenceName);
     vm.serializeUint('root', 'decimals', decimals);
