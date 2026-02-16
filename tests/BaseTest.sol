@@ -388,15 +388,15 @@ abstract contract BaseTest is Test {
   }
 
   function _generateMdReport(string memory sourcePath) internal {
-    string memory outPath = string(abi.encodePacked('./reports/', reportName, '.md'));
+    string memory outPath = string(abi.encodePacked('./reports/out/', reportName, '.md'));
 
-    string[] memory inputs = new string[](7);
-    inputs[0] = 'npx';
-    inputs[1] = '@bgd-labs/aave-cli';
-    inputs[2] = 'capo-report';
+    string[] memory inputs = new string[](6);
+    inputs[0] = './node_modules/.bin/tsx';
+    inputs[1] = './reports/capo-report.ts';
+    inputs[2] = '-i';
     inputs[3] = sourcePath;
-    inputs[5] = '-o';
-    inputs[6] = outPath;
+    inputs[4] = '-o';
+    inputs[5] = outPath;
     vm.ffi(inputs);
   }
 }
