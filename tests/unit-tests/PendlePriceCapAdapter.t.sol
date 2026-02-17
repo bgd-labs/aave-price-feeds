@@ -212,6 +212,67 @@ contract PendleCapAdapterTest is Test {
     assertEq(pendleCapAdapter.latestAnswer(), 1e8);
   }
 
+  function test_latestRoundData(uint256 timeToSkip) public {
+    timeToSkip = bound(timeToSkip, 1, pendleCapAdapter.MATURITY() - block.timestamp);
+
+    skip(timeToSkip);
+
+    (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    ) = pendleCapAdapter.latestRoundData();
+
+    uint256 timestamp = vm.getBlockTimestamp();
+    assertEq(roundId, uint80(timestamp));
+    assertLe(answer, assetToUsdAggregator.latestAnswer());
+    assertEq(startedAt, timestamp);
+    assertEq(updatedAt, timestamp);
+    assertEq(answeredInRound, uint80(timestamp));
+  }
+
+  function test_latestRoundDataBelow0() public {
+    assetToUsdAggregator.setLatestAnswer(-1);
+
+    (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    ) = pendleCapAdapter.latestRoundData();
+
+    uint256 timestamp = vm.getBlockTimestamp();
+    assertEq(roundId, uint80(timestamp));
+    assertEq(answer, 0);
+    assertEq(startedAt, timestamp);
+    assertEq(updatedAt, timestamp);
+    assertEq(answeredInRound, uint80(timestamp));
+  }
+
+  function test_latestRoundDataAfterMaturity(uint256 timeToSkip) public {
+    timeToSkip = bound(timeToSkip, pendleCapAdapter.MATURITY() - block.timestamp, type(uint64).max);
+
+    skip(timeToSkip);
+
+    (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    ) = pendleCapAdapter.latestRoundData();
+
+    uint256 timestamp = vm.getBlockTimestamp();
+    assertEq(roundId, uint80(timestamp));
+    assertEq(answer, 1e8);
+    assertEq(startedAt, timestamp);
+    assertEq(updatedAt, timestamp);
+    assertEq(answeredInRound, uint80(timestamp));
+  }
+
   function test_getCurrentDiscount(uint256 timeToSkip) public {
     timeToSkip = bound(timeToSkip, 1, pendleCapAdapter.MATURITY() - block.timestamp);
 
