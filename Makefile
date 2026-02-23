@@ -50,7 +50,7 @@ deploy:
 
 deploy-pk:
 	@if [ -z "$(adapter)" ] || [ -z "$(chain)" ]; then \
-		echo "usage: make deploy adapter=WeEth chain=mainnet"; exit 1; fi
+		echo "usage: make deploy-pk adapter=WeEth chain=mainnet"; exit 1; fi
 	@script="${SCRIPT_$(chain)}"; \
 	if [ -z "$$script" ]; then echo "unknown chain: $(chain)"; exit 1; fi; \
 	zksync_flag=""; \

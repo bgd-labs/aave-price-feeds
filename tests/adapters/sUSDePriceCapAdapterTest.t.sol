@@ -62,7 +62,7 @@ contract sUSDePlasmaTest is CLAdapterBaseTest {
   {}
 }
 
-contract sUSDeInkPriceCapAdapterTest is CLAdapterBaseTest {
+contract sUSDeInkTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodeInk.sUSDeAdapterCode(),
