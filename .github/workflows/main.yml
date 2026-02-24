@@ -40,12 +40,34 @@ jobs:
           ZKSYNC: true
           ROOT_DIR: "zksync"
 
+      - name: Run common unit tests
+        id: unit_tests
+        run: |
+          forge test --match-path 'tests/unit-tests/*'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install JS dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run report JS tests
+        run: pnpm run vitest
+
       - name: Run Forge tests
         uses: bgd-labs/github-workflows/.github/actions/comment-artifact@main
 
       # we let failing tests pass so we can log them in the comment, still we want the ci to fail
       - name: Post test
-        if: ${{ steps.test.outputs.testStatus != 0 || steps.zktest.outputs.testStatus != 0 }}
+        if: ${{ steps.test.outputs.testStatus != 0 || steps.zktest.outputs.testStatus != 0 || steps.unit_tests.outputs.testStatus != 0}}
         run: |
           echo "tests failed"
           exit 1

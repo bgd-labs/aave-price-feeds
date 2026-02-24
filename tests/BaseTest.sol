@@ -282,26 +282,38 @@ abstract contract BaseTest is Test {
     uint256 previousTimestamp
   ) private pure returns (int256) {
     return
+      // forge-lint: disable-next-line(unsafe-typecast)
       (((ratio - previousRatio) * int256(SECONDS_PER_YEAR)) * 100_00) /
+      // forge-lint: disable-next-line(unsafe-typecast)
       (previousRatio * int256(currentTimestamp - previousTimestamp));
   }
 
   function _getMaxRatio(IPriceCapAdapter adapter) private view returns (uint256) {
     uint256 snapshotRatio = adapter.getSnapshotRatio();
     uint256 snapshotTimestamp = adapter.getSnapshotTimestamp();
-    uint256 maxGrowthPerSecond = adapter.getMaxRatioGrowthPerSecond();
-    return (snapshotRatio + maxGrowthPerSecond * (block.timestamp - snapshotTimestamp));
+    uint256 maxGrowthPerSecondScaled = adapter.getMaxRatioGrowthPerSecondScaled();
+    uint256 SCALING_FACTOR = adapter.SCALING_FACTOR();
+
+    return
+      uint256(
+        snapshotRatio +
+          (maxGrowthPerSecondScaled * (block.timestamp - snapshotTimestamp)) /
+          SCALING_FACTOR
+      );
   }
 
   function _mockRatioProviderRate(uint256 amount) internal virtual {}
 
-  /// @dev verifies that if growth in a year is greater than zero, growth per second must be greater than zero
+  /// @dev verifies that if growth in a year is greater than zero, growth per second scaled must be greater than zero
   /// and growth in a year won't be more than 100%
   function _validateGrowth(IPriceCapAdapter adapter) private view {
     uint256 maxYearlyGrowthRatePercent = adapter.getMaxYearlyGrowthRatePercent();
 
     if (maxYearlyGrowthRatePercent > 0) {
-      assertGt(adapter.getMaxRatioGrowthPerSecond(), 0);
+      // @dev For small values of the initial `snapshotRatio` and `maxYearlyRatioGrowthPercent` it can take a zero value
+      assertGe(adapter.getMaxRatioGrowthPerSecond(), 0);
+      // @dev In these cases it is recommended to look at `getMaxRatioGrowthPerSecondScaled()`
+      assertGt(adapter.getMaxRatioGrowthPerSecondScaled(), 0);
     }
 
     assertLe(adapter.getMaxYearlyGrowthRatePercent(), adapter.PERCENTAGE_FACTOR());
@@ -348,7 +360,7 @@ abstract contract BaseTest is Test {
     uint16 maxYearlyGrowthPercent,
     uint256 snapshotDelayDays
   ) internal returns (string memory) {
-    string memory path = string(abi.encodePacked('./reports/', reportName, '.json'));
+    string memory path = string(abi.encodePacked('./reports/out/', reportName, '.json'));
     vm.serializeString('root', 'source', sourceName);
     vm.serializeString('root', 'reference', referenceName);
     vm.serializeUint('root', 'decimals', decimals);
@@ -376,15 +388,15 @@ abstract contract BaseTest is Test {
   }
 
   function _generateMdReport(string memory sourcePath) internal {
-    string memory outPath = string(abi.encodePacked('./reports/', reportName, '.md'));
+    string memory outPath = string(abi.encodePacked('./reports/out/', reportName, '.md'));
 
-    string[] memory inputs = new string[](7);
-    inputs[0] = 'npx';
-    inputs[1] = '@bgd-labs/aave-cli';
-    inputs[2] = 'capo-report';
+    string[] memory inputs = new string[](6);
+    inputs[0] = './node_modules/.bin/tsx';
+    inputs[1] = './reports/capo-report.ts';
+    inputs[2] = '-i';
     inputs[3] = sourcePath;
-    inputs[5] = '-o';
-    inputs[6] = outPath;
+    inputs[4] = '-o';
+    inputs[5] = outPath;
     vm.ffi(inputs);
   }
 }

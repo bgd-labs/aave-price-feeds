@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
-import {IMaticRateProvider} from 'cl-synchronicity-price-adapter/interfaces/IMaticRateProvider.sol';
+import {IMaticRateProvider} from '../../interfaces/IMaticRateProvider.sol';
 
 import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol';
 

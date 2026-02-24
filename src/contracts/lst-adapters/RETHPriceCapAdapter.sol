@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
-import {IrETH} from 'cl-synchronicity-price-adapter/interfaces/IrETH.sol';
+import {IrETH} from '../../interfaces/IrETH.sol';
 
 import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol';
 

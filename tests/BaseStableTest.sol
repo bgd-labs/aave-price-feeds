@@ -57,6 +57,7 @@ abstract contract BaseStableTest is Test {
 
     uint256 priceCap;
     try adapter.getPriceCap() returns (int256 _priceCap) {
+      // forge-lint: disable-next-line(unsafe-typecast)
       priceCap = uint256(_priceCap);
     } catch {
       priceCap = uint256(IEURPriceCapAdapterStable(address(adapter)).getPriceCapRatio());

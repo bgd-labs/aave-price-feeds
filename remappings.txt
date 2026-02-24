@@ -1,6 +1,5 @@
 forge-std/=lib/forge-std/src/
 aave-address-book/=lib/aave-address-book/src/
-cl-synchronicity-price-adapter/=lib/cl-synchronicity-price-adapter/src/
 aave-helpers/=lib/aave-helpers/src/
 solidity-utils/=lib/aave-address-book/lib/aave-v3-origin/lib/solidity-utils/src/
 aave-v3-origin/=lib/aave-address-book/lib/aave-v3-origin/src/

@@ -3,8 +3,8 @@ pragma solidity ^0.8.0;
 
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
 
-import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IChainlinkAggregator.sol';
-import {ICLSynchronicityPriceAdapter} from 'cl-synchronicity-price-adapter/interfaces/ICLSynchronicityPriceAdapter.sol';
+import {IChainlinkAggregator} from '../../src/interfaces/IChainlinkAggregator.sol';
+import {ICLSynchronicityPriceAdapter} from '../../src/interfaces/ICLSynchronicityPriceAdapter.sol';
 
 interface IPriceCapAdapterStable is ICLSynchronicityPriceAdapter {
   /**
@@ -35,6 +35,11 @@ interface IPriceCapAdapterStable is ICLSynchronicityPriceAdapter {
   function ACL_MANAGER() external view returns (IACLManager);
 
   /**
+   * @notice Maximum capped value that could be set
+   */
+  function MAX_STABLE_CAP_VALUE() external view returns (int256);
+
+  /**
    * @notice Updates price cap
    * @param priceCap the new price cap
    */
@@ -53,4 +58,5 @@ interface IPriceCapAdapterStable is ICLSynchronicityPriceAdapter {
   error ACLManagerIsZeroAddress();
   error CallerIsNotRiskOrPoolAdmin();
   error CapLowerThanActualPrice();
+  error InvalidNewPriceCap();
 }
