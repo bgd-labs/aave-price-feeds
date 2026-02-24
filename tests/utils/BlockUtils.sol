@@ -60,10 +60,6 @@ library BlockUtils {
       return 43_200;
     }
 
-    if (keccak256(bytes(network)) == keccak256(bytes('plasma'))) {
-      return 86_400;
-    }
-
     if (keccak256(bytes(network)) == keccak256(bytes('sonic'))) {
       return 230_000;
     }
