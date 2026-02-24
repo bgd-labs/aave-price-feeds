@@ -78,14 +78,10 @@ See [misc-adapters documentation](./src/contracts/misc-adapters/README.md) for d
 
 ```bash
 # Install dependencies
-forge install
-pnpm i
+make install
 
-# Run tests
-forge test
-
-# Run tests for specific network
-forge test --match-path "tests/ethereum/*"
+# Run tests (unit and adapter/fork tests)
+make test
 
 # Run report generator tests
 pnpm run vitest
