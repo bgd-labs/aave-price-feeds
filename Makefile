@@ -9,8 +9,8 @@ update:; forge update
 # Build & test
 build  :; forge build --sizes
 test   :; make unit-tests && make adapters-tests
-unit-tests   :; forge test --match-path "tests/unit-tests/*" -vvv
-adapters-tests   :; forge test --match-path "tests/adapters/*" -vvv && FOUNDRY_PROFILE=zksync forge test --zksync -vvv
+unit-test   :; forge test --match-path "tests/unit-tests/*" -vvv
+adapters-test   :; forge test --match-path "tests/adapters/*" -vvv && FOUNDRY_PROFILE=zksync forge test --zksync -vvv
 
 # Lint
 lint  :; npm run lint:fix
