@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "vitest": "vitest run --config vitest.config.ts",
-    "test": "npm run vitest",
+    "test": "pnpm run vitest",
     "lint": "prettier ./",
-    "lint:fix": "npm run lint -- --write"
+    "lint:fix": "pnpm run lint -- --write"
   },
   "repository": {
     "type": "git",

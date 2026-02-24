@@ -3,7 +3,7 @@
 -include .env
 
 # deps
-install:; forge install && npm install
+install:; forge install && pnpm install
 update:; forge update
 
 # Build & test
@@ -13,7 +13,7 @@ unit-test   :; forge test --match-path "tests/unit-tests/*" -vvv
 adapters-test   :; forge test --match-path "tests/adapters/*" -vvv && FOUNDRY_PROFILE=zksync forge test --zksync -vvv
 
 # Lint
-lint  :; npm run lint:fix
+lint  :; pnpm run lint:fix
 
 # Deploy
 
@@ -63,5 +63,5 @@ deploy-pk:
 download :; cast source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :
 	@mkdir -p diffs
-	@npx prettier ${before} ${after} --write
+	@pnpm exec prettier ${before} ${after} --write
 	@printf '%s\n%s\n%s\n' "\`\`\`diff" "$$(git diff --no-index --diff-algorithm=patience --ignore-space-at-eol ${before} ${after})" "\`\`\`" > diffs/${out}.md

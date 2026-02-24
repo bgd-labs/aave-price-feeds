@@ -79,7 +79,7 @@ See [misc-adapters documentation](./src/contracts/misc-adapters/README.md) for d
 ```bash
 # Install dependencies
 forge install
-npm i
+pnpm i
 
 # Run tests
 forge test
@@ -88,7 +88,7 @@ forge test
 forge test --match-path "tests/ethereum/*"
 
 # Run report generator tests
-npm run vitest
+pnpm run vitest
 ```
 
 ## CAPO Report Generator
@@ -101,7 +101,7 @@ npm run vitest
 The generator script is [`reports/capo-report.ts`](./reports/capo-report.ts) and is executed through FFI:
 
 ```bash
-./node_modules/.bin/tsx ./reports/capo-report.ts -i ./reports/mocks/capo.json -o ./reports/out/capo.md
+pnpm exec tsx ./reports/capo-report.ts -i ./reports/mocks/capo.json -o ./reports/out/capo.md
 ```
 
 ## Adding New Adapters
