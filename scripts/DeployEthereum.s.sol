@@ -634,14 +634,14 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3EthereumLido.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkEthereum.AAVE_SVR_ETH__USD,
+            baseAggregatorAddress: AaveV3EthereumLidoAssets.wstETH_ORACLE,
             ratioProviderAddress: tETH,
             pairDescription: 'Capped tETH / wstETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_207148153557508708,
+              snapshotRatio: 1_002302911335141630,
               snapshotTimestamp: 1748925539, // Jun-03-2025
-              maxYearlyRatioGrowthPercent: 12_04
+              maxYearlyRatioGrowthPercent: 4_50
             })
           })
         )
