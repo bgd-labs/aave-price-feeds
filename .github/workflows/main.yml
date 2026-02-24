@@ -45,6 +45,23 @@ jobs:
         run: |
           forge test --match-path 'tests/unit-tests/*'
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install JS dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run report JS tests
+        run: pnpm run vitest
+
       - name: Run Forge tests
         uses: bgd-labs/github-workflows/.github/actions/comment-artifact@main
 
