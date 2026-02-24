@@ -1,6 +1,8 @@
 # build and cache
 cache/
 out/
+!reports/out/
+!reports/out/.empty
 zkout/
 
 # general

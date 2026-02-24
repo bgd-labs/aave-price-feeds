@@ -153,7 +153,7 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
   }
 
   function _generateJsonReport() internal {
-    string memory path = string(abi.encodePacked('./reports/', REPORT_NAME, '.json'));
+    string memory path = string(abi.encodePacked('./reports/out/', REPORT_NAME, '.json'));
 
     vm.serializeString('root', 'source', DESCRIPTION);
     vm.serializeString('root', 'reference', 'MKR / USD (Chainlink)');
@@ -185,7 +185,7 @@ contract DiscountedMKRSKYAdapterForkTest is Test {
   }
 
   function _generateMdReport() internal {
-    string memory path = string(abi.encodePacked('./reports/', REPORT_NAME, '.md'));
+    string memory path = string(abi.encodePacked('./reports/out/', REPORT_NAME, '.md'));
 
     // Build markdown content
     string memory md = '# DiscountedMKRSKYAdapter Historic Report\n\n';
