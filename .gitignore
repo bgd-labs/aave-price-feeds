@@ -1,6 +1,8 @@
 # build and cache
 cache/
 out/
+!reports/out/
+!reports/out/.empty
 zkout/
 
 # general
@@ -13,8 +15,6 @@ zkout/
 # Vs code spelling extension
 cspell.json
 
-# well, looks strange to ignore package-lock, but we have only prettier and it's temporary
-package-lock.json
 node_modules
 
 # ignore foundry deploy artifacts

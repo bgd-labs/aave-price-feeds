@@ -3,7 +3,7 @@
 	url = https://github.com/foundry-rs/forge-std
 [submodule "lib/aave-helpers"]
 	path = lib/aave-helpers
-	url = https://github.com/bgd-labs/aave-helpers
+	url = https://github.com/aave-dao/aave-helpers
 [submodule "lib/aave-address-book"]
 	path = lib/aave-address-book
-	url = https://github.com/bgd-labs/aave-address-book
+	url = https://github.com/aave-dao/aave-address-book

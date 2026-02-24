@@ -67,6 +67,7 @@ See [misc-adapters documentation](./src/contracts/misc-adapters/README.md) for d
 │   └── interfaces/
 ├── scripts/                             # Deployment scripts per network
 ├── tests/                               # Test suite per network
+├── reports/                             # CAPO snapshots, report generator, and markdown outputs
 └── security/                            # Audit reports
 ```
 
@@ -78,12 +79,29 @@ See [misc-adapters documentation](./src/contracts/misc-adapters/README.md) for d
 ```bash
 # Install dependencies
 forge install
+pnpm i
 
 # Run tests
 forge test
 
 # Run tests for specific network
 forge test --match-path "tests/ethereum/*"
+
+# Run report generator tests
+pnpm run vitest
+```
+
+## CAPO Report Generator
+
+`BaseTest` generates CAPO markdown reports during retrospective tests.
+
+- Input snapshot: `./reports/out/<REPORT_NAME>.json` (temporary)
+- Output report: `./reports/out/<REPORT_NAME>.md`
+
+The generator script is [`reports/capo-report.ts`](./reports/capo-report.ts) and is executed through FFI:
+
+```bash
+pnpm exec tsx ./reports/capo-report.ts -i ./reports/mocks/capo.json -o ./reports/out/capo.md
 ```
 
 ## Adding New Adapters
