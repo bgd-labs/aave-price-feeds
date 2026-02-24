@@ -10,13 +10,16 @@ import {IPriceCapAdapterStable, ICLSynchronicityPriceAdapter, IACLManager, IChai
  */
 contract PriceCapAdapterStable is IPriceCapAdapterStable {
   /// @inheritdoc IPriceCapAdapterStable
+  int256 public constant MAX_STABLE_CAP_VALUE = 2e8;
+
+  /// @inheritdoc IPriceCapAdapterStable
   IChainlinkAggregator public immutable ASSET_TO_USD_AGGREGATOR;
 
   /// @inheritdoc IPriceCapAdapterStable
   IACLManager public immutable ACL_MANAGER;
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
-  uint8 public decimals;
+  uint8 public immutable decimals;
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
   string public description;
@@ -48,6 +51,10 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
       return priceCap;
     }
 
+    if (basePrice <= 0) {
+      return 0;
+    }
+
     return basePrice;
   }
 
@@ -67,7 +74,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
 
   /// @inheritdoc IPriceCapAdapterStable
   function isCapped() public view virtual returns (bool) {
-    return (ASSET_TO_USD_AGGREGATOR.latestAnswer() > this.latestAnswer());
+    return ASSET_TO_USD_AGGREGATOR.latestAnswer() > _priceCap;
   }
 
   /**
@@ -75,8 +82,11 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
    * @param priceCap the new price cap
    */
   function _setPriceCap(int256 priceCap) internal {
-    int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
+    if (priceCap > MAX_STABLE_CAP_VALUE || priceCap < 0) {
+      revert InvalidNewPriceCap();
+    }
 
+    int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
     if (priceCap < basePrice) {
       revert CapLowerThanActualPrice();
     }

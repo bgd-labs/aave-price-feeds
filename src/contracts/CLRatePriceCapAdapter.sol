@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.20;
+pragma solidity ^0.8.20;
 
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
-import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IChainlinkAggregator.sol';
+import {IChainlinkAggregator} from '../interfaces/IChainlinkAggregator.sol';
 
 import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
 

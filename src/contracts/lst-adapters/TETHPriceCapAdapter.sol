@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import {IERC4626} from 'forge-std/interfaces/IERC4626.sol';
-import {IStETH} from 'cl-synchronicity-price-adapter/interfaces/IStETH.sol';
+import {IStETH} from '../../interfaces/IStETH.sol';
 import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol';
 
 /**

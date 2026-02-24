@@ -4,7 +4,9 @@ pragma solidity ^0.8.0;
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {LineaScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {AaveV3Linea} from 'aave-address-book/AaveV3Linea.sol';
+import {ChainlinkLinea} from 'aave-address-book/ChainlinkLinea.sol';
 import {CLRatePriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
+import {FixedPriceAdapter} from '../src/contracts/misc-adapters/FixedPriceAdapter.sol';
 import {PriceCapAdapterStable, IPriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCapAdapter.sol';
 
@@ -130,6 +132,29 @@ library CapAdaptersCodeLinea {
         )
       );
   }
+
+  function mUSDAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PriceCapAdapterStable).creationCode,
+        abi.encode(
+          IPriceCapAdapterStable.CapAdapterStableParams({
+            aclManager: AaveV3Linea.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(ChainlinkLinea.MUSD__USD),
+            adapterDescription: 'Capped mUSD / USD',
+            priceCap: int256(1.04 * 1e8)
+          })
+        )
+      );
+  }
+
+  function fixedMUsdAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(FixedPriceAdapter).creationCode,
+        abi.encode(address(AaveV3Linea.ACL_MANAGER), 8, int256(1 * 1e8), 'Fixed mUSD/USD')
+      );
+  }
 }
 
 contract DeployWeEthLinea is LineaScript {
@@ -165,5 +190,17 @@ contract DeployWstETHLinea is LineaScript {
 contract DeployWRstETHLinea is LineaScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeLinea.wrsETHAdapterCode());
+  }
+}
+
+contract DeployMUSDLinea is LineaScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeLinea.mUSDAdapterCode());
+  }
+}
+
+contract DeployFixedMUSDLinea is LineaScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeLinea.fixedMUsdAdapterCode());
   }
 }

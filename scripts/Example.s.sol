@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
-import {CLSynchronicityPriceAdapterPegToBase} from 'cl-synchronicity-price-adapter/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
+import {CLSynchronicityPriceAdapterPegToBase} from '../src/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 
 library stEURCapAdapters {

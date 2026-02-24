@@ -1,0 +1,17 @@
+{
+  "lib/aave-address-book": {
+    "branch": {
+      "name": "main",
+      "rev": "6ac635afafd29de2ed7c39c9d37669a49c7db753"
+    }
+  },
+  "lib/aave-helpers": {
+    "branch": {
+      "name": "main",
+      "rev": "e3773a2abb151cbaf378caeccab28da114200208"
+    }
+  },
+  "lib/forge-std": {
+    "rev": "0c71116a218268ee8c0157be8efcb13af0f7beaf"
+  }
+}

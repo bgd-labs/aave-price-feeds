@@ -1,0 +1,226 @@
+{
+  "decimals": 8,
+  "maxYearlyGrowthPercent": 875,
+  "minSnapshotDelay": 7,
+  "prices": {
+    "19356450": {
+      "dayToDayGrowth": 0,
+      "referencePrice": 346549000000,
+      "smoothedGrowth": 0,
+      "sourcePrice": 357914153315,
+      "timestamp": 1709490755
+    },
+    "19363750": {
+      "dayToDayGrowth": 171,
+      "referencePrice": 358534536000,
+      "smoothedGrowth": 0,
+      "sourcePrice": 370310532844,
+      "timestamp": 1709578811
+    },
+    "19371050": {
+      "dayToDayGrowth": 491,
+      "referencePrice": 356717720000,
+      "smoothedGrowth": 0,
+      "sourcePrice": 368484566962,
+      "timestamp": 1709666819
+    },
+    "19378350": {
+      "dayToDayGrowth": 214,
+      "referencePrice": 387400000000,
+      "smoothedGrowth": 0,
+      "sourcePrice": 400202920430,
+      "timestamp": 1709754851
+    },
+    "19385650": {
+      "dayToDayGrowth": 464,
+      "referencePrice": 387719770000,
+      "smoothedGrowth": 0,
+      "sourcePrice": 400585227082,
+      "timestamp": 1709842931
+    },
+    "19392950": {
+      "dayToDayGrowth": 366,
+      "referencePrice": 395197000000,
+      "smoothedGrowth": 0,
+      "sourcePrice": 408352437097,
+      "timestamp": 1709931119
+    },
+    "19400250": {
+      "dayToDayGrowth": 365,
+      "referencePrice": 390878617449,
+      "smoothedGrowth": 0,
+      "sourcePrice": 403931874281,
+      "timestamp": 1710019967
+    },
+    "19407550": {
+      "dayToDayGrowth": 300,
+      "referencePrice": 389237199000,
+      "smoothedGrowth": 339,
+      "sourcePrice": 402269511587,
+      "timestamp": 1710108191
+    },
+    "19414850": {
+      "dayToDayGrowth": 355,
+      "referencePrice": 405172157013,
+      "smoothedGrowth": 365,
+      "sourcePrice": 418779647706,
+      "timestamp": 1710196343
+    },
+    "19422150": {
+      "dayToDayGrowth": 347,
+      "referencePrice": 395180000000,
+      "smoothedGrowth": 345,
+      "sourcePrice": 408491637390,
+      "timestamp": 1710284519
+    },
+    "19429450": {
+      "dayToDayGrowth": 261,
+      "referencePrice": 400696759142,
+      "smoothedGrowth": 351,
+      "sourcePrice": 414224713661,
+      "timestamp": 1710373115
+    },
+    "19436750": {
+      "dayToDayGrowth": 235,
+      "referencePrice": 388186606000,
+      "smoothedGrowth": 319,
+      "sourcePrice": 401318898648,
+      "timestamp": 1710462071
+    },
+    "19444050": {
+      "dayToDayGrowth": 230,
+      "referencePrice": 376340630000,
+      "smoothedGrowth": 299,
+      "sourcePrice": 389097413303,
+      "timestamp": 1710550655
+    },
+    "19451350": {
+      "dayToDayGrowth": 217,
+      "referencePrice": 353715488000,
+      "smoothedGrowth": 278,
+      "sourcePrice": 365727699156,
+      "timestamp": 1710639443
+    },
+    "19458650": {
+      "dayToDayGrowth": 281,
+      "referencePrice": 360770000000,
+      "smoothedGrowth": 275,
+      "sourcePrice": 373051277856,
+      "timestamp": 1710728159
+    },
+    "19465950": {
+      "dayToDayGrowth": 232,
+      "referencePrice": 341078000000,
+      "smoothedGrowth": 258,
+      "sourcePrice": 352711990420,
+      "timestamp": 1710816827
+    },
+    "19473250": {
+      "dayToDayGrowth": 208,
+      "referencePrice": 324726491000,
+      "smoothedGrowth": 238,
+      "sourcePrice": 335822435506,
+      "timestamp": 1710905459
+    },
+    "19480550": {
+      "dayToDayGrowth": 387,
+      "referencePrice": 351859000000,
+      "smoothedGrowth": 256,
+      "sourcePrice": 363921625509,
+      "timestamp": 1710993875
+    },
+    "19487850": {
+      "dayToDayGrowth": 251,
+      "referencePrice": 350632167007,
+      "smoothedGrowth": 258,
+      "sourcePrice": 362678329924,
+      "timestamp": 1711082471
+    },
+    "19495150": {
+      "dayToDayGrowth": 297,
+      "referencePrice": 332875483000,
+      "smoothedGrowth": 268,
+      "sourcePrice": 344340356942,
+      "timestamp": 1711170911
+    },
+    "19502450": {
+      "dayToDayGrowth": 261,
+      "referencePrice": 331829815289,
+      "smoothedGrowth": 274,
+      "sourcePrice": 343283895716,
+      "timestamp": 1711259507
+    },
+    "19509750": {
+      "dayToDayGrowth": 245,
+      "referencePrice": 346962555434,
+      "smoothedGrowth": 269,
+      "sourcePrice": 358963867272,
+      "timestamp": 1711348427
+    },
+    "19517050": {
+      "dayToDayGrowth": 231,
+      "referencePrice": 365913658361,
+      "smoothedGrowth": 269,
+      "sourcePrice": 378595083613,
+      "timestamp": 1711437119
+    },
+    "19524350": {
+      "dayToDayGrowth": 344,
+      "referencePrice": 356610090000,
+      "smoothedGrowth": 288,
+      "sourcePrice": 369005083183,
+      "timestamp": 1711526519
+    },
+    "19531650": {
+      "dayToDayGrowth": 265,
+      "referencePrice": 357539000000,
+      "smoothedGrowth": 271,
+      "sourcePrice": 369994503716,
+      "timestamp": 1711617263
+    },
+    "19538950": {
+      "dayToDayGrowth": 278,
+      "referencePrice": 353479000000,
+      "smoothedGrowth": 274,
+      "sourcePrice": 365821925515,
+      "timestamp": 1711706699
+    },
+    "19546250": {
+      "dayToDayGrowth": 248,
+      "referencePrice": 351230000000,
+      "smoothedGrowth": 267,
+      "sourcePrice": 363519779513,
+      "timestamp": 1711795391
+    },
+    "19553550": {
+      "dayToDayGrowth": 182,
+      "referencePrice": 360617191378,
+      "smoothedGrowth": 256,
+      "sourcePrice": 373254580315,
+      "timestamp": 1711884131
+    },
+    "19560850": {
+      "dayToDayGrowth": 209,
+      "referencePrice": 353935545849,
+      "smoothedGrowth": 251,
+      "sourcePrice": 366360436472,
+      "timestamp": 1711972979
+    },
+    "19568150": {
+      "dayToDayGrowth": 369,
+      "referencePrice": 332176644980,
+      "smoothedGrowth": 271,
+      "sourcePrice": 343873281666,
+      "timestamp": 1712061359
+    },
+    "19575450": {
+      "dayToDayGrowth": 221,
+      "referencePrice": 331009407509,
+      "smoothedGrowth": 253,
+      "sourcePrice": 342686187101,
+      "timestamp": 1712149799
+    }
+  },
+  "reference": "ETH / USD",
+  "source": "Capped weETH / eETH(ETH) / USD"
+}

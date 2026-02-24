@@ -4,8 +4,11 @@ pragma solidity ^0.8.0;
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {BaseScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {AaveV3Base, AaveV3BaseAssets} from 'aave-address-book/AaveV3Base.sol';
+import {ChainlinkBase} from 'aave-address-book/ChainlinkBase.sol';
+
 import {EURPriceCapAdapterStable, IEURPriceCapAdapterStable, IChainlinkAggregator} from '../src/contracts/misc-adapters/EURPriceCapAdapterStable.sol';
 import {CLRatePriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
+import {LBTCPriceCapAdapter} from '../src/contracts/lst-adapters/LBTCPriceCapAdapter.sol';
 
 library CapAdaptersCodeBase {
   address public constant weETH_eETH_AGGREGATOR = 0x35e9D7001819Ea3B39Da906aE6b06A62cfe2c181;
@@ -14,6 +17,7 @@ library CapAdaptersCodeBase {
   address public constant rsETH_ETH_AGGREGATOR = 0x99DAf760d2CFB770cc17e883dF45454FE421616b;
   address public constant EURC_PRICE_FEED = 0xDAe398520e2B67cd3f27aeF9Cf14D93D927f8250;
   address public constant EUR_PRICE_FEED = 0xc91D87E81faB8f93699ECf7Ee9B44D11e1D53F0F;
+  address public constant LBTC_STAKE_ORACLE = 0x1De9fcfeDF3E51266c188ee422fbA1c7860DA0eF;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -94,6 +98,54 @@ library CapAdaptersCodeBase {
         )
       );
   }
+
+  function lBTCAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(LBTCPriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Base.ACL_MANAGER,
+            baseAggregatorAddress: ChainlinkBase.BTC__USD,
+            ratioProviderAddress: LBTC_STAKE_ORACLE,
+            pairDescription: 'Capped LBTC / BTC / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_000000000000000000,
+              snapshotTimestamp: 1750031153, // Jun-15-2025
+              maxYearlyRatioGrowthPercent: 2_00
+            })
+          })
+        )
+      );
+  }
+
+  function syrupUSDCAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLRatePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Base.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3BaseAssets.USDC_ORACLE,
+            ratioProviderAddress: ChainlinkBase.syrupUSDC_USDC_Exchange_Rate,
+            pairDescription: 'Capped SyrupUSDC / USDC / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_141275955119667166,
+              snapshotTimestamp: 1765541747, // Dec-12-2025
+              maxYearlyRatioGrowthPercent: 8_04
+            })
+          })
+        )
+      );
+  }
+}
+
+contract DeployLBTCBase is BaseScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.lBTCAdapterCode());
+  }
 }
 
 contract DeployWeEthBase is BaseScript {
@@ -117,5 +169,11 @@ contract DeployRsETHBase is BaseScript {
 contract DeployEURCBase is BaseScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.EURCAdapterCode());
+  }
+}
+
+contract DeploySyrupUSDCBase is BaseScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.syrupUSDCAdapterCode());
   }
 }
