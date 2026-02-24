@@ -56,11 +56,11 @@ Add deployment function to the network script (e.g., [`DeployEthereum.s.sol`](sc
 
 > **zkSync:** Return encoded parameters instead of deployment code.
 
-Add deployment command to Makefile.
+Use the Makefile deploy target: `make deploy adapter=<AdapterName> chain=<chain>` (example: `make deploy adapter=WeEth chain=mainnet`).
 
 ### 4. Test
 
-1. Add test to `tests/<network>/` folder
+1. 1. Add/update the adapter test file in `tests/adapters/` (append new network test contracts to the existing file when possible).
 2. Inherit from [`BaseTest`](tests/BaseTest.sol) and implement `_createAdapter()`,
    or use [`CLAdapterBaseTest`](tests/CLAdapterBaseTest.sol) for Chainlink-based adapters
 3. Configure test parameters:
@@ -88,7 +88,7 @@ Add deployment function to the network script:
 | `adapterDescription`   | Adapter description                           |
 | `priceCap`             | Cap value (e.g., `int256(1.04 * 1e8)` for 4%) |
 
-Add deployment command to Makefile.
+Use the Makefile deploy target: `make deploy adapter=<AdapterName> chain=<chain>` (example: `make deploy adapter=USDC chain=mainnet`).
 
 ### 2. Test
 
@@ -122,7 +122,7 @@ Add deployment function to the network script:
 
 > Maturity is read automatically from the PT token contract.
 
-Add deployment command to Makefile.
+Use the Makefile deploy target: `make deploy adapter=<AdapterName> chain=<chain>` (example: `make deploy adapter=PendlePt chain=mainnet`).
 
 ---
 

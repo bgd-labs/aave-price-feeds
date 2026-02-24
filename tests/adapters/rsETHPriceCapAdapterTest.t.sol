@@ -12,6 +12,7 @@ import {CapAdaptersCodeAvalanche} from '../../scripts/DeployAvalanche.s.sol';
 import {CapAdaptersCodeInk} from '../../scripts/DeployInk.s.sol';
 import {CapAdaptersCodeLinea} from '../../scripts/DeployLinea.s.sol';
 import {CapAdaptersCodeMantle} from '../../scripts/DeployMantle.s.sol';
+import {CapAdaptersCodePlasma} from '../../scripts/DeployPlasma.s.sol';
 import {CapAdaptersCodeMegaEth} from '../../scripts/DeployMegaEth.s.sol';
 
 contract rsETHEthereumTest is BaseTest {
@@ -111,4 +112,15 @@ contract wrsETHMegaEthTest is CLAdapterBaseTest {
     // cannot test due to newly base feed deployed
     assertTrue(true);
   }
+}
+
+contract wrsETHPlasmaTest is CLAdapterBaseTest {
+  constructor()
+    CLAdapterBaseTest(
+      CapAdaptersCodePlasma.wrsETHAdapterCode(),
+      30,
+      ForkParams({network: 'plasma', blockNumber: 7418169}),
+      'WrsETH_Plasma'
+    )
+  {}
 }

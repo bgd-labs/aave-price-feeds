@@ -9,11 +9,9 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol'
  * @title TETHPriceCapAdapter
  * @author BGD Labs
  * @notice Price capped adapter to calculate price of (tETH / USD) pair by using
- * @notice Chainlink data feed for (ETH / USD) and (tETH / WSTETH / ETH) ratio.
+ * @notice Price capped adapter feed for (WSTETH / ETH / USD) and (tETH / WSTETH) ratio.
  */
 contract TETHPriceCapAdapter is PriceCapAdapterBase {
-  address public constant STETH = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84;
-
   /**
    * @param capAdapterParams parameters to create cap adapter
    */
@@ -35,7 +33,6 @@ contract TETHPriceCapAdapter is PriceCapAdapterBase {
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    uint256 tETHToWstETH = IERC4626(RATIO_PROVIDER).convertToAssets(10 ** RATIO_DECIMALS);
-    return int256(IStETH(STETH).getPooledEthByShares(tETHToWstETH));
+    return int256(IERC4626(RATIO_PROVIDER).convertToAssets(10 ** RATIO_DECIMALS));
   }
 }
