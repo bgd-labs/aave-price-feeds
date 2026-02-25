@@ -36,8 +36,8 @@ contract rsETHArbitrumTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodeArbitrum.rsETHAdapterCode(),
-      3,
-      ForkParams({network: 'arbitrum', blockNumber: 316605777}),
+      30,
+      ForkParams({network: 'arbitrum', blockNumber: 435769000}),
       'RsETH_Arbitrum'
     )
   {}

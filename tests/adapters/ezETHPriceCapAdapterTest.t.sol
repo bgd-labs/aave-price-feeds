@@ -39,13 +39,14 @@ contract ezETHBaseTest is CLAdapterBaseTest {
     )
   {}
 }
+import 'forge-std/console.sol';
 
 contract ezETHArbitrumTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodeArbitrum.ezETHAdapterCode(),
-      90,
-      ForkParams({network: 'arbitrum', blockNumber: 286888946}),
+      30,
+      ForkParams({network: 'arbitrum', blockNumber: 435769000}),
       'ezETH_arbitrum'
     )
   {}
