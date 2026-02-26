@@ -13,6 +13,7 @@ import {LBTCPriceCapAdapter} from '../src/contracts/lst-adapters/LBTCPriceCapAda
 
 library CapAdaptersCodeBase {
   address public constant LBTC_STAKE_ORACLE = 0x1De9fcfeDF3E51266c188ee422fbA1c7860DA0eF;
+  address public constant USDC_SVR_ADAPTER = 0xf52D010c7d4ecBfda92c2509900593CE34535D86;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -122,13 +123,13 @@ library CapAdaptersCodeBase {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Base.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3BaseAssets.USDC_ORACLE,
+            baseAggregatorAddress: USDC_SVR_ADAPTER,
             ratioProviderAddress: ChainlinkBase.syrupUSDC_USDC_Exchange_Rate,
             pairDescription: 'Capped SyrupUSDC / USDC / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_141275955119667166,
-              snapshotTimestamp: 1765541747, // Dec-12-2025
+              snapshotRatio: 1_151861177118403071,
+              snapshotTimestamp: 1771307347, // Feb-17-2026 (block: 42259000)
               maxYearlyRatioGrowthPercent: 8_04
             })
           })
