@@ -44,7 +44,7 @@ library CapAdaptersCodeArbitrum {
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1_071564937164950348,
-              snapshotTimestamp: 1770747589, // Feb-10-2026 (block: 430676000)
+              snapshotTimestamp: 1770747589, // Feb-10-2026 (block: 430704000)
               maxYearlyRatioGrowthPercent: 10_89
             })
           })
@@ -65,7 +65,7 @@ library CapAdaptersCodeArbitrum {
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1_064743064023132384,
-              snapshotTimestamp: 1770747589, // Feb-10-2026 (block: 430676000)
+              snapshotTimestamp: 1770747589, // Feb-10-2026 (block: 430704000)
               maxYearlyRatioGrowthPercent: 9_83
             })
           })
