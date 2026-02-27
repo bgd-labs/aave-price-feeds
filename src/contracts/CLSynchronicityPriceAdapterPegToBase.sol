@@ -44,23 +44,23 @@ contract CLSynchronicityPriceAdapterPegToBase is ICLSynchronicityPriceAdapter {
   /**
    * @param pegToBaseAggregatorAddress the address of PEG / BASE feed
    * @param assetToPegAggregatorAddress the address of the ASSET / PEG feed
-   * @param decimals precision of the answer
+   * @param decimals_ precision of the answer
    * @param pairDescription description
    */
   constructor(
     address pegToBaseAggregatorAddress,
     address assetToPegAggregatorAddress,
-    uint8 decimals,
+    uint8 decimals_,
     string memory pairDescription
   ) {
     PEG_TO_BASE = IChainlinkAggregator(pegToBaseAggregatorAddress);
     ASSET_TO_PEG = IChainlinkAggregator(assetToPegAggregatorAddress);
 
-    if (decimals > MAX_DECIMALS) revert DecimalsAboveLimit();
+    if (decimals_ > MAX_DECIMALS) revert DecimalsAboveLimit();
     if (PEG_TO_BASE.decimals() > MAX_DECIMALS) revert DecimalsAboveLimit();
     if (ASSET_TO_PEG.decimals() > MAX_DECIMALS) revert DecimalsAboveLimit();
 
-    DECIMALS = decimals;
+    DECIMALS = decimals_;
     _description = pairDescription;
 
     // equal to 10 to the power of the sum decimals of feeds
