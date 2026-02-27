@@ -5,7 +5,7 @@ script = 'scripts'
 out = 'out'
 libs = ['lib']
 remappings = []
-solc = '0.8.27'
+solc = '0.8.28'
 ffi = true
 fs_permissions = [{ access = "write", path = "./reports" }]
 evm_version = 'shanghai'

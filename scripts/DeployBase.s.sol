@@ -7,17 +7,13 @@ import {AaveV3Base, AaveV3BaseAssets} from 'aave-address-book/AaveV3Base.sol';
 import {ChainlinkBase} from 'aave-address-book/ChainlinkBase.sol';
 
 import {EURPriceCapAdapterStable, IEURPriceCapAdapterStable, IChainlinkAggregator} from '../src/contracts/misc-adapters/EURPriceCapAdapterStable.sol';
+import {PriceCapAdapterStable, IPriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 import {CLRatePriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
 import {LBTCPriceCapAdapter} from '../src/contracts/lst-adapters/LBTCPriceCapAdapter.sol';
 
 library CapAdaptersCodeBase {
-  address public constant weETH_eETH_AGGREGATOR = 0x35e9D7001819Ea3B39Da906aE6b06A62cfe2c181;
-  address public constant ezETH_ETH_AGGREGATOR = 0xC4300B7CF0646F0Fe4C5B2ACFCCC4dCA1346f5d8;
-  address public constant rsETH_LRT_ORACLE = 0x7781ae9B47FeCaCEAeCc4FcA8d0b6187E3eF9ba7;
-  address public constant rsETH_ETH_AGGREGATOR = 0x99DAf760d2CFB770cc17e883dF45454FE421616b;
-  address public constant EURC_PRICE_FEED = 0xDAe398520e2B67cd3f27aeF9Cf14D93D927f8250;
-  address public constant EUR_PRICE_FEED = 0xc91D87E81faB8f93699ECf7Ee9B44D11e1D53F0F;
   address public constant LBTC_STAKE_ORACLE = 0x1De9fcfeDF3E51266c188ee422fbA1c7860DA0eF;
+  address public constant USDC_SVR_CAPPED_ADAPTER = 0xf52D010c7d4ecBfda92c2509900593CE34535D86;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -26,13 +22,13 @@ library CapAdaptersCodeBase {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Base.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3BaseAssets.WETH_ORACLE,
-            ratioProviderAddress: weETH_eETH_AGGREGATOR,
+            baseAggregatorAddress: ChainlinkBase.AAVE_SVR_ETH__USD,
+            ratioProviderAddress: ChainlinkBase.AAVE_SVR_WEETH__EETH_Exchange_Rate,
             pairDescription: 'Capped weETH / eETH(ETH) / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1038264880178601326,
-              snapshotTimestamp: 1715620171, // 13th of May 2024
+              snapshotRatio: 1_088379838933126642,
+              snapshotTimestamp: 1771307347, // Feb-17-2026 (block: 42259000)
               maxYearlyRatioGrowthPercent: 8_75
             })
           })
@@ -47,13 +43,13 @@ library CapAdaptersCodeBase {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Base.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3BaseAssets.WETH_ORACLE,
-            ratioProviderAddress: ezETH_ETH_AGGREGATOR,
+            baseAggregatorAddress: ChainlinkBase.AAVE_SVR_ETH__USD,
+            ratioProviderAddress: ChainlinkBase.AAVE_SVR_EZETH__ETH_Exchange_Rate,
             pairDescription: 'Capped ezETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1029613402295302804,
-              snapshotTimestamp: 1733389347, // 2024-12-05
+              snapshotRatio: 1_071514982303582791,
+              snapshotTimestamp: 1770691347, // Feb-10-2026 (block: 41951000)
               maxYearlyRatioGrowthPercent: 10_89
             })
           })
@@ -68,13 +64,13 @@ library CapAdaptersCodeBase {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Base.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3BaseAssets.WETH_ORACLE,
-            ratioProviderAddress: rsETH_ETH_AGGREGATOR,
+            baseAggregatorAddress: ChainlinkBase.AAVE_SVR_ETH__USD,
+            ratioProviderAddress: ChainlinkBase.AAVE_SVR_rsETH__ETH_Exchange_Rate,
             pairDescription: 'Capped rsETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_036271920052097966,
-              snapshotTimestamp: 1738837347, // Feb-06-2025
+              snapshotRatio: 1_064691728347193357,
+              snapshotTimestamp: 1770691347, // Feb-10-2026 (block: 41951000)
               maxYearlyRatioGrowthPercent: 9_83
             })
           })
@@ -89,8 +85,8 @@ library CapAdaptersCodeBase {
         abi.encode(
           IEURPriceCapAdapterStable.CapAdapterStableParamsEUR({
             aclManager: AaveV3Base.ACL_MANAGER,
-            assetToUsdAggregator: IChainlinkAggregator(EURC_PRICE_FEED),
-            baseToUsdAggregator: IChainlinkAggregator(EUR_PRICE_FEED),
+            assetToUsdAggregator: IChainlinkAggregator(ChainlinkBase.AAVE_SVR_EURC__USD),
+            baseToUsdAggregator: IChainlinkAggregator(ChainlinkBase.EUR__USD),
             adapterDescription: 'Capped EURC/USD',
             priceCapRatio: int256(1.04 * 1e8),
             ratioDecimals: 8
@@ -106,13 +102,13 @@ library CapAdaptersCodeBase {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Base.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkBase.BTC__USD,
+            baseAggregatorAddress: ChainlinkBase.AAVE_SVR_BTC__USD,
             ratioProviderAddress: LBTC_STAKE_ORACLE,
             pairDescription: 'Capped LBTC / BTC / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_000000000000000000,
-              snapshotTimestamp: 1750031153, // Jun-15-2025
+              snapshotRatio: 1_003041079211609094,
+              snapshotTimestamp: 1771307347, // Feb-17-2026 (block: 42259000)
               maxYearlyRatioGrowthPercent: 2_00
             })
           })
@@ -127,15 +123,72 @@ library CapAdaptersCodeBase {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Base.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3BaseAssets.USDC_ORACLE,
+            baseAggregatorAddress: USDC_SVR_CAPPED_ADAPTER,
             ratioProviderAddress: ChainlinkBase.syrupUSDC_USDC_Exchange_Rate,
             pairDescription: 'Capped SyrupUSDC / USDC / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_141275955119667166,
-              snapshotTimestamp: 1765541747, // Dec-12-2025
+              snapshotRatio: 1_151861177118403071,
+              snapshotTimestamp: 1771307347, // Feb-17-2026 (block: 42259000)
               maxYearlyRatioGrowthPercent: 8_04
             })
+          })
+        )
+      );
+  }
+
+  function cbETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLRatePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Base.ACL_MANAGER,
+            baseAggregatorAddress: ChainlinkBase.AAVE_SVR_ETH__USD,
+            ratioProviderAddress: ChainlinkBase.cbETH_ETH_Exchange_Rate,
+            pairDescription: 'Capped cbETH / ETH / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_123263823685699828,
+              snapshotTimestamp: 1771307347, // Feb-17-2026 (block: 42259000)
+              maxYearlyRatioGrowthPercent: 8_12
+            })
+          })
+        )
+      );
+  }
+
+  function wstETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLRatePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Base.ACL_MANAGER,
+            baseAggregatorAddress: ChainlinkBase.AAVE_SVR_ETH__USD,
+            ratioProviderAddress: ChainlinkBase.AAVE_SVR_WSTETH__STETH_Exchange_Rate,
+            pairDescription: 'Capped wstETH / stETH(ETH) / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_227182231483433137,
+              snapshotTimestamp: 1771307347, // Feb-17-2026 (block: 42259000)
+              maxYearlyRatioGrowthPercent: 9_68
+            })
+          })
+        )
+      );
+  }
+
+  function USDCAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PriceCapAdapterStable).creationCode,
+        abi.encode(
+          IPriceCapAdapterStable.CapAdapterStableParams({
+            aclManager: AaveV3Base.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(ChainlinkBase.AAVE_SVR_USDC__USD),
+            adapterDescription: 'Capped USDC/USD',
+            priceCap: int256(1.04 * 1e8)
           })
         )
       );
@@ -175,5 +228,23 @@ contract DeployEURCBase is BaseScript {
 contract DeploySyrupUSDCBase is BaseScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.syrupUSDCAdapterCode());
+  }
+}
+
+contract DeployCbETHBase is BaseScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.cbETHAdapterCode());
+  }
+}
+
+contract DeployWstETHBase is BaseScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.wstETHAdapterCode());
+  }
+}
+
+contract DeployUSDCBase is BaseScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.USDCAdapterCode());
   }
 }

@@ -35,7 +35,7 @@ contract weETHBaseTest is CLAdapterBaseTest {
     CLAdapterBaseTest(
       CapAdaptersCodeBase.weETHAdapterCode(),
       30,
-      ForkParams({network: 'base', blockNumber: 14720247}),
+      ForkParams({network: 'base', blockNumber: 42567000}),
       'weETH_base'
     )
   {}
