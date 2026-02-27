@@ -8,7 +8,7 @@ update:; forge update
 
 # Build & test
 build  :; forge build --sizes
-test   :; make unit-tests && make adapters-tests
+test   :; make unit-test && make adapters-test
 unit-test   :; forge test --match-path "tests/unit-tests/*" -vvv
 adapters-test   :; forge test --match-path "tests/adapters/*" -vvv && FOUNDRY_PROFILE=zksync forge test --zksync -vvv
 

@@ -13,6 +13,7 @@ import {CapAdaptersCodeLinea} from '../../scripts/DeployLinea.s.sol';
 import {CapAdaptersCodePlasma} from '../../scripts/DeployPlasma.s.sol';
 import {CapAdaptersCodeMegaEth} from '../../scripts/DeployMegaEth.s.sol';
 import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
+import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrum.s.sol';
 
 contract wstETHEthereumTest is BaseTest {
   constructor()
@@ -110,6 +111,17 @@ contract wstETHBaseTest is CLAdapterBaseTest {
       30,
       ForkParams({network: 'base', blockNumber: 42567000}),
       'wstETH_base'
+    )
+  {}
+}
+
+contract wstETHArbitrumTest is CLAdapterBaseTest {
+  constructor()
+    CLAdapterBaseTest(
+      CapAdaptersCodeArbitrum.wstETHAdapterCode(),
+      30,
+      ForkParams({network: 'arbitrum', blockNumber: 435534000}),
+      'wstETH_Arbitrum'
     )
   {}
 }

@@ -50,6 +50,7 @@ import {CapAdaptersCodeSonic} from '../../scripts/DeploySonic.s.sol';
 import {CapAdaptersCodePlasma} from '../../scripts/DeployPlasma.s.sol';
 import {CapAdaptersCodeInk} from '../../scripts/DeployInk.s.sol';
 import {CapAdaptersCodeMegaEth} from '../../scripts/DeployMegaEth.s.sol';
+import {ChainlinkArbitrum} from 'aave-address-book/ChainlinkArbitrum.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
@@ -116,25 +117,25 @@ contract ExchangeRatesEth is Test {
 
 contract ExchangeRatesArbitrum is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('arbitrum'), 311775777); // 2025-03-03
+    vm.createSelectFork(vm.rpcUrl('arbitrum'), 433105000); // Feb-17-2026
   }
 
   function test_getExchangeRate() public view {
     uint256 rEthRate = uint256(
-      IChainlinkAggregator(MiscArbitrum.rETH_ETH_AGGREGATOR).latestAnswer()
+      IChainlinkAggregator(ChainlinkArbitrum.rETH_ETH_Exchange_Rate).latestAnswer()
     );
     uint256 wstEthRate = uint256(
-      IChainlinkAggregator(MiscArbitrum.wstETH_stETH_AGGREGATOR).latestAnswer()
+      IChainlinkAggregator(ChainlinkArbitrum.wstETH_stETH_Exchange_Rate).latestAnswer()
     );
     uint256 weEthRate = uint256(
-      IChainlinkAggregator(CapAdaptersCodeArbitrum.weETH_eETH_AGGREGATOR).latestAnswer()
+      IChainlinkAggregator(ChainlinkArbitrum.weETH__eETH_Exchange_Rate).latestAnswer()
     );
     uint256 ezEthRate = uint256(
-      IChainlinkAggregator(CapAdaptersCodeArbitrum.ezETH_ETH_AGGREGATOR).latestAnswer()
+      IChainlinkAggregator(ChainlinkArbitrum.ezETH__ETH_Exchange_Rate).latestAnswer()
     );
 
     uint256 rsETHRate = uint256(
-      IChainlinkAggregator(CapAdaptersCodeArbitrum.rsETH_ETH_AGGREGATOR).latestAnswer()
+      IChainlinkAggregator(ChainlinkArbitrum.rsETH__ETH_Exchange_Rate).latestAnswer()
     );
 
     console.log('Arbitrum');
