@@ -158,12 +158,12 @@ abstract contract BaseTest is Test {
 
     uint256 growthPercent = adapter.getMaxYearlyGrowthRatePercent();
     if (growthPercent > 0 && uint256(adapter.getRatio()) > adapter.getSnapshotRatio()) {
-      // set cap to 1%
+      // set yearly growth to 0.1%
       _setCapParametersByAdmin(
         adapter,
         uint104(adapter.getSnapshotRatio()),
         uint48(adapter.getSnapshotTimestamp() + 1),
-        uint16(50)
+        uint16(10)
       );
     } else {
       // adapters without a growth rate we mock the exchange rate

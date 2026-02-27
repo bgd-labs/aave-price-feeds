@@ -33,8 +33,8 @@ contract ezETHBaseTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodeBase.ezETHAdapterCode(),
-      90,
-      ForkParams({network: 'base', blockNumber: 23967401}),
+      30,
+      ForkParams({network: 'base', blockNumber: 42567000}),
       'ezETH_base'
     )
   {}

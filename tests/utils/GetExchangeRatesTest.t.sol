@@ -9,6 +9,7 @@ import {AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 import {AaveV2EthereumAssets} from 'aave-address-book/AaveV2Ethereum.sol';
 import {AaveV3AvalancheAssets} from 'aave-address-book/AaveV3Avalanche.sol';
 import {ChainlinkAvalanche} from 'aave-address-book/ChainlinkAvalanche.sol';
+import {ChainlinkBase} from 'aave-address-book/ChainlinkBase.sol';
 import {AaveV3GnosisAssets} from 'aave-address-book/AaveV3Gnosis.sol';
 import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
 import {MiscArbitrum} from 'aave-address-book/MiscArbitrum.sol';
@@ -35,6 +36,7 @@ import {IRsETH} from '../../src/interfaces/IRsETH.sol';
 import {IBNBx} from '../../src/interfaces/IBNBx.sol';
 import {IRsETHL2} from '../../src/interfaces/IRsETHL2.sol';
 import {IEBTC} from '../../src/interfaces/IEBTC.sol';
+import {ILBTC} from '../../src/interfaces/ILBTC.sol';
 import {IStS} from '../../src/interfaces/IStS.sol';
 import {IMaplePool} from '../../src/interfaces/IMaplePool.sol';
 
@@ -168,39 +170,39 @@ contract ExchangeRatesAvax is Test {
 
 contract ExchangeRatesBase is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('base'), 39376200); // Dec-12-2025
+    vm.createSelectFork(vm.rpcUrl('base'), 42259000); // Feb-17-2026
   }
 
   function test_getExchangeRate() public view {
-    uint256 cbEthRate = uint256(IChainlinkAggregator(MiscBase.cbETH_ETH_AGGREGATOR).latestAnswer());
+    uint256 cbEthRate = uint256(IChainlinkAggregator(ChainlinkBase.cbETH_ETH_Exchange_Rate).latestAnswer());
     uint256 wstEthRate = uint256(
-      IChainlinkAggregator(MiscBase.wstETH_stETH_AGGREGATOR).latestAnswer()
+      IChainlinkAggregator(ChainlinkBase.AAVE_SVR_WSTETH__STETH_Exchange_Rate).latestAnswer()
     );
     uint256 weEthRate = uint256(
-      IChainlinkAggregator(CapAdaptersCodeBase.weETH_eETH_AGGREGATOR).latestAnswer()
+      IChainlinkAggregator(ChainlinkBase.AAVE_SVR_WEETH__EETH_Exchange_Rate).latestAnswer()
     );
     uint256 ezEthRate = uint256(
-      IChainlinkAggregator(CapAdaptersCodeBase.ezETH_ETH_AGGREGATOR).latestAnswer()
+      IChainlinkAggregator(ChainlinkBase.AAVE_SVR_EZETH__ETH_Exchange_Rate).latestAnswer()
     );
 
-    uint256 rsETHRate = uint256(IRsETHL2(CapAdaptersCodeBase.rsETH_LRT_ORACLE).rate());
-
     uint256 rsETHCLRate = uint256(
-      IChainlinkAggregator(CapAdaptersCodeBase.rsETH_ETH_AGGREGATOR).latestAnswer()
+      IChainlinkAggregator(ChainlinkBase.AAVE_SVR_rsETH__ETH_Exchange_Rate).latestAnswer()
     );
 
     uint256 syrupUSDCCLRate = uint256(
       IChainlinkAggregator(ChainlinkBase.syrupUSDC_USDC_Exchange_Rate).latestAnswer()
     );
 
+    uint256 lBTCRate = ILBTC(CapAdaptersCodeBase.LBTC_STAKE_ORACLE).getRate();
+
     console.log('Base');
     console.log('cbEthRate', cbEthRate);
     console.log('wstEthRate', wstEthRate);
     console.log('weEthRate', weEthRate);
     console.log('ezEthRate', ezEthRate);
-    console.log('rsETHRate', rsETHRate);
     console.log('rsETHCLRate', rsETHCLRate);
     console.log('syrupUSDCCLRate', syrupUSDCCLRate);
+    console.log('lBTCRate', lBTCRate);
 
     console.log(block.timestamp);
   }
