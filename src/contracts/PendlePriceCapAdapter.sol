@@ -94,13 +94,16 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
     if (currentAssetPrice <= 0) {
       return 0;
     }
-    // cast to 'uint256' is safe because negative price (currentAssetPrice <= 0) return early.
+    // cast to 'uint256' is safe because currentAssetPrice > 0 (non-positive prices return early).
+    // Subtraction will not revert because getCurrentDiscount() < PERCENTAGE_FACTOR, enforced by the
+    // DiscountExceeds100Percent check in _setDiscountRatePerYear, and the discount only decreases over time.
     // forge-lint: disable-next-line(unsafe-typecast)
     uint256 price = (uint256(currentAssetPrice) * (PERCENTAGE_FACTOR - getCurrentDiscount())) /
       PERCENTAGE_FACTOR;
 
-    // cast to 'int256' is safe because currentAssetPrice > 0 and the discount factor is < 1e18,
-    // so price <= currentAssetPrice <= type(int256).max.
+    // cast to 'int256' is safe because the getCurrentDiscount() can only reduce the value, never increase it.
+    // This means the computed price cannot be greater than `currentAssetPrice`.
+    // In the worst case, it can be as low as zero, but never negative.
     // forge-lint: disable-next-line(unsafe-typecast)
     return int256(price);
   }
