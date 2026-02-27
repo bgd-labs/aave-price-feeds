@@ -64,7 +64,7 @@ See [misc-adapters documentation](./src/contracts/misc-adapters/README.md) for d
 │   │   └── misc-adapters/               # Specialized adapters
 │   └── interfaces/
 ├── scripts/                             # Deployment scripts per network
-├── tests/                               # Test suite per network
+├── tests/                               # Foundry test suites (adapters, unit-tests)
 ├── reports/                             # CAPO snapshots, report generator, and markdown outputs
 └── security/                            # Audit reports
 ```
