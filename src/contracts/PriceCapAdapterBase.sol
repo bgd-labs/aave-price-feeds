@@ -181,15 +181,17 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     _maxYearlyRatioGrowthPercent = priceCapParams.maxYearlyRatioGrowthPercent;
 
     // Lowest possible value of `maxRatioGrowthPerSecondScaled` with non-zero `maxYearlyRatioGrowthPercent` is 317 wei
-    uint104 maxRatioGrowthPerSecondScaled = uint104(
-      (uint256(priceCapParams.snapshotRatio) *
-        priceCapParams.maxYearlyRatioGrowthPercent *
-        SCALING_FACTOR) /
-        PERCENTAGE_FACTOR /
-        SECONDS_PER_YEAR
-    );
+    uint256 maxRatioGrowthPerSecondScaled = (uint256(priceCapParams.snapshotRatio) *
+      priceCapParams.maxYearlyRatioGrowthPercent *
+      SCALING_FACTOR) /
+      PERCENTAGE_FACTOR /
+      SECONDS_PER_YEAR;
 
-    _maxRatioGrowthPerSecondScaled = maxRatioGrowthPerSecondScaled;
+    // cast to 'uint104' is safe because `maxYearlyRatioGrowthPercent` is uint16 and the formula simplifies to
+    // `snapshotRatio * maxYearlyRatioGrowthPercent / 315_360`, so even with snapshotRatio == type(uint104).max and
+    // maxYearlyRatioGrowthPercent == type(uint16).max the result remains below type(uint104).max.
+    // forge-lint: disable-next-line(unsafe-typecast)
+    _maxRatioGrowthPerSecondScaled = uint104(maxRatioGrowthPerSecondScaled);
 
     emit CapParametersUpdated(
       priceCapParams.snapshotRatio,
@@ -214,11 +216,13 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   }
 
   function _getMaxRatio() internal view returns (int256) {
+    uint256 maxRatio = _snapshotRatio +
+      (_maxRatioGrowthPerSecondScaled * (block.timestamp - _snapshotTimestamp)) /
+      SCALING_FACTOR;
     return
-      int256(
-        _snapshotRatio +
-          (_maxRatioGrowthPerSecondScaled * (block.timestamp - _snapshotTimestamp)) /
-          SCALING_FACTOR
-      );
+      // cast to 'int256' is safe because the computed `maxRatio` is non-negative and
+      // would need an unrealistically large timestamp delta to approach the int256 bound.
+      // forge-lint: disable-next-line(unsafe-typecast)
+      int256(maxRatio);
   }
 }

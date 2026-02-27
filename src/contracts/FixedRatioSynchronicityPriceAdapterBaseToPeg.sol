@@ -42,25 +42,25 @@ contract FixedRatioSynchronicityPriceAdapterBaseToPeg is ICLSynchronicityPriceAd
   /**
    * @param baseToPegAggregatorAddress the address of BASE / PEG feed
    * @param priceRatio Percent ratio of the original peg price, e.g. 95_00
-   * @param decimals precision of the answer
+   * @param decimals_ precision of the answer
    * @param pairDescription description
    */
   constructor(
     address baseToPegAggregatorAddress,
     int256 priceRatio,
-    uint8 decimals,
+    uint8 decimals_,
     string memory pairDescription
   ) {
     BASE_TO_PEG = IChainlinkAggregator(baseToPegAggregatorAddress);
 
-    if (decimals > MAX_DECIMALS) revert DecimalsAboveLimit();
+    if (decimals_ > MAX_DECIMALS) revert DecimalsAboveLimit();
     if (BASE_TO_PEG.decimals() > MAX_DECIMALS) revert DecimalsAboveLimit();
     if (priceRatio <= 0 || priceRatio >= 100_00) revert RatioOutOfBounds();
 
-    MULTIPLIER = int256(10 ** (BASE_TO_PEG.decimals() + decimals));
+    MULTIPLIER = int256(10 ** (BASE_TO_PEG.decimals() + decimals_));
 
     PRICE_RATIO = priceRatio;
-    DECIMALS = decimals;
+    DECIMALS = decimals_;
     _description = pairDescription;
   }
 

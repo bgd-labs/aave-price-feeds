@@ -86,6 +86,8 @@ contract DiscountedMKRSKYAdapter is IDiscountedMKRSKYAdapter {
     // This should never happen, but as extra validation
     if (rawPrice <= 0) return 0;
 
+    // cast to 'uint256' is safe because rawPrice > 0 (non-positive prices return early).
+    // forge-lint: disable-next-line(unsafe-typecast)
     uint256 referenceFeedPrice = uint256(rawPrice);
 
     // e.g. (6650503 * 24000) * (1e18 - 0.02e18) / 1e18 = 156489827040 (~$1564 with 8 decimals)
