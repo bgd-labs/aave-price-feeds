@@ -30,7 +30,7 @@ contract syrupUSDCBaseTest is CLAdapterBaseTest {
     CLAdapterBaseTest(
       CapAdaptersCodeBase.syrupUSDCAdapterCode(),
       30,
-      ForkParams({network: 'base', blockNumber: 42654815}),
+      ForkParams({network: 'base', blockNumber: 42659489}),
       'syrupUSDC_CL_Base'
     )
   {}
