@@ -21,20 +21,15 @@ abstract contract BaseStableTest is Test {
 
   ForkParams public forkParams;
   bytes public deploymentCode;
-  bytes public adapterParams;
 
   constructor(
-    bytes memory _deploymentCodeOrParams,
+    bytes memory _deploymentCode,
     uint8 _retrospectiveDays,
     ForkParams memory _forkParams
   ) {
     forkParams = _forkParams;
     RETROSPECTIVE_DAYS = _retrospectiveDays;
-    if (keccak256(bytes(_forkParams.network)) == keccak256(bytes('zksync'))) {
-      adapterParams = _deploymentCodeOrParams;
-    } else {
-      deploymentCode = _deploymentCodeOrParams;
-    }
+    deploymentCode = _deploymentCode;
   }
 
   function setUp() public {
@@ -104,12 +99,6 @@ abstract contract BaseStableTest is Test {
   }
 
   function _createAdapter() internal returns (IPriceCapAdapterStable) {
-    if (keccak256(bytes(forkParams.network)) == keccak256(bytes('zksync'))) {
-      return
-        new PriceCapAdapterStable{salt: 'test'}(
-          abi.decode(adapterParams, (IPriceCapAdapterStable.CapAdapterStableParams))
-        );
-    }
     return IPriceCapAdapterStable(GovV3Helpers.deployDeterministic(deploymentCode));
   }
 }

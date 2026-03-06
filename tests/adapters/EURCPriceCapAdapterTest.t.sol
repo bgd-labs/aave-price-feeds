@@ -20,7 +20,7 @@ contract EURCBaseTest is BaseStableTest {
     BaseStableTest(
       CapAdaptersCodeBase.EURCAdapterCode(),
       10,
-      ForkParams({network: 'base', blockNumber: 26853575})
+      ForkParams({network: 'base', blockNumber: 42567000})
     )
   {}
 }

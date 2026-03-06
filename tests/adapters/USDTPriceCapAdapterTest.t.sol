@@ -8,8 +8,7 @@ import {CapAdaptersCodeLinea} from '../../scripts/DeployLinea.s.sol';
 import {CapAdaptersCodeMantle} from '../../scripts/DeployMantle.s.sol';
 import {CapAdaptersCodeMegaEth} from '../../scripts/DeployMegaEth.s.sol';
 import {CapAdaptersCodePlasma} from '../../scripts/DeployPlasma.s.sol';
-import {CapAdaptersCodeSoneium} from '../../scripts/DeploySoneium.s.sol';
-
+import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrum.s.sol';
 
 contract USDTEthereumTest is BaseStableTest {
   constructor()
@@ -31,7 +30,6 @@ contract USDTLineaTest is BaseStableTest {
   {}
 }
 
-
 contract USDTMantleTest is BaseStableTest {
   constructor()
     BaseStableTest(
@@ -41,7 +39,6 @@ contract USDTMantleTest is BaseStableTest {
     )
   {}
 }
-
 
 contract USDTMegaEthTest is BaseStableTest {
   constructor()
@@ -53,7 +50,6 @@ contract USDTMegaEthTest is BaseStableTest {
   {}
 }
 
-
 contract USDTPlasmaTest is BaseStableTest {
   constructor()
     BaseStableTest(
@@ -63,14 +59,12 @@ contract USDTPlasmaTest is BaseStableTest {
     )
   {}
 }
-
-
-contract USDTSoneiumTest is BaseStableTest {
+contract USDTArbitrumTest is BaseStableTest {
   constructor()
     BaseStableTest(
-      CapAdaptersCodeSoneium.USDTAdapterCode(),
-      14,
-      ForkParams({network: 'soneium', blockNumber: 7177569})
+      CapAdaptersCodeArbitrum.USDTAdapterCode(),
+      30,
+      ForkParams({network: 'arbitrum', blockNumber: 435534000})
     )
   {}
 }

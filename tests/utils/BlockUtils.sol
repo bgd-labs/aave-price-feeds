@@ -21,7 +21,7 @@ library BlockUtils {
     }
 
     if (keccak256(bytes(network)) == keccak256(bytes('arbitrum'))) {
-      return 345000;
+      return 347000;
     }
 
     if (keccak256(bytes(network)) == keccak256(bytes('avalanche'))) {
@@ -50,10 +50,6 @@ library BlockUtils {
 
     if (keccak256(bytes(network)) == keccak256(bytes('gnosis'))) {
       return 17000;
-    }
-
-    if (keccak256(bytes(network)) == keccak256(bytes('zksync'))) {
-      return 80_000;
     }
 
     if (keccak256(bytes(network)) == keccak256(bytes('linea'))) {

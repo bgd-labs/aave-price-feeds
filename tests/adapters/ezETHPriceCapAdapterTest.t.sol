@@ -33,19 +33,20 @@ contract ezETHBaseTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodeBase.ezETHAdapterCode(),
-      90,
-      ForkParams({network: 'base', blockNumber: 23967401}),
+      30,
+      ForkParams({network: 'base', blockNumber: 42567000}),
       'ezETH_base'
     )
   {}
 }
+import 'forge-std/console.sol';
 
 contract ezETHArbitrumTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodeArbitrum.ezETHAdapterCode(),
-      90,
-      ForkParams({network: 'arbitrum', blockNumber: 286888946}),
+      30,
+      ForkParams({network: 'arbitrum', blockNumber: 435769000}),
       'ezETH_arbitrum'
     )
   {}

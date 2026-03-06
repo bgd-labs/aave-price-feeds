@@ -37,8 +37,8 @@ contract LBTCBaseTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeBase.lBTCAdapterCode(),
-      7,
-      ForkParams({network: 'base', blockNumber: 33556903}),
+      30,
+      ForkParams({network: 'base', blockNumber: 42567000}),
       'LBTC_Base'
     )
   {}
