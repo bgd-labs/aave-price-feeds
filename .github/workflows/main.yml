@@ -20,25 +20,14 @@ jobs:
         with:
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
 
-      # we simply use foundry zk for all jobs in this repo
       - name: Run Foundry setup
         uses: bgd-labs/github-workflows/.github/actions/foundry-setup@main
-        with:
-          ZKSYNC: "true"
 
       - name: Run Forge tests
         id: test
         uses: bgd-labs/github-workflows/.github/actions/foundry-test@main
         with:
           MODE: "CHANGED"
-
-      - name: Run ZK tests
-        id: zktest
-        uses: bgd-labs/github-workflows/.github/actions/foundry-test@main
-        with:
-          MODE: "CHANGED"
-          ZKSYNC: true
-          ROOT_DIR: "zksync"
 
       - name: Run common unit tests
         id: unit_tests
@@ -67,7 +56,7 @@ jobs:
 
       # we let failing tests pass so we can log them in the comment, still we want the ci to fail
       - name: Post test
-        if: ${{ steps.test.outputs.testStatus != 0 || steps.zktest.outputs.testStatus != 0 || steps.unit_tests.outputs.testStatus != 0}}
+        if: ${{ steps.test.outputs.testStatus != 0 || steps.unit_tests.outputs.testStatus != 0}}
         run: |
           echo "tests failed"
           exit 1

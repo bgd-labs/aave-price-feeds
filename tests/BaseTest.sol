@@ -32,12 +32,11 @@ abstract contract BaseTest is Test {
 
   ForkParams public forkParams;
   bytes public deploymentCode;
-  bytes public adapterParams;
   string public reportName;
   PriceParams[] prices;
 
   constructor(
-    bytes memory _deploymentCodeOrParams,
+    bytes memory _deploymentCode,
     uint8 _retrospectiveDays,
     ForkParams memory _forkParams,
     string memory _reportName
@@ -45,11 +44,7 @@ abstract contract BaseTest is Test {
     forkParams = _forkParams;
     RETROSPECTIVE_DAYS = _retrospectiveDays;
     reportName = _reportName;
-    if (keccak256(bytes(_forkParams.network)) == keccak256(bytes('zksync'))) {
-      adapterParams = _deploymentCodeOrParams;
-    } else {
-      deploymentCode = _deploymentCodeOrParams;
-    }
+    deploymentCode = _deploymentCode;
   }
 
   function setUp() public {
@@ -182,9 +177,6 @@ abstract contract BaseTest is Test {
   }
 
   function _getCapAdapterParams() internal returns (IPriceCapAdapter.CapAdapterParams memory) {
-    if (keccak256(bytes(forkParams.network)) == keccak256(bytes('zksync'))) {
-      return abi.decode(adapterParams, (IPriceCapAdapter.CapAdapterParams));
-    }
     IPriceCapAdapter adapter = _createAdapter();
     return
       IPriceCapAdapter.CapAdapterParams({
@@ -206,9 +198,6 @@ abstract contract BaseTest is Test {
   ) internal virtual returns (IPriceCapAdapter) {}
 
   function _createAdapter() internal returns (IPriceCapAdapter) {
-    if (keccak256(bytes(forkParams.network)) == keccak256(bytes('zksync'))) {
-      return _createAdapter(_getCapAdapterParams());
-    }
     return IPriceCapAdapter(GovV3Helpers.deployDeterministic(deploymentCode));
   }
 

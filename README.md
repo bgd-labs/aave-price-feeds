@@ -145,7 +145,8 @@ function latestRoundData()
   [CL Synchronicity Price Adapter](https://github.com/bgd-labs/cl-synchronicity-price-adapter) repository.
 - They were later moved and improved in the [Aave Capo](https://github.com/bgd-labs/aave-capo) repository.
 - The [Aave Capo](https://github.com/bgd-labs/aave-capo) repository was later renamed to
-  [Aave Price Feeds](https://github.com/bgd-labs/aave-price-feeds) to better reflect its purpose.
+  [Aave Price Feeds](https://github.com/bgd-labs/aave-price-feeds) to better reflect its purpose.  
+- Following the [Multichain Strategy Proposal](https://governance.aave.com/t/arfc-focussing-the-aave-v3-multichain-strategy-phase-1/23954), we removed the scripts and tests for the Soneium and zkSync chains from this repository. Please refer to [address-book](https://github.com/aave-dao/aave-address-book) for deployed adapter addresses.
 
 ## License
 

@@ -10,7 +10,7 @@ update:; forge update
 build  :; forge build --sizes
 test   :; make unit-test && make adapters-test
 unit-test   :; forge test --match-path "tests/unit-tests/*" -vvv
-adapters-test   :; forge test --match-path "tests/adapters/*" -vvv && FOUNDRY_PROFILE=zksync forge test --zksync -vvv
+adapters-test   :; forge test --match-path "tests/adapters/*" -vvv
 
 # Lint
 lint  :; pnpm run lint:fix
@@ -35,7 +35,6 @@ SCRIPT_ink := DeployInk
 SCRIPT_plasma := DeployPlasma
 SCRIPT_megaeth := DeployMegaEth
 SCRIPT_gnosis := DeployGnosis
-SCRIPT_zksync := DeployZkSync
 
 ### usage: make deploy adapter=WeEth chain=mainnet
 deploy:
@@ -43,20 +42,16 @@ deploy:
 		echo "usage: make deploy adapter=WeEth chain=mainnet"; exit 1; fi
 	@script="${SCRIPT_$(chain)}"; \
 	if [ -z "$$script" ]; then echo "unknown chain: $(chain)"; exit 1; fi; \
-	zksync_flag=""; \
-	if [ "$(chain)" = "zksync" ]; then zksync_flag="--zksync"; fi; \
-	echo "forge script $$zksync_flag scripts/$$script.s.sol:Deploy$(adapter) --rpc-url $(chain) $(common-flags)"; \
-	forge script $$zksync_flag scripts/$$script.s.sol:Deploy$(adapter) --rpc-url $(chain) $(common-flags)
+	echo "forge script scripts/$$script.s.sol:Deploy$(adapter) --rpc-url $(chain) $(common-flags)"; \
+	forge script scripts/$$script.s.sol:Deploy$(adapter) --rpc-url $(chain) $(common-flags)
 
 deploy-pk:
 	@if [ -z "$(adapter)" ] || [ -z "$(chain)" ]; then \
 		echo "usage: make deploy-pk adapter=WeEth chain=mainnet"; exit 1; fi
 	@script="${SCRIPT_$(chain)}"; \
 	if [ -z "$$script" ]; then echo "unknown chain: $(chain)"; exit 1; fi; \
-	zksync_flag=""; \
-	if [ "$(chain)" = "zksync" ]; then zksync_flag="--zksync"; fi; \
-	echo "forge script $$zksync_flag scripts/$$script.s.sol:Deploy$(adapter) --rpc-url $(chain) $(common-flags-pk)"; \
-	forge script $$zksync_flag scripts/$$script.s.sol:Deploy$(adapter) --rpc-url $(chain) $(common-flags-pk)
+	echo "forge script scripts/$$script.s.sol:Deploy$(adapter) --rpc-url $(chain) $(common-flags-pk)"; \
+	forge script scripts/$$script.s.sol:Deploy$(adapter) --rpc-url $(chain) $(common-flags-pk)
 
 
 # Utilities
