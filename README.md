@@ -128,12 +128,14 @@ The currently audited adapters expose only `latestAnswer()`, which is used by Aa
 
 ## Repository History
 
+> [!NOTE]  
+> Following the [Multichain Strategy Proposal](https://governance.aave.com/t/arfc-focussing-the-aave-v3-multichain-strategy-phase-1/23954), Soneium and zkSync scripts and tests have been removed from this repository. For deployed adapter addresses, please consult the [address-book](https://github.com/aave-dao/aave-address-book) repository.
+
 - The original contracts of this repository were developed inside the
   [CL Synchronicity Price Adapter](https://github.com/bgd-labs/cl-synchronicity-price-adapter) repository.
 - They were later moved and improved in the [Aave Capo](https://github.com/bgd-labs/aave-capo) repository.
 - The [Aave Capo](https://github.com/bgd-labs/aave-capo) repository was later renamed to
-  [Aave Price Feeds](https://github.com/bgd-labs/aave-price-feeds) to better reflect its purpose.  
-- Following the [Multichain Strategy Proposal](https://governance.aave.com/t/arfc-focussing-the-aave-v3-multichain-strategy-phase-1/23954), we removed the scripts and tests for the Soneium and zkSync chains from this repository. Please refer to [address-book](https://github.com/aave-dao/aave-address-book) for deployed adapter addresses.
+  [Aave Price Feeds](https://github.com/bgd-labs/aave-price-feeds) to better reflect its purpose.
 
 ## License
 
