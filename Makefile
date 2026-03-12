@@ -35,6 +35,7 @@ SCRIPT_ink := DeployInk
 SCRIPT_plasma := DeployPlasma
 SCRIPT_megaeth := DeployMegaEth
 SCRIPT_gnosis := DeployGnosis
+SCRIPT_xlayer := DeployXLayer
 
 ### usage: make deploy adapter=WeEth chain=mainnet
 deploy:
