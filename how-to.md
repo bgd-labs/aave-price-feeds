@@ -35,7 +35,7 @@ Use the generic [`CLRatePriceCapAdapter`](src/contracts/CLRatePriceCapAdapter.so
 Risk providers give you growth rate and minimum snapshot delay, but you need `snapshotRatio` and `snapshotTimestamp`:
 
 1. Use [GetExchangeRatesTest](tests/utils/GetExchangeRatesTest.t.sol):
-   - Add a method to get the rate for the corresponding network (see [osETH example](tests/utils/GetExchangeRatesTest.t.sol#L66))
+   - Add a method to get the rate for the corresponding network (see [sUSDe example](tests/utils/GetExchangeRatesTest.t.sol#L69))
    - Set block number to approximately `now - minimumSnapshotDelay in blocks`; (tip: you can check blocks per day in [BlockUtils.sol](tests/utils/BlockUtils.sol))
    - Run test with console output to obtain the rate `snapshotRatio` and timestamp `snapshotTimestamp`
 
@@ -67,7 +67,7 @@ Use the Makefile deploy target: `make deploy adapter=<AdapterName> chain=<chain>
    - Adapter code
    - Retrospective days (default: 90)
    - Fork parameters (network, block) (tip: use the `now` block you used to obtain the snapshot block)
-   - Report name `{asset}_{network}` (e.g., `osETH_Ethereum`)
+   - Report name `{asset}_{network}` (e.g., `sUSDe_Ethereum`)
 
 > **zkSync:** Add `salt` parameter: `new CLRatePriceCapAdapter{salt: 'test'}(params)`
 

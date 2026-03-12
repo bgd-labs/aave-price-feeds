@@ -35,7 +35,7 @@ contract syrupUSDCBaseTest is CLAdapterBaseTest {
     )
   {}
 
-  function test_latestAnswerRetrospective() public override {
+  function test_latestAnswerRetrospective() public pure override {
     // Because the base adapter (USDC SVR + Stable Capo adapter) was recently deployed, we cannot generate the report against it.
     // That said, the 30-day report was generated against the USDC SVR directly, without the Stable Capo adapter.
     assertTrue(true);

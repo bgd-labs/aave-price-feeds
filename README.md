@@ -1,18 +1,16 @@
 # Aave Price Feeds
 
-Price oracle adapter smart contracts with upper-bound price protection for assets used by the Aave protocol.
-These adapters wrap Chainlink price feeds and cap prices to prevent oracle manipulation or malfunction from affecting Aave pools.
+This repository contains custom oracle adapters used when plain Chainlink pricing is not correct and/or not enough for Aave risk requirements.
 
-## Overview
-
-Aave protocol relies on external oracles for asset prices. If an oracle returns a negative, zero, or an abnormally high price
-(due to bugs, manipulation, or errors), it could lead to protocol exploits. This repository provides protective wrappers that:
-
-1. Fetches prices from Chainlink oracles
-2. Validates prices against configured maximum bounds
-3. Returns capped prices if bounds are exceeded
+## Examples
 
 ![Price Cap Adapters Architecture](./images/price-cap-adapters.png)
+
+- LSTs with rate-based caps (wstETH, rsETH, weETH, ezETH, osETH)
+- Stablecoins with fixed caps (USDC, USDT, EURC, RLUSD)
+- Composed feeds for non-direct pairs (e.g. asset/ETH and ETH/USD to derive asset/USD)
+- Pendle PT pricing with time-decaying discount
+- Custom transforms such as discounted MKR from SKY or fixed-price adapters
 
 ## Adapter Types
 
@@ -66,7 +64,7 @@ See [misc-adapters documentation](./src/contracts/misc-adapters/README.md) for d
 │   │   └── misc-adapters/               # Specialized adapters
 │   └── interfaces/
 ├── scripts/                             # Deployment scripts per network
-├── tests/                               # Test suite per network
+├── tests/                               # Foundry test suites (adapters, unit-tests)
 ├── reports/                             # CAPO snapshots, report generator, and markdown outputs
 └── security/                            # Audit reports
 ```
@@ -110,20 +108,9 @@ The currently audited adapters expose only `latestAnswer()`, which is used by Aa
 
 **For v4 compatibility:**
 
-1. Add the `latestRoundData()` method to the `ICLSynchronicityPriceAdapter` interface:
+1. New adapters must inherit from the [`IExtendedFeed`](./src/interfaces//IExtendedFeed.sol) interface, which implements the `latestRoundData()` function.
 
-```solidity
-function latestRoundData()
-  external
-  view
-  returns (
-    uint80 roundId,
-    int256 answer,
-    uint256 startedAt,
-    uint256 updatedAt,
-    uint80 answeredInRound
-  );
-```
+2. Implement it on the adapter (see `latestRoundData()` example in [`OneUSDFixedAdapter.sol`](./src/contracts/misc-adapters/OneUSDFixedAdapter.sol)).
 
 ## Security
 
@@ -141,12 +128,14 @@ function latestRoundData()
 
 ## Repository History
 
+> [!NOTE]  
+> Following the [Multichain Strategy Proposal](https://governance.aave.com/t/arfc-focussing-the-aave-v3-multichain-strategy-phase-1/23954), Soneium and zkSync scripts and tests have been removed from this repository. For deployed adapter addresses, please consult the [address-book](https://github.com/aave-dao/aave-address-book) repository.
+
 - The original contracts of this repository were developed inside the
   [CL Synchronicity Price Adapter](https://github.com/bgd-labs/cl-synchronicity-price-adapter) repository.
 - They were later moved and improved in the [Aave Capo](https://github.com/bgd-labs/aave-capo) repository.
 - The [Aave Capo](https://github.com/bgd-labs/aave-capo) repository was later renamed to
-  [Aave Price Feeds](https://github.com/bgd-labs/aave-price-feeds) to better reflect its purpose.  
-- Following the [Multichain Strategy Proposal](https://governance.aave.com/t/arfc-focussing-the-aave-v3-multichain-strategy-phase-1/23954), we removed the scripts and tests for the Soneium and zkSync chains from this repository. Please refer to [address-book](https://github.com/aave-dao/aave-address-book) for deployed adapter addresses.
+  [Aave Price Feeds](https://github.com/bgd-labs/aave-price-feeds) to better reflect its purpose.
 
 ## License
 

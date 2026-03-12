@@ -154,6 +154,7 @@ abstract contract BaseTest is Test {
     uint256 growthPercent = adapter.getMaxYearlyGrowthRatePercent();
     if (growthPercent > 0 && uint256(adapter.getRatio()) > adapter.getSnapshotRatio()) {
       // set yearly growth to 0.1%
+      // Moving 1s forward the timestamp and keeping same ratio should never have any impact sync-wise
       _setCapParametersByAdmin(
         adapter,
         uint104(adapter.getSnapshotRatio()),
